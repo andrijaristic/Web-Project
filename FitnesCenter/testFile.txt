@@ -1,0 +1,4 @@
+﻿AFitnesCentar-ACentrova-2000-2000-30000-100-100-1000
+CFitnesCentar2-ACentrova-2000-2000-30000-100-100-1000
+BFitnesCentar3-Centrova2-1980-2000-30000-100-100-1000
+ZFitnesCentar3-Centrova2-2010-2000-30000-100-100-1000

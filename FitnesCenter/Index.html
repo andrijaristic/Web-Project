@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.js"></script>
+    <script src="Scripts/MainPageScript.js"></script>
+</head>
+<body>
+    <div>
+        <p>
+            <input type="text" id="inputNaziv"/>
+            <input type="text" id="inputAdresa"/><br /><br />
+            <input type="number" id="minGodina"/>
+            <input type="number" id="maxGodina" /><br />
+            <button id="btnSearch">Pretraga</button>
+            <button id="btnSearchClear">Reset</button>
+        </p><br /><br />
+        <div id="checkboxFilter">
+            <input type="checkbox" id="checkboxNaziv"  value="naziv"/>Naziv<br />
+            <input type="checkbox" id="checkboxAdresa" value="adresa"/>Adresa<br />
+            <input type="checkbox" id="checkboxGodina" value="godina"/>Godina otvaranja<br />
+            <select id="sortOption">
+                <option value="opadajuce">Opadajuce</option>
+                <option value="rastuce">Rastuce</option>
+            </select>
+            <button id="btnSort">Sort</button>
+        </div>
+     </div>
+    <div id="fitnesCentriSpisak"></div>
+</body>
+</html>
