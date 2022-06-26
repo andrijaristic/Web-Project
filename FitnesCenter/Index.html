@@ -5,28 +5,36 @@
     <title></title>
     <script src="Scripts/jquery-3.3.1.js"></script>
     <script src="Scripts/MainPageScript.js"></script>
+    <link rel="stylesheet" href="css/myStyleSheet.css"/>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a class="front" id="registerHref" href="Register.html">REGISTER</a></li>
+            <li><a class="front" id="loginHref" href="Login.html">LOGIN</a></li>
+            <li><a class="front" id="logoutHref" href="Index.html">LOG OUT</a></li>
+        </ul>
+    </nav><br />
     <div>
         <p>
-            <input type="text" id="inputNaziv"/>
-            <input type="text" id="inputAdresa"/><br /><br />
-            <input type="number" id="minGodina"/>
+            <input type="text" id="inputNaziv" />
+            <input type="text" id="inputAdresa" /><br /><br />
+            <input type="number" id="minGodina" />
             <input type="number" id="maxGodina" /><br />
             <button id="btnSearch">Pretraga</button>
             <button id="btnSearchClear">Reset</button>
         </p><br /><br />
-        <div id="checkboxFilter">
-            <input type="checkbox" id="checkboxNaziv"  value="naziv"/>Naziv<br />
-            <input type="checkbox" id="checkboxAdresa" value="adresa"/>Adresa<br />
-            <input type="checkbox" id="checkboxGodina" value="godina"/>Godina otvaranja<br />
+        <div class="fontTest" id="checkboxFilter">
+            <input type="checkbox" id="checkboxNaziv" value="naziv" />Naziv<br />
+            <input type="checkbox" id="checkboxAdresa" value="adresa" />Adresa<br />
+            <input type="checkbox" id="checkboxGodina" value="godina" />Godina otvaranja<br />
             <select id="sortOption">
                 <option value="opadajuce">Opadajuce</option>
                 <option value="rastuce">Rastuce</option>
             </select>
             <button id="btnSort">Sort</button>
         </div>
-     </div>
+    </div>
     <div id="fitnesCentriSpisak"></div>
 </body>
 </html>

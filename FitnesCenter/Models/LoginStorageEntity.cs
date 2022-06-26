@@ -5,8 +5,9 @@ using System.Web;
 
 namespace FitnesCenter.Models
 {
-    class Repo
+    public class LoginStorageEntity
     {
-        public static List<FitnesCentar> centri = new List<FitnesCentar>();
+        public string AccessToken { get; set; }
+        public Korisnik Korisnik { get; set; }
     }
 }

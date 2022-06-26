@@ -3,7 +3,19 @@ var dataCurrent = [];
 
 $(document).ready(function () {
     loadFitnesCentre();
-    
+    if (sessionStorage.getItem('accessToken')) {
+        $('#loginHref').hide();
+        $('#logoutHref').show();
+    } else {
+        $('#loginHref').show();
+        $('#logoutHref').hide();
+    }
+
+    $('#logoutHref').click(function () {
+        sessionStorage.setItem('accessToken', '');
+        sessionStorage.setItem('activeUser', '');
+        alert('Logged out!');
+    });
 
     $('#btnSearch').click(function () {
         searchFitnesCentre();

@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="../Scripts/jquery-3.3.1.js"></script>
+    <script src="../Scripts/RegisterPageScript.js"></script>
+    <link rel="stylesheet" href="css/myStyleSheet.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="front" href="Index.html">HOME</a></li>
+            <li><a class="front" href="Login.html">LOGIN</a></li>
+        </ul>
+    </nav>
+    <div class="fontTest">
+        <form id="registerForm">
+            <table class="login">
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" id="username" /></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" id="password" /></td>
+                </tr>
+                <tr>
+                    <td>Ime:</td>
+                    <td><input type="text" id="ime" /></td>
+                </tr>
+                <tr>
+                    <td>Prezime:</td>
+                    <td><input type="text" id="prezime" /></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="text" id="email" /></td>
+                </tr>
+                <tr>
+                    <td>Datum rodjenja:</td>
+                    <td><input type="date" id="datum" /></td>
+                </tr>
+                <tr>
+                    <td>Pol</td>
+                    <td>
+                        <select id="pol">
+                            <option value="musko">MUSKI</option>
+                            <option value="zensko">ZENSKI</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="btnDivLogin">
+                <button id="btnRegister">REGISTER</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+nav{
+    margin: 0;
+}
+
+li {
+    float: left;
+}
+
+div.fontTest{
+    font-family: 'Segoe UI';
+}
+
+li a.front {
+    text-decoration: none;
+    display: inline-block;
+    padding: 6px;
+    font-family: 'Segoe UI';
+    font-weight: lighter;
+    font-size: 15px;
+
+}
+
+a:visited.front, a:active.front{
+    color:white;
+}
+
+a:hover.front{
+    color: orchid;
+}
+
+table.login td{
+    padding-top: 1em;
+}
+
+label{
+    vertical-align: bottom;
+}
+
+input[type="checkbox"]{
+    vertical-align: bottom;
+}
+
+div.btnDivLogin{
+    padding-top: 1em;
+}
+
+button{
+    font-size: 1em;
+    font-family: sans-serif;
+    font-weight: lighter;
+}
+
