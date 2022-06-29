@@ -14,5 +14,6 @@ namespace FitnesCenter.Models
         public DateTime DatumVreme { get; set; }    // Format: dd/MM/yyyy HH:mm
         public int MaksBrojPosetilaca { get; set; }
         public List<Korisnik> Posetioci { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

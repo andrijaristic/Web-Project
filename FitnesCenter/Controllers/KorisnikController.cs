@@ -56,5 +56,50 @@ namespace FitnesCenter.Controllers
         {
             return BadRequest();
         }
+
+        [HttpPut]
+        [Route("api/korisnik/UpdateKorisnikInfo")]
+        public IHttpActionResult UpdateKorisnikInfo(Korisnik korisnik)
+        {
+            string username = korisnik.Username;
+            string oldUsername = korisnik.Username.Split('-')[0];
+            string newUsername = korisnik.Username.Split('-')[1];
+            korisnik.Username = oldUsername;
+
+            if (BazePodataka.korisnikRepository.CheckIfKorisnikExists(korisnik.Username))
+            {
+                korisnik.Username = username;
+                if (!BazePodataka.korisnikRepository.UpdateKorisnik(korisnik))
+                {
+                    return BadRequest();
+                }
+                korisnik.Username = newUsername;
+                return Ok(korisnik);
+            }
+            return BadRequest();
+        }
+
+        // Svi odrzani treninzi.
+        //
+        [HttpGet]
+        [Route("api/korisnik/GetTreningeKorisnik")]
+        public IHttpActionResult GetTreningeKorisnik(string username)
+        {
+            Korisnik korisnik = BazePodataka.korisnikRepository.GetKorisnikByUsername(username);
+            List<GrupniTrening> retVal = new List<GrupniTrening>();
+
+            if (korisnik.Uloga == Enums.Uloge.POSETILAC)
+            {
+                retVal = BazePodataka.grupniTreninziRepository.GetOdrzaneGrupneTreningeForPosetilac(korisnik.Username);
+            } else if (korisnik.Uloga == Enums.Uloge.TRENER)
+            {
+                retVal = BazePodataka.grupniTreninziRepository.GetOdrzaneGrupneTreningeForTrener(korisnik.GrupniTreninziTrener);
+            }
+
+
+            if (retVal.Count == 0) { return NotFound(); } // NotFound - 404 | BadRequest - 400
+
+            return Ok(retVal);
+        }
     }
 }

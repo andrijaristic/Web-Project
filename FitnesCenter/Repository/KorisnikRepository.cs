@@ -40,17 +40,38 @@ namespace FitnesCenter.Repository
 
                 Enums.Pol enumPol = pol == "muski" ? Enums.Pol.MUSKI : Enums.Pol.ZENSKI;
 
-                retVal.Add(new Korisnik()
+                if (enumUloga == Enums.Uloge.TRENER)
                 {
-                    Username = username,
-                    Password = password,
-                    Ime = ime,
-                    Prezime = prezime,
-                    Pol = enumPol,
-                    Email = email,
-                    DatumRodjenja = date,
-                    Uloga = enumUloga
-                });
+                    Korisnik korisnik = new Korisnik()
+                    {
+                        Username = username,
+                        Password = password,
+                        Ime = ime,
+                        Prezime = prezime,
+                        Pol = enumPol,
+                        Email = email,
+                        DatumRodjenja = date,
+                        Uloga = enumUloga,
+                        GrupniTreninziTrener = new List<GrupniTrening>()
+                    };
+
+                    korisnik.GrupniTreninziTrener.Add(BazePodataka.treninzi[1]);
+                    retVal.Add(korisnik);                    
+                } else
+                {
+                    Korisnik korisnik = new Korisnik()
+                    {
+                        Username = username,
+                        Password = password,
+                        Ime = ime,
+                        Prezime = prezime,
+                        Pol = enumPol,
+                        Email = email,
+                        DatumRodjenja = date,
+                        Uloga = enumUloga,
+                    };
+                    retVal.Add(korisnik);
+                }
 
                 line = sr.ReadLine();
             }
@@ -78,6 +99,24 @@ namespace FitnesCenter.Repository
             }
 
             return retVal;
+        }
+
+        public bool UpdateKorisnik(Korisnik korisnik)
+        {
+            string oldUsername = korisnik.Username.Split('-')[0];
+            string newUsername = korisnik.Username.Split('-')[1];
+            korisnik.Username = oldUsername;
+
+            for (int i = 0; i < BazePodataka.korisnici.Count; i++)
+            {
+                if (string.Equals(BazePodataka.korisnici[i].Username, korisnik.Username))
+                {
+                    korisnik.Username = newUsername;
+                    BazePodataka.korisnici[i] = korisnik;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

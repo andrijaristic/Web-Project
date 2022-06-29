@@ -6,9 +6,11 @@ $(document).ready(function () {
     if (sessionStorage.getItem('accessToken')) {
         $('#loginHref').hide();
         $('#logoutHref').show();
+        $('#myAccountHref').show();
     } else {
         $('#loginHref').show();
         $('#logoutHref').hide();
+        $('#myAccountHref').hide();
     }
 
     $('#logoutHref').click(function () {

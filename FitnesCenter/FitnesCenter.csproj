@@ -158,6 +158,7 @@
     <Compile Include="Controllers\CentriController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KorisnikController.cs" />
+    <Compile Include="Controllers\TreningController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,6 +166,7 @@
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\FitnesCentar.cs" />
     <Compile Include="Models\GrupniTrening.cs" />
+    <Compile Include="Models\GrupniTreningPosetilacEntity.cs" />
     <Compile Include="Models\Komentar.cs" />
     <Compile Include="Models\Korisnik.cs" />
     <Compile Include="Models\LoginStorageEntity.cs" />
@@ -187,9 +189,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="App_Data\grupniTreninzi.txt" />
+    <Content Include="History.html" />
     <Content Include="Index.html" />
     <Content Include="App_Data\korisnici.txt" />
     <Content Include="Login.html" />
+    <Content Include="MyAccount.html" />
     <Content Include="Register.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -214,6 +218,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DetailsPageScript.js" />
+    <Content Include="Scripts\HistoryPageScript.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -222,6 +227,7 @@
     <Content Include="Scripts\MainPageScript.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="App_Data\fitnesCentri.txt" />
+    <Content Include="Scripts\MyAccountPageScript.js" />
     <Content Include="Scripts\RegisterPageScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.js"></script>
+    <script src="Scripts/MyAccountPageScript.js"></script>
+    <link rel="stylesheet" href="css/myStyleSheet.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="front" id="homeAccountHref" href="Index.html">HOME</a></li>
+            <li><a class="front" id="historyAccountHref" href="History.html">HISTORY</a></li>
+        </ul>
+    </nav><br />
+    <button id="enableChanges">Izmeni</button><br /><br />
+    <table id="showAccountInfo">
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" id="accountUsername" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td id="passwordField">Password:</td>
+            <td><input type="password" id="accountPassword" readonly="readonly" /></td>
+            <td><label><input type="checkbox" id="showPassword" />Show</label></td>
+        </tr>
+        <tr id="rowAccountPasswordNew">
+            <td>New Password:</td>
+            <td><input type="password" id="accountPasswordNew" /></td>
+            <td><label><input type="checkbox" id="showPasswordNew" />Show</label></td>
+        </tr>
+        <tr id="rowAccountPasswordNewRetype">
+            <td>Retype password:</td>
+            <td><input type="password" id="accountPasswordNewRetype" /></td>
+            <td><label><input type="checkbox" id="showPasswordNewRetype" />Show</label></td>
+        </tr>
+        <tr>
+            <td>Ime:</td>
+            <td><input type="text" id="accountIme" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td>Prezime:</td>
+            <td><input type="text" id="accountPrezime" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" id="accountEmail" readonly="readonly" /></td>
+        </tr>
+        <tr>
+            <td>Datum rodjenja:</td>
+            <td><input type="date" id="accountDatum" readonly="readonly" /></td>
+        </tr>
+    </table><br />
+    <button id="btnSaveChanges">Save changes</button><br />
+    <a href="Index.html">Pocetna strana</a>
+</body>
+</html>

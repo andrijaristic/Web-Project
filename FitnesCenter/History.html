@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.js"></script>
+    <script src="Scripts/HistoryPageScript.js"></script>
+    <link rel="stylesheet" href="css/myStyleSheet.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="front" id="historyToHomeHref" href="Index.html">HOME</a></li>
+            <li><a class="front" id="myAccountFromHistoryHref" href="MyAccount.html">MY ACCOUNT</a></li>
+        </ul>
+    </nav><br />
+    <div class="fontTest" id="checkboxFilter">
+        <input type="text" id="pretragaNaziv" />
+        <input type="text" id="nazivFitnesCentra" /><br />
+        <select id="tipTreninga">
+            <option value="yoga">YOGA</option>
+            <option value="les">LES MILLS TONE</option>
+            <option value="body">BODY PUMP</option>
+        </select>
+        <input type="number" id="minGodina" />
+        <input type="number" id="maxGodina" /><br /><br />
+        <input type="checkbox" id="checkboxNazivTreninga" value="nazivTreninga" />Naziv treninga<br />
+        <input type="checkbox" id="checkboxTipTreninga" value="tipTreninga" />Tip treninga<br />
+        <input type="checkbox" id="checkboxFitnesCentar" value="fitnesCentar" />Naziv fitnes centra<br />
+        <input type="checkbox" id="checkboxDatum" value="datum"/>Datum i vreme
+        <select id="sortOption">
+            <option value="opadajuce">Opadajuce</option>
+            <option value="rastuce">Rastuce</option>
+        </select>
+        <button id="btnSort">Sort</button>
+    </div><br />
+
+    <div id="spisakTreninga"></div>
+</body>
+</html>

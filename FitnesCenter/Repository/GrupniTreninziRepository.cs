@@ -49,13 +49,124 @@ namespace FitnesCenter.Repository
                     FitnesCentar = fc,
                     TrajanjeTreninga = trajanje,
                     DatumVreme = date,
-                    MaksBrojPosetilaca = brojPosetilaca 
+                    MaksBrojPosetilaca = brojPosetilaca,
+                    Posetioci = new List<Korisnik>(),
+                    isDeleted = false
                 });
 
                 line = sr.ReadLine();
             }
 
             return retVal;
+        }
+
+        public GrupniTrening GetGrupniTreningByNaziv(string naziv)
+        {
+            GrupniTrening retVal = new GrupniTrening();
+            foreach(var el in BazePodataka.treninzi)
+            {
+                if (string.Equals(el.Naziv, naziv) && !el.isDeleted) { retVal = el; break; }
+            }
+
+            return retVal;
+        }
+
+        public bool AddPosetilacToGrupniTrening(string naziv, Korisnik korisnik)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (string.Equals(el.Naziv, naziv) && (el.Posetioci == null || el.Posetioci.Count < el.MaksBrojPosetilaca) && !el.Posetioci.Contains(korisnik) && !el.isDeleted)
+                {
+                    el.Posetioci.Add(korisnik);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public List<GrupniTrening> GetOdrzaneGrupneTreningeForPosetilac(string username)
+        {
+            List<GrupniTrening> retVal = new List<GrupniTrening>();
+
+            foreach (var el in BazePodataka.treninzi)
+            {
+                foreach (var _el in el.Posetioci)
+                {
+                    if(string.Equals(_el.Username, username) && DateTime.Now > el.DatumVreme && !el.isDeleted)
+                    {
+                        retVal.Add(el);
+                        break;
+                    } 
+                }
+            }
+
+            return retVal;
+        }
+
+        public List<GrupniTrening> GetOdrzaneGrupneTreningeForTrener(List<GrupniTrening> treninzi)
+        {   
+            List<GrupniTrening> retVal = new List<GrupniTrening>();
+
+            foreach (var el in treninzi)
+            {
+                if (el.DatumVreme < DateTime.Now && !el.isDeleted)
+                {
+                    retVal.Add(el);
+                }
+            }
+
+            return retVal;
+        }
+
+        public bool DeleteTrening(string naziv)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (string.Equals(el.Naziv, naziv) ){
+                    if (!el.isDeleted && el.Posetioci.Count == 0)
+                    {
+                        el.isDeleted = true;
+                        return true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateGrupniTrening(GrupniTrening trening)
+        {
+            for (int i = 0; i < BazePodataka.treninzi.Count; i++)
+            {
+                if (string.Equals(BazePodataka.treninzi[i].Naziv, trening.Naziv))
+                {
+                    trening.FitnesCentar = BazePodataka.treninzi[i].FitnesCentar;
+                    trening.Posetioci = BazePodataka.treninzi[i].Posetioci;
+                    BazePodataka.treninzi[i] = trening;
+                    return true;
+                }
+            }
+
+            return false; 
+        }
+
+        public bool AddGrupniTrening(GrupniTrening trening)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (!string.Equals(el.Naziv, trening.Naziv))
+                {
+                    BazePodataka.treninzi.Add(trening);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

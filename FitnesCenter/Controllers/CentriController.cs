@@ -43,7 +43,7 @@ namespace FitnesCenter.Controllers
             List<GrupniTrening> retVal = new List<GrupniTrening>();
             foreach (var el in BazePodataka.treninzi)
             {
-                if (string.Equals(el.FitnesCentar.Naziv, naziv))
+                if (string.Equals(el.FitnesCentar.Naziv, naziv) && el.DatumVreme < DateTime.Now && !el.isDeleted)
                 {
                     retVal.Add(el);
                 }

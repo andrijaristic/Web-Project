@@ -4,6 +4,13 @@
 }
 
 $(document).ready(function () {
+    if (sessionStorage.getItem('accessToken')) {
+        $('#loginHref').hide();
+    } else {
+        $('#loginHref').show();
+    }
+
+
     console.log("Spremna");
     $("#btnRegister").click(function () {
         let username = $('#username').val();

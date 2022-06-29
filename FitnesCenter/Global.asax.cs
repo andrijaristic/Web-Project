@@ -22,9 +22,9 @@ namespace FitnesCenter
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             // Putanja ~/FitnesCenter/FitnerCenter/testFile.txt
-            BazePodataka.korisnici = BazePodataka.korisnikRepository.GetAllKorisnike();
             BazePodataka.centri = BazePodataka.fitnesCentarRepository.GetAllFitnesCentre();
             BazePodataka.treninzi = BazePodataka.grupniTreninziRepository.GetAllGrupneTreninge();
+            BazePodataka.korisnici = BazePodataka.korisnikRepository.GetAllKorisnike();
         }
     }
 }

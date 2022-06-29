@@ -5,10 +5,52 @@
     <title></title>
     <script src="Scripts/jquery-3.3.1.js"></script>
     <script src="Scripts/DetailsPageScript.js"></script>
+    <link rel="stylesheet" href="css//myStyleSheet.css" />
 </head>
 <body>
-    <div id="spisakTreninga"></div><br />
-    <a href="Index.html">Nazad</a>
-    <a href="Details.html"></a>
+    <nav>
+        <ul>
+            <li><a class="front" href="Index.html">HOME</a></li>
+        </ul>
+    </nav><br />
+    <div id="spisakTreninga"></div>
+    <div id="formaTrening">
+        <table>
+            <tr>
+                <td>Naziv: </td>
+                <td><input type="text" id="treningNaziv" /></td>
+            </tr>
+            <tr>
+                <td>Tip<br />treninga: </td>
+                <td><input type="text" id="treningTip" /></td>
+            </tr>
+            <tr>
+                <td>Trajanje: </td>
+                <td><input type="text" id="treningTrajanje" /></td>
+            </tr>
+            <tr>
+                <td>Maksimalni<br />broj posetilaca: </td>
+                <td><input type="text" id="treningBrojPosetioca" /></td>
+            </tr>
+            <tr>
+                <td>Vreme<br />odrzanja: </td>
+                <td><input type="date" id="treningVreme" /></td>
+            </tr>
+        </table>
+        <button id="btnSacuvajIzmeneTrening">Sacuvaj izmene</button>
+    </div><br /><br />
+    <div id="divBtnDodajTrening">
+        <button id="btnDodajTrening">DODAJ</button>
+    </div>
 </body>
 </html>
+
+
+        <!--public string Naziv { get; set; }
+        public Enums.TipTreninga TipTreninga { get; set; }
+        public FitnesCentar FitnesCentar { get; set; }
+        public int TrajanjeTreninga { get; set; }   // Trajanje u MINUTIMA.
+        public DateTime DatumVreme { get; set; }    // Format: dd/MM/yyyy HH:mm
+        public int MaksBrojPosetilaca { get; set; }
+        public List<Korisnik> Posetioci { get; set; }
+        public bool isDeleted { get; set; }-->

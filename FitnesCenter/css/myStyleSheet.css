@@ -6,11 +6,7 @@
     background-color: black;
 }
 
-nav{
-    margin: 0;
-}
-
-li {
+li{
     float: left;
 }
 
@@ -27,6 +23,7 @@ li a.front {
     font-size: 15px;
 
 }
+
 
 a:visited.front, a:active.front{
     color:white;
