@@ -37,15 +37,22 @@ namespace FitnesCenter.Controllers
             if (BazePodataka.korisnikRepository.CheckIfKorisnikExists(loginInfo.Username))
             {
                 Korisnik korisnik = BazePodataka.korisnikRepository.GetKorisnikByUsername(loginInfo.Username);
-                LoginStorageEntity logEntity = new LoginStorageEntity();  // AccessToken | Korisnik => sessionStorage
 
-                logEntity.AccessToken = $"{loginInfo.Username}-{loginInfo.Password}";
-                logEntity.Korisnik = korisnik;
+                if (korisnik.isBlocked)
+                {
+                    return BadRequest();    // Blokiran.
+                }
+
+                LoginStorageEntity logEntity = new LoginStorageEntity
+                {
+                    AccessToken = $"{loginInfo.Username}-{loginInfo.Password}",
+                    Korisnik = korisnik
+                };  // AccessToken | Korisnik => sessionStorage
 
                 return Ok(logEntity);
             }
 
-            return BadRequest();
+            return NotFound(); // Ne postoji.
         }
 
         // Obrisati logovanog korisnika iz spiksa ulogovanih na back-end.

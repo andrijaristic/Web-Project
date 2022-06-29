@@ -9,73 +9,116 @@ namespace FitnesCenter.Repository
 {
     public class GrupniTreninziRepository
     {
+        public void SaveToFile()
+        {
+            // Ocisti fajl.
+            string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\grupniTreninzi.txt"));
+            File.WriteAllText(path, String.Empty);
+
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                string line = "";
+                foreach (var el in BazePodataka.treninzi)
+                {
+                    // dd/MM/yyyy HH:mm
+                    string dan = el.DatumVreme.Day.ToString();
+                    string mesec = el.DatumVreme.Month.ToString();
+                    string godina = el.DatumVreme.Year.ToString();
+                    string sat = el.DatumVreme.Hour.ToString();
+                    string minut = el.DatumVreme.Minute.ToString();
+
+                    string posetioci = "null";
+                    if (el.Posetioci.Count != 0)
+                    {
+                        posetioci = "";
+                        foreach (var _el in el.Posetioci)
+                        {
+                            posetioci += $"{_el.Username};";
+                        }
+                    }
+
+                    line += $"{el.Id}={el.Naziv}={el.TipTreninga.ToString()}={el.FitnesCentar.Id}={el.TrajanjeTreninga}={dan}/{mesec}/{godina} {sat}:{minut}=" +
+                    $"{el.MaksBrojPosetilaca}={posetioci}={(el.isDeleted ? "true" : "false")}\n";
+                }
+
+                sw.WriteLine(line);
+            }
+        }
+
         public List<GrupniTrening> GetAllGrupneTreninge()
         {
             List<GrupniTrening> retVal = new List<GrupniTrening>();
 
             string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\grupniTreninzi.txt"));
-            StreamReader sr = new StreamReader(path);
-            string line = sr.ReadLine();
-            while (line != null)
+            using (StreamReader sr = new StreamReader(path))
             {
-                string naziv = line.Split('-')[0];
-                string tipTreninga = line.Split('-')[1];
-                string fitnesCentarNaziv = line.Split('-')[2];
-                int trajanje = int.Parse(line.Split('-')[3]);
-                string datumVreme = line.Split('-')[4]; // dd/MM/yyy HH:mm
-                int brojPosetilaca = int.Parse(line.Split('-')[5]);
-
-                string datum = datumVreme.Split('?')[0];
-                string vreme = datumVreme.Split('?')[1];
-
-                string dan = datum.Split('.')[0];
-                string mesec = datum.Split('.')[1];
-                string godina = datum.Split('.')[2];
-
-                string sat = vreme.Split('.')[0];
-                string minut = vreme.Split('.')[1];
-
-                var datumVremeAttr = $"{dan}/{mesec}/{godina} {sat}:{minut}";
-                DateTime date = DateTime.Parse(datumVremeAttr, System.Globalization.CultureInfo.InvariantCulture);
-
-                FitnesCentar fc = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(fitnesCentarNaziv);
-                Enums.TipTreninga enumTipTreninga = tipTreninga == "yoga" ? Enums.TipTreninga.YOGA : 
-                                                    tipTreninga == "les mills one" ? Enums.TipTreninga.LES_MILLS_TONE : Enums.TipTreninga.BODY_PUMP;
-
-                retVal.Add(new GrupniTrening()
+                string line = sr.ReadLine();
+                while (!string.IsNullOrEmpty(line))
                 {
-                    Naziv = naziv,
-                    TipTreninga = enumTipTreninga,
-                    FitnesCentar = fc,
-                    TrajanjeTreninga = trajanje,
-                    DatumVreme = date,
-                    MaksBrojPosetilaca = brojPosetilaca,
-                    Posetioci = new List<Korisnik>(),
-                    isDeleted = false
-                });
+                    Guid.TryParse(line.Split('=')[0], out Guid id);
+                    string naziv = line.Split('=')[1];
+                    string tipTreninga = line.Split('=')[2];
+                    //string fitnesCentarNaziv = line.Split('-')[2];
+                    Guid.TryParse(line.Split('=')[3], out Guid idCentar);
+                    int trajanje = int.Parse(line.Split('=')[4]);
+                    string datumVreme = line.Split('=')[5]; // dd/MM/yyy HH:mm
+                    int brojPosetilaca = int.Parse(line.Split('=')[6]);
+                    bool isDeletedFile = line.Split('=')[7] == "true" ? true : false;
 
-                line = sr.ReadLine();
+                    string datum = datumVreme.Split(' ')[0];
+                    string vreme = datumVreme.Split(' ')[1];
+
+                    string dan = datum.Split('/')[0];
+                    string mesec = datum.Split('/')[1];
+                    string godina = datum.Split('/')[2];
+
+                    string sat = vreme.Split(':')[0];
+                    string minut = vreme.Split(':')[1];
+
+                    var datumVremeAttr = $"{dan}/{mesec}/{godina} {sat}:{minut}";
+                    DateTime date = DateTime.Parse(datumVremeAttr, System.Globalization.CultureInfo.InvariantCulture);
+
+                    FitnesCentar fc = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(idCentar);
+                    Enum.TryParse(tipTreninga, out Enums.TipTreninga enumTipTreninga);
+                    //Enums.TipTreninga enumTipTreninga = tipTreninga == "yoga" ? Enums.TipTreninga.YOGA :
+                    //                                    tipTreninga == "les mills one" ? Enums.TipTreninga.LES_MILLS_TONE : Enums.TipTreninga.BODY_PUMP;
+
+                    retVal.Add(new GrupniTrening()
+                    {
+                        Id = id,
+                        Naziv = naziv,
+                        TipTreninga = enumTipTreninga,
+                        FitnesCentar = fc,
+                        TrajanjeTreninga = trajanje,
+                        DatumVreme = date,
+                        MaksBrojPosetilaca = brojPosetilaca,
+                        Posetioci = new List<Korisnik>(),
+                        isDeleted = isDeletedFile
+                    });
+
+                    line = sr.ReadLine();
+                }
             }
 
             return retVal;
         }
 
-        public GrupniTrening GetGrupniTreningByNaziv(string naziv)
+        public GrupniTrening GetGrupniTreningByNaziv(Guid id)
         {
             GrupniTrening retVal = new GrupniTrening();
             foreach(var el in BazePodataka.treninzi)
             {
-                if (string.Equals(el.Naziv, naziv) && !el.isDeleted) { retVal = el; break; }
+                if (el.Id == id && !el.isDeleted) { retVal = el; break; }
             }
 
             return retVal;
         }
 
-        public bool AddPosetilacToGrupniTrening(string naziv, Korisnik korisnik)
+        public bool AddPosetilacToGrupniTrening(Guid id, Korisnik korisnik)
         {
             foreach (var el in BazePodataka.treninzi)
             {
-                if (string.Equals(el.Naziv, naziv) && (el.Posetioci == null || el.Posetioci.Count < el.MaksBrojPosetilaca) && !el.Posetioci.Contains(korisnik) && !el.isDeleted)
+                if (el.Id == id && (el.Posetioci == null || el.Posetioci.Count < el.MaksBrojPosetilaca) && !el.Posetioci.Contains(korisnik) && !el.isDeleted)
                 {
                     el.Posetioci.Add(korisnik);
                     return true;
@@ -119,11 +162,11 @@ namespace FitnesCenter.Repository
             return retVal;
         }
 
-        public bool DeleteTrening(string naziv)
+        public bool DeleteTrening(Guid id)
         {
             foreach (var el in BazePodataka.treninzi)
             {
-                if (string.Equals(el.Naziv, naziv) ){
+                if (el.Id == id){
                     if (!el.isDeleted && el.Posetioci.Count == 0)
                     {
                         el.isDeleted = true;

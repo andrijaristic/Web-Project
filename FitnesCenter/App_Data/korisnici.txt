@@ -1,3 +1,4 @@
-﻿admin-admin-Admin-Admin-muski-admin@gmail.com-23.11.2000-vlasnik
-trener-trener-Trener-Trener-zenski-trener@gmail.com-23.11.2000-trener
-pos-pos-Pos-Pos-muski-pos@gmail.com-23.11.2000-posetilac
+admin=admin=Admin=Admin=MUSKI=admin@gmail.com=20/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;269238bb-4891-403b-a221-4226a8697513=false
+trener=trener=Trener=Trener=ZENSKI=trener@gmail.com=20/11/2000=TRENER=null=b06e3139-7a6a-4a01-bcee-2545c00f01fb;7444369b-33d6-4a15-872a-607981417463=f11c22df-b873-49d5-9c50-48f07285f342=null=false
+pos=pos=Pos=Pos=MUSKI=pos@gmail.com=20/11/2000=POSETILAC=null=null=null=null=false
+

@@ -18,7 +18,7 @@ namespace FitnesCenter.Controllers
         [Route("api/trening/PosetiTrening")]
         public IHttpActionResult PosetiTrening([FromBody]GrupniTreningPosetilacEntity gtpe)
         {
-            if (BazePodataka.grupniTreninziRepository.AddPosetilacToGrupniTrening(gtpe.NazivGrupniTrening, gtpe.Korisnik))
+            if (BazePodataka.grupniTreninziRepository.AddPosetilacToGrupniTrening(gtpe.Id, gtpe.Korisnik))
             {
                 return Ok(gtpe.Korisnik);
             }
@@ -28,9 +28,9 @@ namespace FitnesCenter.Controllers
 
         [HttpDelete]
         [Route("api/trening/ObrisiTrening")]
-        public IHttpActionResult ObrisiTrening([FromUri]string naziv)
+        public IHttpActionResult ObrisiTrening([FromUri]Guid id)
         {
-            if (BazePodataka.grupniTreninziRepository.DeleteTrening(naziv))
+            if (BazePodataka.grupniTreninziRepository.DeleteTrening(id))
             {
                 return Ok();
             }
@@ -64,9 +64,9 @@ namespace FitnesCenter.Controllers
 
         [HttpGet]
         [Route("api/trening/SpisakPosetiocaTrening")]
-        public IHttpActionResult SpisakPosetiocaTrening([FromUri]string naziv)
+        public IHttpActionResult SpisakPosetiocaTrening([FromUri]Guid id)
         {
-            GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(naziv);
+            GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(id);
             List<Korisnik> retVal = new List<Korisnik>();
             
             foreach (var el in trening.Posetioci)

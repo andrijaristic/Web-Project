@@ -9,7 +9,6 @@ var PolEnums = {
     ZENSKI: 1
 }
 
-
 var TipTreningaEnums = {
     YOGA: 0,
     LES_MILLS_TONE: 1,
@@ -19,7 +18,7 @@ var TipTreningaEnums = {
 var data = []
 
 $(document).ready(function () {
-    let id = getParameterByName('id');
+    let idCentra = getParameterByName('id');
     let user;
     if (sessionStorage.getItem('accessToken')) {
         user = JSON.parse(sessionStorage.getItem('activeUser'));
@@ -27,7 +26,7 @@ $(document).ready(function () {
     //let user = JSON.parse(sessionStorage.getItem('activeUser'));
     //console.log(user);
 
-    displayTreninge(id);
+    displayTreninge(idCentra);
 
     $('#spisakTreninga').on('click', '#btnPosetiTrening', function () {
 
@@ -35,7 +34,7 @@ $(document).ready(function () {
             url: 'api/trening/PosetiTrening',
             type: 'POST',
             data: {
-                nazivGrupniTrening: $(this).attr('value'),
+                id: $(this).attr('value'),
                 korisnik: user
             },
             dataType: 'json',
@@ -56,7 +55,7 @@ $(document).ready(function () {
             type: 'DELETE',
             success: function (response) {
                 alert('Uspesno obrisan trening');
-                displayTreninge(id);
+                displayTreninge(idCentra);
             },
             error: function (xhr) {
                 alert(xhr.status);
@@ -65,8 +64,8 @@ $(document).ready(function () {
     });
 
     $('#spisakTreninga').on('click', '#btnIzmeniTrening', function () {
-        let naziv = $(this).attr('value');
-        showForm(naziv);
+        let id = $(this).attr('value');
+        showForm(id);
 
         $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
             $.ajax({
@@ -163,14 +162,14 @@ function display(data) {
     $('#content').html(`${data.Naziv}`);
 }
 
-function showForm(naziv) {
+function showForm(id) {
     $('#spisakTreninga').hide();
     $('#formaTrening').show();
     $('#btnDodajTrening').hide();
 
     let trening;
     for (el in data) {
-        if (data[el].Naziv == naziv) {
+        if (data[el].Id == id) {
             trening = data[el];
         }
     }
@@ -193,15 +192,18 @@ function displayTreninge(id) {
         success: function (dataFun) {
             if (dataFun == null) { return; }
             data = dataFun;
-            if (!sessionStorage.getItem('accessToken')) {
+            if (!sessionStorage.getItem('accessToken')  ) {
                 createTableNeprijavljen(dataFun);
                 return;
             }
+
             let user = JSON.parse(sessionStorage.getItem('activeUser'));
             if (user.Uloga == UlogaEnums.POSETILAC) {
                 createTablePosetioc(dataFun);
             } else if (user.Uloga == UlogaEnums.TRENER) {
                 createTableTrener(dataFun);
+            } else {
+                createTableNeprijavljen(dataFun);
             }
         }
     });
@@ -235,7 +237,7 @@ function createTablePosetioc(dataFun) {
 
     for (element in dataFun) {
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
-        trening += `<td><button class="PosetiClass" value="${dataFun[element].Naziv}" id="btnPosetiTrening">+</button></td>`;
+        trening += `<td><button class="PosetiClass" value="${dataFun[element].Id}" id="btnPosetiTrening">+</button></td>`;
         tableTreninzi += '<tr>' + trening + '</tr>';
     }
 
@@ -256,9 +258,9 @@ function createTableTrener(dataFun) {
         for (_element in user.GrupniTreninziTrener) { 
             if (dataFun[element].Naziv == user.GrupniTreninziTrener[_element].Naziv) {
                 ispisan = true;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Naziv}" id="btnObrisiTrening">-</button></td>`;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Naziv}" id="btnIzmeniTrening">?</button></td>`;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Naziv}" id="btnPrikaziSpisakPosetiocaTrening">List</button></td>`;
+                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnObrisiTrening">-</button></td>`;
+                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnIzmeniTrening">?</button></td>`;
+                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnPrikaziSpisakPosetiocaTrening">List</button></td>`;
                 tableTreninzi += '<tr>' + trening + '</tr>';
             }
         }

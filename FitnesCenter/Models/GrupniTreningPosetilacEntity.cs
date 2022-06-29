@@ -7,7 +7,7 @@ namespace FitnesCenter.Models
 {
     public class GrupniTreningPosetilacEntity
     {
-        public string NazivGrupniTrening { get; set; }
+        public Guid Id { get; set; }
         public Korisnik Korisnik { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿AFitnesCentar-ACentrova-2000-2000-30000-100-100-1000
-CFitnesCentar2-ACentrova-2000-2000-30000-100-100-1000
-BFitnesCentar3-Centrova2-1980-2000-30000-100-100-1000
-ZFitnesCentar3-Centrova2-2010-2000-30000-100-100-1000
+f11c22df-b873-49d5-9c50-48f07285f342=AFitnesCentar=ACentrova=2000=admin=2000=30000=100=100=1000=false
+b3c361b2-2fdf-4e54-af6a-e19b1285c73f=CFitnesCentar2=BCentrova=2000=admin=2000=30000=100=100=1000=false
+95b76659-b361-42d0-b6d6-0faad23d50dc=BFitnesCentar3=Centrova2=1980=null=2000=30000=100=100=1000=false
+269238bb-4891-403b-a221-4226a8697513=ZFitnesCentar3=Centrova3=2010=null=2000=30000=100=100=1000=false
+

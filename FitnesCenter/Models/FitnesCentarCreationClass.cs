@@ -5,18 +5,16 @@ using System.Web;
 
 namespace FitnesCenter.Models
 {
-    public class FitnesCentar
+    public class FitnesCentarCreationClass
     {
-        public Guid Id { get; set; }
         public string Naziv { get; set; }
         public string Adresa { get; set; }  // Format: Ulica i broj, mesto/grad, postanski broj
         public int GodinaOtvaranja { get; set; }
-        public Korisnik Vlasnik { get; set; }
+        public string Vlasnik { get; set; }
         public double CenaMesecneClanarine { get; set; }
         public double CenaGodisnjeClanarine { get; set; }
-        public double CenaJednogTreninga { get; set; }
-        public double CenaJednogGrupnogTreninga { get; set; }
-        public double CenaJednogTreningaSaTrenerom { get; set; }
-        public bool isDeleted { get; set; }
+        public double CenaJednogTreniniga { get; set; }
+        public double CenaJednogGrupnogTreniniga { get; set; }
+        public double CenaJednogTreninigaSaTrenerom { get; set; }
     }
 }

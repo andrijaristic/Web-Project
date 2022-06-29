@@ -15,9 +15,10 @@ namespace FitnesCenter.Models
         public string Email { get; set; }
         public DateTime DatumRodjenja { get; set; } // Format: dd/MM/yyyy
         public Enums.Uloge Uloga { get; set; }
-        public List<GrupniTrening> GrupniTreninziPosetioc { get; set; }
+        public List<Guid> GrupniTreninziPosetioc { get; set; }  // Promenjno na Guid za svaki trening. Nece se menjati.
         public List<GrupniTrening> GrupniTreninziTrener { get; set; }
         public FitnesCentar FitnesCentarTrener { get; set; }
-        public FitnesCentar FitnesCentarVlasnik { get; set; }
+        public List<Guid> FitnesCentarVlasnik { get; set; } // Promenjeno u listu zbog toga sto kaze da Vlasnik moze imati vise centara.
+        public bool isBlocked { get; set; }
     }
 }

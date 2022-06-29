@@ -11,50 +11,193 @@ namespace FitnesCenter.Repository
     public class FitnesCentarRepository
     {
         // Preuzimanje svega iz .txt fajla.
+        public void SaveToFile()
+        {
+            // Ocisti fajl.
+            string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\fitnesCentri.txt"));
+            File.WriteAllText(path, String.Empty);
+
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                string line = "";
+                foreach (var el in BazePodataka.centri)
+                {
+                    string vlasnik = "null";
+                    if (el.Vlasnik != null)
+                    {
+                        vlasnik = el.Vlasnik.Username;
+                    }
+
+
+                    line += $"{el.Id}={el.Naziv}={el.Adresa}={el.GodinaOtvaranja}={vlasnik}=" +
+                    $"{el.CenaMesecneClanarine}={el.CenaGodisnjeClanarine}={el.CenaJednogTreninga}={el.CenaJednogGrupnogTreninga}={el.CenaJednogTreningaSaTrenerom}=" +
+                    $"{(el.isDeleted ? "true" : "false")}\n";
+                }
+
+                sw.WriteLine(line);
+            }
+        }
+
+        public void AddVlasnikeToCentre()
+        {
+            List<Korisnik> vlasnici = BazePodataka.korisnikRepository.GetVlasnike();
+            foreach (var el in BazePodataka.centri)
+            { 
+                foreach (var _el in vlasnici)
+                {
+                    if (el.Vlasnik != null && string.Equals(el.Vlasnik.Username, _el.Username))
+                    {
+                        el.Vlasnik = _el;
+                    }
+                }
+            }
+
+            SaveToFile();
+        }
+
         public List<FitnesCentar> GetAllFitnesCentre()
         {
             List<FitnesCentar> retVal = new List<FitnesCentar>();
             string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\fitnesCentri.txt"));
-            StreamReader sr = new StreamReader(path);
-            string line = sr.ReadLine();
-            while (line != null)
+            using (StreamReader sr = new StreamReader(path))
             {
-                string naziv = line.Split('-')[0];
-                string adresa = line.Split('-')[1];
-                int godina = int.Parse(line.Split('-')[2]);
-                double mesecna = double.Parse(line.Split('-')[3]);
-                double godisnja = double.Parse(line.Split('-')[4]);
-                double jedan = double.Parse(line.Split('-')[5]);
-                double jedanGrupni = double.Parse(line.Split('-')[6]);
-                double jedanGrupniTrener = double.Parse(line.Split('-')[7]);
-                retVal.Add(new FitnesCentar()
+                string line = sr.ReadLine();
+                while (!string.IsNullOrEmpty(line))
                 {
-                    Naziv = naziv,
-                    Adresa = adresa,
-                    GodinaOtvaranja = godina,
-                    CenaMesecneClanarine = mesecna,
-                    CenaGodisnjeClanarine = godisnja,
-                    CenaJednogTreniniga = jedan,
-                    CenaJednogGrupnoTreniniga = jedanGrupni,
-                    CenaJednogTreninigaSaTrenerom = jedanGrupniTrener
-                });
-                line = sr.ReadLine();
+                    Guid.TryParse(line.Split('=')[0], out Guid id);
+                    string naziv = line.Split('=')[1];
+                    string adresa = line.Split('=')[2];
+                    int godina = int.Parse(line.Split('=')[3]);
+                    string vlasnik = line.Split('=')[4];
+                    double mesecna = double.Parse(line.Split('=')[5]);
+                    double godisnja = double.Parse(line.Split('=')[6]);
+                    double jedan = double.Parse(line.Split('=')[7]);
+                    double jedanGrupni = double.Parse(line.Split('=')[8]);
+                    double jedanGrupniTrener = double.Parse(line.Split('=')[9]);
+                    bool isDeletedFile = line.Split('=')[10] == "true" ? true : false;
+
+                    if (string.Equals(vlasnik, null))
+                    {
+                        retVal.Add(new FitnesCentar()
+                        {
+                            Id = id,
+                            Naziv = naziv,
+                            Adresa = adresa,
+                            Vlasnik = null,
+                            GodinaOtvaranja = godina,
+                            CenaMesecneClanarine = mesecna,
+                            CenaGodisnjeClanarine = godisnja,
+                            CenaJednogTreninga = jedan,
+                            CenaJednogGrupnogTreninga = jedanGrupni,
+                            CenaJednogTreningaSaTrenerom = jedanGrupniTrener,
+                            isDeleted = isDeletedFile
+                        });
+                    } else
+                    {
+                        retVal.Add(new FitnesCentar()
+                        {
+                            Id = id,
+                            Naziv = naziv,
+                            Adresa = adresa,
+                            Vlasnik = new Korisnik() { Username = vlasnik },
+                            GodinaOtvaranja = godina,
+                            CenaMesecneClanarine = mesecna,
+                            CenaGodisnjeClanarine = godisnja,
+                            CenaJednogTreninga = jedan,
+                            CenaJednogGrupnogTreninga = jedanGrupni,
+                            CenaJednogTreningaSaTrenerom = jedanGrupniTrener,
+                            isDeleted = isDeletedFile
+                        });
+                    }
+
+                    line = sr.ReadLine();
+                }
             }
 
             return retVal;
         }
 
-        public FitnesCentar GetFitnesCentarByNaziv(string naziv)
+        public FitnesCentar GetFitnesCentarByNaziv(Guid id)
         {
             foreach (var el in BazePodataka.centri)
             {
-                if (string.Equals(el.Naziv, naziv))
+                if (el.Id == id)
                 {
                     return el;
                 }
             }
 
             return null;
+        }
+
+        public Korisnik CreateFitnesCentar(FitnesCentar centar)
+        {
+            if (!CheckIfCentarExists(centar.Naziv))
+            {
+                BazePodataka.centri.Add(centar);
+                Korisnik vlasnik = BazePodataka.korisnikRepository.AddFitnesCentarToVlasnik(centar);
+
+                if (vlasnik != null)
+                {
+                    return vlasnik; 
+                }
+
+                return null;
+            }
+
+            return null;
+        }
+
+        public bool CheckIfCentarExists(string id)
+        {
+            foreach (var el in BazePodataka.centri)
+            {
+                if (string.Equals(el.Naziv, id))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateFitnesCentar(FitnesCentar centar)
+        {
+            for (int i = 0; i < BazePodataka.centri.Count; i++)
+            {
+                if (BazePodataka.centri[i].Id == centar.Id)
+                {
+                    BazePodataka.centri[i] = centar;
+                    SaveToFile();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool DeleteFitnesCentar(string naziv)
+        {
+            foreach (var el in BazePodataka.centri)
+            {
+                // Nasli smo koga brisemo.
+                if (string.Equals(el.Naziv, naziv))
+                {
+                    // Blokiraj sve njegove trenere.
+                    el.isDeleted = true;
+                    foreach (var _el in BazePodataka.korisnici)
+                    {
+                        if (_el.Uloga == Enums.Uloge.TRENER && string.Equals(_el.FitnesCentarTrener.Naziv, naziv))
+                        {
+                            _el.isBlocked = true;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

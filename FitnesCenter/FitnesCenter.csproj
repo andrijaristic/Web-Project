@@ -165,6 +165,7 @@
     </Compile>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\FitnesCentar.cs" />
+    <Compile Include="Models\FitnesCentarCreationClass.cs" />
     <Compile Include="Models\GrupniTrening.cs" />
     <Compile Include="Models\GrupniTreningPosetilacEntity.cs" />
     <Compile Include="Models\Komentar.cs" />

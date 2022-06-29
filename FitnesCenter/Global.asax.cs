@@ -25,6 +25,11 @@ namespace FitnesCenter
             BazePodataka.centri = BazePodataka.fitnesCentarRepository.GetAllFitnesCentre();
             BazePodataka.treninzi = BazePodataka.grupniTreninziRepository.GetAllGrupneTreninge();
             BazePodataka.korisnici = BazePodataka.korisnikRepository.GetAllKorisnike();
+
+            BazePodataka.fitnesCentarRepository.AddVlasnikeToCentre();
+            //BazePodataka.fitnesCentarRepository.SaveToFile();
+            //BazePodataka.grupniTreninziRepository.SaveToFile();
+            //BazePodataka.korisnikRepository.SaveToFile();
         }
     }
 }

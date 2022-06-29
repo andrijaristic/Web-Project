@@ -7,6 +7,7 @@ namespace FitnesCenter.Models
 {
     public class Komentar
     {
+        public Guid Id { get; set; }
         public Korisnik Posetilac { get; set; }     // Posetilac koji je ostavio komentar. 
         public FitnesCentar FitnesCentar { get; set; }  // Fitnes centar na koji se odnosi
         public string Sadrzaj { get; set; } 
