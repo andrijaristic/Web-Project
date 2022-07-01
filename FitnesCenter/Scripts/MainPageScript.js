@@ -70,26 +70,26 @@ $(document).ready(function () {
 
 
     $('#fitnesCentriSpisak').on('click', '#btnObrisiCentar', function () {
-        let naziv = $(this).attr('value');
+        let id = $(this).attr('value');
 
         $.ajax({
-            url: 'api/centri/ObrisiCentar?naziv=' + $(this).attr('value'),
+            url: 'api/centri/ObrisiCentar?id=' + id,
             type: 'DELETE',
             success: function (response) {
                 alert('Uspesno obrisan centar');
                 displayCentre();
             },
             error: function (xhr) {
-                alert(xhr.status);
+                alert('Postoje treninzi koji jos trebaju da se odrze.');
             }
         });
     });
 
     $('#fitnesCentriSpisak').on('click', '#btnIzmeniCentar', function () {
-        let naziv = $(this).attr('value');
+        let id = $(this).attr('value');
         $('#btnAddFitnesCentar').hide();
         $('#btnUpdateFitnesCentar').show();
-        showForm(naziv);
+        showForm(id);
 
         let vlasnik = JSON.parse(sessionStorage.getItem('activeUser'));
 
@@ -360,7 +360,7 @@ function createTable(dataFun) {
         let centar = '<td>' + dataFun[element].Naziv + '</td>';
         centar += '<td>' + dataFun[element].Adresa + '</td>';
         centar += '<td>' + dataFun[element].GodinaOtvaranja + '</td>';
-        centar += `<td><button class="btnDetails" name="${dataFun[element].Naziv}" onClick="location.href=\'Details.html?id=${dataFun[element].Naziv}\'">Detalji</td>`;
+        centar += `<td><button class="btnDetails" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
 
         tableCentri += '<tr>' + centar + '</tr>';
     }
@@ -381,14 +381,15 @@ function createTableVlasnik(dataFun) {
         let centar = '<td>' + dataFun[element].Naziv + '</td>';
         centar += '<td>' + dataFun[element].Adresa + '</td>';
         centar += '<td>' + dataFun[element].GodinaOtvaranja + '</td>';
-        centar += `<td><button class="btnDetails" name="${dataFun[element].Naziv}" onClick="location.href=\'Details.html?id=${dataFun[element].Naziv}\'">Detalji</td>`;
+        centar += `<td><button class="btnDetails" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
         let ispisan = false;
 
         for (_element in vlasnik.FitnesCentarVlasnik) {
             if (dataFun[element].Id == vlasnik.FitnesCentarVlasnik[_element]) {
                 ispisan = true;
-                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Naziv}" id="btnObrisiCentar">-</button></td>`;
-                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Naziv}" id="btnIzmeniCentar">?</button></td>`;
+                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
+                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnIzmeniCentar">?</button></td>`;
+                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
                 tableCentri += '<tr>' + centar + '</tr>';
             }
         }
@@ -447,14 +448,14 @@ function createFitnesCentar() {
     });
 }
 
-function showForm(naziv) {
+function showForm(id) {
     $('#fitnesCentriSpisak').hide();
     $('#createFitnesCentarForm').show();
     $('#btnShowCreateFormFitnesCentar').hide();
 
     let centar;
     for (el in data) {
-        if (data[el].Naziv == naziv) {
+        if (data[el].Id == id) {
             centar = data[el];
         }
     }

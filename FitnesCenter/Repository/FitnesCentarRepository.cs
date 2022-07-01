@@ -52,7 +52,7 @@ namespace FitnesCenter.Repository
                 }
             }
 
-            SaveToFile();
+            //SaveToFile();
         }
 
         public List<FitnesCentar> GetAllFitnesCentre()
@@ -132,13 +132,14 @@ namespace FitnesCenter.Repository
 
         public Korisnik CreateFitnesCentar(FitnesCentar centar)
         {
-            if (!CheckIfCentarExists(centar.Naziv))
+            if (!CheckIfCentarExists(centar.Id))
             {
                 BazePodataka.centri.Add(centar);
                 Korisnik vlasnik = BazePodataka.korisnikRepository.AddFitnesCentarToVlasnik(centar);
 
                 if (vlasnik != null)
                 {
+                    BazePodataka.fitnesCentarRepository.SaveToFile();
                     return vlasnik; 
                 }
 
@@ -148,11 +149,11 @@ namespace FitnesCenter.Repository
             return null;
         }
 
-        public bool CheckIfCentarExists(string id)
+        public bool CheckIfCentarExists(Guid id)
         {
             foreach (var el in BazePodataka.centri)
             {
-                if (string.Equals(el.Naziv, id))
+                if (el.Id == id)
                 {
                     return true;
                 }
@@ -168,7 +169,8 @@ namespace FitnesCenter.Repository
                 if (BazePodataka.centri[i].Id == centar.Id)
                 {
                     BazePodataka.centri[i] = centar;
-                    SaveToFile();
+
+                    BazePodataka.fitnesCentarRepository.SaveToFile();
                     return true;
                 }
             }
@@ -176,23 +178,34 @@ namespace FitnesCenter.Repository
             return false;
         }
 
-        public bool DeleteFitnesCentar(string naziv)
+        public bool DeleteFitnesCentar(Guid id)
         {
             foreach (var el in BazePodataka.centri)
             {
                 // Nasli smo koga brisemo.
-                if (string.Equals(el.Naziv, naziv))
+                if (el.Id == id)
                 {
-                    // Blokiraj sve njegove trenere.
-                    el.isDeleted = true;
-                    foreach (var _el in BazePodataka.korisnici)
+                    // Proveri da li ima treninga koji ce se odrzati u buducnosti (ZA SAD PROSLOSTI KAKO NE BI PUKLO)
+                    foreach (var _el in BazePodataka.treninzi)
                     {
-                        if (_el.Uloga == Enums.Uloge.TRENER && string.Equals(_el.FitnesCentarTrener.Naziv, naziv))
+                        if (_el.FitnesCentar.Id == el.Id && _el.DatumVreme.ToUniversalTime() < DateTime.Now.ToUniversalTime())
                         {
-                            _el.isBlocked = true;
+                            return false;
                         }
                     }
 
+                    // Blokiraj sve njegove trenere.
+                    el.isDeleted = true;
+                    foreach (var _el2 in BazePodataka.korisnici)
+                    {
+                        if (_el2.Uloga == Enums.Uloge.TRENER && _el2.FitnesCentarTrener.Id == el.Id)
+                        {
+                            _el2.isBlocked = true;
+                        }
+                    }
+
+                    BazePodataka.fitnesCentarRepository.SaveToFile();
+                    BazePodataka.korisnikRepository.SaveToFile();
                     return true;
                 }
             }

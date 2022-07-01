@@ -27,8 +27,17 @@ namespace FitnesCenter.Controllers
             {
                 return NotFound();
             }
+            List<FitnesCentar> retVal = new List<FitnesCentar>();
+            
+            foreach (var el in BazePodataka.centri)
+            {
+                if (!el.isDeleted)
+                {
+                    retVal.Add(el);
+                }
+            }
 
-            return Ok(BazePodataka.centri);
+            return Ok(retVal);
         }
 
         [HttpGet]
@@ -45,12 +54,13 @@ namespace FitnesCenter.Controllers
 
         [HttpGet]
         [Route("api/centri/GetTreninge")]
-        public IHttpActionResult GetTreninge(string naziv)
+        public IHttpActionResult GetTreninge(Guid id)
         {
+            //Guid.TryParse(idStr, out Guid id);
             List<GrupniTrening> retVal = new List<GrupniTrening>();
             foreach (var el in BazePodataka.treninzi)
             {
-                if (string.Equals(el.FitnesCentar.Naziv, naziv) && el.DatumVreme < DateTime.Now.ToUniversalTime() && !el.isDeleted)
+                if (el.FitnesCentar.Id == id && el.DatumVreme < DateTime.Now.ToUniversalTime() && !el.isDeleted)
                 {
                     //Console.WriteLine($"{DateTime.Now.ToUniversalTime()}");
                     retVal.Add(el);
@@ -64,6 +74,9 @@ namespace FitnesCenter.Controllers
         [Route("api/centri/CreateFitnesCentar")]
         public IHttpActionResult CreateFitnesCentar([FromBody]FitnesCentar centar)
         {
+            centar.Id = Guid.NewGuid();
+            centar.isDeleted = false;
+
             Korisnik vlasnik = BazePodataka.fitnesCentarRepository.CreateFitnesCentar(centar);
             if (vlasnik != null)
             {
@@ -86,9 +99,9 @@ namespace FitnesCenter.Controllers
 
         [HttpDelete]
         [Route("api/centri/ObrisiCentar")]
-        public IHttpActionResult ObrisiCentar([FromUri]string naziv)
+        public IHttpActionResult ObrisiCentar([FromUri]Guid id)
         {
-            if (BazePodataka.fitnesCentarRepository.DeleteFitnesCentar(naziv))
+            if (BazePodataka.fitnesCentarRepository.DeleteFitnesCentar(id))
             {
                 return Ok();
             }
@@ -112,6 +125,72 @@ namespace FitnesCenter.Controllers
             if (retVal.Count == 0) { return BadRequest(); }
 
             return Ok(retVal);
+        }
+
+        [HttpGet]
+        [Route("api/centri/GetTrenere")]
+        public IHttpActionResult GetTrenere(Guid id)
+        {
+            List<Korisnik> retVal = new List<Korisnik>();
+            foreach (var el in BazePodataka.korisnici)
+            {
+                if (el.Uloga == Enums.Uloge.TRENER && el.FitnesCentarTrener.Id == id && !el.isBlocked)
+                {
+                    retVal.Add(el);
+                }
+            }
+
+            if (retVal.Count == 0) { return BadRequest(); }
+
+            return Ok(retVal);
+        }
+
+        [HttpGet]
+        [Route("api/centri/GetKomentare")]
+        public IHttpActionResult GetKomentare([FromUri]Guid centarId)
+        {
+            if (BazePodataka.komentari.Count == 0) { return NotFound(); }
+            List<Komentar> komentari = BazePodataka.komentarRepository.GetKomentareForCentar(centarId);
+
+            if (komentari.Count == 0) { return NotFound(); }
+
+            return Ok(komentari);
+        }
+
+        [HttpPut]
+        [Route("api/centri/OdobriKomentar")]
+        public IHttpActionResult OdobriKomentar([FromUri]Guid komentarId)
+        {
+            if (BazePodataka.komentarRepository.OdobriKomentar(komentarId))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut]
+        [Route("api/centri/OdbijKomentar")]
+        public IHttpActionResult OdbijKomentar([FromUri]Guid komentarId)
+        {
+            if (BazePodataka.komentarRepository.OdbijKomentar(komentarId))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+        
+        [HttpPost]
+        [Route("api/centri/AddKomentar")]
+        public IHttpActionResult AddKomentar([FromBody]Komentar komentar)
+        {
+            if (BazePodataka.komentarRepository.AddKomentar(komentar))
+            {
+                return Ok(komentar);
+            }
+
+            return BadRequest();
         }
     }
 }

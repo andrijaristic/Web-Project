@@ -41,16 +41,22 @@
     </div><br /><br />
     <div id="divBtnDodajTrening">
         <button id="btnDodajTrening">DODAJ</button>
+    </div><br />
+    <div id="komentari"></div>
+    <div id="divDodajKomentar">
+        <button id="btnDodajKomentar">Ostavi komentar</button>
+        <table id="dodajKomentarForm">
+            <tr>
+                <td>Sadrzaj: </td>
+                <td><input type="text" id="inputSadrzaj"/></td>
+            </tr>
+            <tr>
+                <td>Ocena: </td>
+                <td><input type="number" id="inputOcena" placeholder="1-5"/></td>
+            </tr>
+        </table>
+        <button id="btnPostaviKomentar">Postavi</button>
     </div>
+    <div id="treneriCentra"></div>
 </body>
 </html>
-
-
-        <!--public string Naziv { get; set; }
-        public Enums.TipTreninga TipTreninga { get; set; }
-        public FitnesCentar FitnesCentar { get; set; }
-        public int TrajanjeTreninga { get; set; }   // Trajanje u MINUTIMA.
-        public DateTime DatumVreme { get; set; }    // Format: dd/MM/yyyy HH:mm
-        public int MaksBrojPosetilaca { get; set; }
-        public List<Korisnik> Posetioci { get; set; }
-        public bool isDeleted { get; set; }-->

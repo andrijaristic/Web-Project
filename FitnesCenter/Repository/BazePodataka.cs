@@ -12,10 +12,12 @@ namespace FitnesCenter.Repository
         public static List<FitnesCentar> centri = new List<FitnesCentar>();
         public static List<GrupniTrening> treninzi = new List<GrupniTrening>();
         public static List<Korisnik> korisnici = new List<Korisnik>();
+        public static List<Komentar> komentari = new List<Komentar>();
 
         // Pristupi fajlovima za editovanje baza i txt fajla.
         public static FitnesCentarRepository fitnesCentarRepository = new FitnesCentarRepository();
         public static GrupniTreninziRepository grupniTreninziRepository = new GrupniTreninziRepository();
         public static KorisnikRepository korisnikRepository = new KorisnikRepository();
+        public static KomentarRepository komentarRepository = new KomentarRepository();
     }
 }

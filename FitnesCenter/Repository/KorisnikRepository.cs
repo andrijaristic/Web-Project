@@ -27,7 +27,7 @@ namespace FitnesCenter.Repository
                         string godina = el.DatumRodjenja.Year.ToString();
                         string grupniTreninziPosetilac = "null";
 
-                        if (el.GrupniTreninziPosetioc.Count != 0)
+                        if (el.GrupniTreninziPosetioc != null && el.GrupniTreninziPosetioc.Count != 0)
                         {
                             int i = 0;
                             grupniTreninziPosetilac = "";
@@ -51,7 +51,7 @@ namespace FitnesCenter.Repository
                         string godina = el.DatumRodjenja.Year.ToString();
                         string grupniTreninziTrener = "null";
 
-                        if (el.GrupniTreninziTrener.Count != 0)
+                        if (el.GrupniTreninziTrener != null && el.GrupniTreninziTrener.Count != 0)
                         {
                             int i = 0;
                             grupniTreninziTrener = "";
@@ -75,7 +75,7 @@ namespace FitnesCenter.Repository
                         string godina = el.DatumRodjenja.Year.ToString();
                         string fitnesCentri = "null";
 
-                        if (el.FitnesCentarVlasnik.Count != 0)
+                        if (el.FitnesCentarVlasnik != null && el.FitnesCentarVlasnik.Count != 0)
                         {
                             int i = 0;
                             fitnesCentri = "";
@@ -186,9 +186,10 @@ namespace FitnesCenter.Repository
                     string godina = datum.Split('/')[2];
                     var datumAttr = $"{dan}-{mesec}-{godina}";
 
-                    string pattern = "dd-MM-yyyy";
-                    DateTime.TryParseExact(datumAttr, pattern, null, System.Globalization.DateTimeStyles.None, out DateTime date);
-                    date = date.ToUniversalTime();
+                    string format = "dd-MM-yyyy";
+                    DateTime.TryParseExact(datumAttr, format, null, System.Globalization.DateTimeStyles.None, out DateTime date);
+                    //date = date.ToShortDateString();
+                    
 
                     if (enumUloga == Enums.Uloge.VLASNIK)
                     {
@@ -260,7 +261,6 @@ namespace FitnesCenter.Repository
             return retVal;
         }
 
-
         public bool CheckIfKorisnikExists(string username)
         {
             foreach (var el in BazePodataka.korisnici)
@@ -293,6 +293,8 @@ namespace FitnesCenter.Repository
                 {
                     korisnik.Username = newUsername;
                     BazePodataka.korisnici[i] = korisnik;
+
+                    BazePodataka.korisnikRepository.SaveToFile();
                     return true;
                 }
             }
@@ -306,6 +308,8 @@ namespace FitnesCenter.Repository
                 if (string.Equals(BazePodataka.korisnici[i].Username, centar.Vlasnik.Username))
                 {
                     BazePodataka.korisnici[i].FitnesCentarVlasnik.Add(centar.Id);
+
+                    BazePodataka.korisnikRepository.SaveToFile();
                     return BazePodataka.korisnici[i];
                 }
             }
@@ -326,6 +330,27 @@ namespace FitnesCenter.Repository
             }
 
             return retVal;
+        }
+
+        public bool AddTreningToPosetilacList(Guid id, string username)
+        {
+            if (!CheckIfKorisnikExists(username)) { return false; }
+
+            foreach (var el in BazePodataka.korisnici)
+            {
+                if (string.Equals(el.Username, username))
+                {
+                    if (!el.GrupniTreninziPosetioc.Contains(id))
+                    {
+                        el.GrupniTreninziPosetioc.Add(id);
+
+                        BazePodataka.korisnikRepository.SaveToFile();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

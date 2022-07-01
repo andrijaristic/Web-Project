@@ -27,7 +27,7 @@
         let newIme = $('#accountIme').val();
         let newPrezime = $('#accountPrezime').val();
         let newEmail = $('#accountEmail').val();
-        let datum = user.DatumRodjenja;
+        let datum = $('#accountDatum').val();
         let pol = user.Pol;
 
         $.ajax({
@@ -63,7 +63,12 @@ function displayInformation(user) {
     $('#accountIme').attr('value', user.Ime);
     $('#accountPrezime').attr('value', user.Prezime);
     $('#accountEmail').attr('value', user.Email);
-    $('#accountDatum').attr('placeholder', user.DatumRodjenja);    // Problem u prikazivanju vremena. kada je .attr('value', user.DatumRodjenja), sa 'placeholder' nista ne javlja.
+
+    let datum = new Date(user.DatumRodjenja).toLocaleDateString('en-GB');
+    datum = datum.split('/');
+    datum = `${datum[2]}-${datum[1]}-${datum[0]}`;
+
+    $('#accountDatum').attr('value', datum);    // Problem u prikazivanju vremena. kada je .attr('value', user.DatumRodjenja), sa 'placeholder' nista ne javlja.
     disableChange();
 }
 

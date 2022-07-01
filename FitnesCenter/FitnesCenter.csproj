@@ -172,13 +172,16 @@
     <Compile Include="Models\Korisnik.cs" />
     <Compile Include="Models\LoginStorageEntity.cs" />
     <Compile Include="Models\LoginInfo.cs" />
+    <Compile Include="Models\RegisterTrener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BazePodataka.cs" />
+    <Compile Include="Repository\KomentarRepository.cs" />
     <Compile Include="Repository\FitnesCentarRepository.cs" />
     <Compile Include="Repository\GrupniTreninziRepository.cs" />
     <Compile Include="Repository\KorisnikRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\komentari.txt" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

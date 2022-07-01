@@ -16,17 +16,82 @@ var TipTreningaEnums = {
 }
 
 var data = []
+var treneriGlobal = []
 
 $(document).ready(function () {
-    let idCentra = getParameterByName('id');
+    $('#btnDodajKomentar').hide();
+    $('#btnDodajTrening').hide();
+    $('#dodajKomentarForm').hide();
+    $('#btnPostaviKomentar').hide();
+
+    let idCentra = parseUrl();
+    console.log(idCentra);
+
     let user;
     if (sessionStorage.getItem('accessToken')) {
+        getKomentare(idCentra);
+        getTrenereCentra(idCentra);
+
         user = JSON.parse(sessionStorage.getItem('activeUser'));
+        if (user.Uloga == 0) {
+            $.ajax({
+                url: 'api/trening/GetAllTrenings?centarId=' + idCentra,
+                type: 'GET',
+                success: function (response) {
+                    for (element in response) { // grupniTreninzi
+                        for (_element in user.GrupniTreninziPosetioc) {
+                            if (user.GrupniTreninziPosetioc[_element] == response[element].Id) {
+                                $('#btnDodajKomentar').show();
+                                break;
+                            }
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.status);
+                }
+            });
+        } else if (user.Uloga == 1 && user.FitnesCentarTrener.Id == idCentra) {
+            $('#btnDodajTrening').show();
+        }
+        else if (user.Uloga == 2) {
+            displayTrenereCentra(idCentra);
+        }
+    } else {
+        getKomentare(idCentra);
+        getTrenereCentra(idCentra);
     }
     //let user = JSON.parse(sessionStorage.getItem('activeUser'));
     //console.log(user);
 
-    displayTreninge(idCentra);
+    $('#formaTrening').hide();
+    $.ajax({
+        url: "api/centri/GetTreninge",
+        type: "GET",
+        data: {
+            id: idCentra
+        },
+        success: function (dataFun) {
+            if (dataFun == null) { return; }
+            data = dataFun;
+            if (!sessionStorage.getItem('accessToken')) {
+                createTableNeprijavljen(dataFun);
+                return;
+            }
+
+            let user = JSON.parse(sessionStorage.getItem('activeUser'));
+            if (user.Uloga == UlogaEnums.POSETILAC) {
+                createTablePosetioc(dataFun);
+            } else if (user.Uloga == UlogaEnums.TRENER) {
+                createTableTrener(dataFun);
+            } else {
+                createTableNeprijavljen(dataFun);
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.status);
+        }
+    });
 
     $('#spisakTreninga').on('click', '#btnPosetiTrening', function () {
 
@@ -40,6 +105,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 console.log(response);
+                sessionStorage.setItem('activeUser', JSON.stringify(response));
                 alert("Uspesno dodat na trening");
                 $(this).hide();
             },
@@ -132,6 +198,95 @@ $(document).ready(function () {
             });
         });
     });
+
+    $('#treneriCentra').on('click', '#btnBlockTrener', function () {
+        let usernameTrenera = $(this).attr('value');
+
+        let trener;
+        for (el in treneriGlobal) {
+            if (treneriGlobal[el].Username == usernameTrenera) {
+                trener = treneriGlobal[el];
+                break;
+            }
+        }
+
+        $.ajax({
+            url: 'api/korisnik/BlockTrener?username=' + usernameTrenera,
+            type: 'PUT',
+            success: function (response) {
+                getTrenereCentra(idCentra);
+            },
+            error: function (xhr) {
+                alert(xhr.status);
+            }
+
+        });
+    });
+
+    $('#komentari').on('click', '#btnOdobriKomentar', function () {
+        let id = $(this).attr('value');
+
+        $.ajax({
+            url: 'api/centri/OdobriKomentar?komentarId=' + id,
+            type: 'PUT',
+            success: function (response) {
+                console.log('Odobren komentar');
+            },
+            error: function (xhr) {
+                alert(xhr.status);
+            }
+        });
+    });
+
+    $('#komentari').on('click', '#btnOdbijKomentar', function () {
+        let id = $(this).attr('value');
+
+        $.ajax({
+            url: 'api/centri/OdbijKomentar?komentarId=' + id,
+            type: 'PUT',
+            success: function (response) {
+                console.log('Odbijen komentar');
+            },
+            error: function (xhr) {
+                alert(xhr.status);
+            }
+        });
+    });
+
+    $('#btnDodajKomentar').click(function () {
+        $('#dodajKomentarForm').show();
+        $('#btnPostaviKomentar').show();
+        $('#btnDodajKomentar').hide();
+    });
+
+    $('#btnPostaviKomentar').click(function () {
+        $('#dodajKomentarForm').hide();
+        $('#btnPostaviKomentar').hide();
+        $('#btnDodajKomentar').show();
+
+        let posetilac = JSON.parse(sessionStorage.getItem('activeUser'));
+        let sadrzaj = $('#inputSadrzaj').val();
+        let ocena = $('#inputOcena').val();
+
+        $.ajax({
+            url: 'api/centri/AddKomentar',
+            type: 'POST',
+            data: {
+                Id: null,
+                Posetilac: posetilac.Username,
+                FitnesCentar: idCentra,
+                Sadrzaj: sadrzaj,
+                Ocena: ocena,
+                NotTouched: true,
+                Odobren: false
+            },
+            success: function (response) { },
+            error: function (xhr) {
+                console.log(xhr.status);
+            }
+
+        });
+    });
 });
 
 function showSpisakPosetioca(dataFun) {
@@ -184,11 +339,10 @@ function showForm(id) {
 function displayTreninge(id) {
     $('#formaTrening').hide();
     $.ajax({
-        url: "api/centri/GetTreninge",
+        url: "api/centri/GetTreninge/",
         type: "GET",
-        data: {
-            naziv: id
-        },
+        data: id,
+        dataType: 'string',
         success: function (dataFun) {
             if (dataFun == null) { return; }
             data = dataFun;
@@ -209,13 +363,27 @@ function displayTreninge(id) {
     });
 }
 
-function getParameterByName(name, url = window.location.href) {
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex.exec(url);
+//function getParameterByName(name, url = window.location.href) {
+//    name = name.replace(/[\[\]]/g, '\\$&');
+//    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex.exec(url);
 
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+//    if (!results) return null;
+//    if (!results[2]) return '';
+//    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+//}
+
+function parseUrl(url = window.location.href) {
+    let a = document.createElement('a');
+    let searchObject, queries, split, i;
+    a.href = url;
+
+    queries = a.search.replace(/^\?/, '').split('&');
+    for (let i = 0; i < queries.length; i++) {
+        split = queries[i].split('=');
+        searchObject = decodeURIComponent(split[1]);
+    }
+
+    return searchObject;
 }
 
 function createTableNeprijavljen(dataFun) {
@@ -250,6 +418,9 @@ function createTableTrener(dataFun) {
     tableTreninzi += `<tr><th>Naziv</th></tr>`;
 
     let user = JSON.parse(sessionStorage.getItem('activeUser'));
+    if (user.FitnesCentarTrener.Id == parseUrl()) {
+        $('#btnDodajTrening').show();
+    }
 
     for (element in dataFun) { 
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
@@ -273,4 +444,92 @@ function createTableTrener(dataFun) {
 
     tableTreninzi += `</table>`;
     $('#spisakTreninga').html(tableTreninzi);
+}
+
+function getTrenereCentra(idCentra) {
+    $.ajax({
+        url: 'api/centri/GetTrenere',
+        type: 'GET',
+        data: {
+            id: idCentra
+        },
+        success: function (response) {
+            treneriGlobal = response;
+            displayTrenereCentra(response);
+        },
+        error: function (xhr) {
+            alert(xhr.status);
+        }
+    })
+}
+
+function displayTrenereCentra(treneri){
+    let tableTreneri = `<table>`;
+    tableTreneri += `<tr><th>Username</th><tr>`;
+
+    for (element in treneri) {
+        let trener = `<td>${treneri[element].Username}</td>`;
+        trener += `<td><button class="TrenerBlock" value="${treneri[element].Username}" id="btnBlockTrener">Block</td>`
+        tableTreneri += `<tr>${trener}</tr>`
+    }
+
+    tableTreneri += `</table>`;
+    $('#treneriCentra').html(tableTreneri);
+}
+
+function getKomentare(idCentra) {
+    $.ajax({
+        url: 'api/centri/GetKomentare?centarId=' + idCentra,
+        type: 'GET',
+        success: function (response) {
+            displayKomentare(response);
+        },
+        error: function (xhr) {
+            alert('Nema komentara');
+        }
+
+    });
+}
+
+function displayKomentare(komentari) {
+    let tableKomentari = `<table>`;
+    tableKomentari += `<tr><th colspan="3">KOMENTARI</th></tr>`
+
+    if (sessionStorage.getItem('accessToken')) {
+        let user = JSON.parse(sessionStorage.getItem('activeUser'));
+        if (user.Uloga == 2) {
+            for (element in komentari) {
+                let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
+                komentar += `<td>${komentari[element].Ocena}</td>`
+                if (komentari[element].NotTouched == true && komentari[element].Odobren == false) {
+                    komentar += `<td><button id="btnOdobriKomentar" value="${komentari[element].Id}">+</button> <button id="btnOdbijKomentar" value="${komentari[element].Id}">-</button></td>`
+                } else if (komentari[element].NotTouched == false && komentari[element].Odobren == false) {
+                    komentar += `<td><b>ODBIJEN</b></td>`;
+                } else if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
+                    komentar += `<td><b>ODOBREN</b></td>`;
+                }
+
+                tableKomentari += `<tr>${komentar}</tr>`
+            }
+        } else {
+            for (element in komentari) {
+                if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
+                    let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
+                    komentar += `<td>${komentari[element].Ocena}</td>`
+                    tableKomentari += `<tr>${komentar}</tr>`
+                }
+            }
+        }
+    } else {
+        for (element in komentari) {
+            if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
+                let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
+                komentar += `<td>${komentari[element].Ocena}</td>`
+                tableKomentari += `<tr>${komentar}</tr>`
+            }
+        }
+    }
+
+    tableKomentari += `</table>`;
+    $('#komentari').html(tableKomentari);
 }

@@ -20,7 +20,7 @@ namespace FitnesCenter.Controllers
         {
             if (BazePodataka.grupniTreninziRepository.AddPosetilacToGrupniTrening(gtpe.Id, gtpe.Korisnik))
             {
-                return Ok(gtpe.Korisnik);
+                return Ok(BazePodataka.korisnikRepository.GetKorisnikByUsername(gtpe.Korisnik.Username));
             }
             
             return BadRequest();
@@ -68,16 +68,21 @@ namespace FitnesCenter.Controllers
         {
             GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(id);
             List<Korisnik> retVal = new List<Korisnik>();
-            
-            foreach (var el in trening.Posetioci)
-            {
-                retVal.Add(el);
-            }
 
-            if (retVal.Count == 0)
-            {
-                return BadRequest();
-            }
+            foreach (var el in trening.Posetioci) { retVal.Add(el); }
+
+            if (retVal.Count == 0){ return BadRequest(); }
+
+            return Ok(retVal);
+        }
+
+        [HttpGet]
+        [Route("api/trening/GetAllTrenings")]
+        public IHttpActionResult GetAllTrenings([FromUri]Guid centarId)
+        {
+            List<GrupniTrening> retVal = BazePodataka.grupniTreninziRepository.GetGrupneTreningeForCentar(centarId);
+
+            if (retVal.Count == 0) { return BadRequest(); }
 
             return Ok(retVal);
         }

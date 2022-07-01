@@ -118,9 +118,20 @@ namespace FitnesCenter.Repository
         {
             foreach (var el in BazePodataka.treninzi)
             {
-                if (el.Id == id && (el.Posetioci == null || el.Posetioci.Count < el.MaksBrojPosetilaca) && !el.Posetioci.Contains(korisnik) && !el.isDeleted)
+                if (el.Id == id && (el.Posetioci == null || el.Posetioci.Count < el.MaksBrojPosetilaca) && !el.isDeleted)
                 {
+                    foreach (var _el in el.Posetioci)
+                    {
+                        if (string.Equals(_el.Username, korisnik.Username))
+                        {
+                            return false;
+                        }
+                    }
+
                     el.Posetioci.Add(korisnik);
+                    BazePodataka.korisnikRepository.AddTreningToPosetilacList(id, korisnik.Username);
+
+                    BazePodataka.grupniTreninziRepository.SaveToFile();
                     return true;
                 }
             }
@@ -170,6 +181,8 @@ namespace FitnesCenter.Repository
                     if (!el.isDeleted && el.Posetioci.Count == 0)
                     {
                         el.isDeleted = true;
+
+                        BazePodataka.grupniTreninziRepository.SaveToFile();
                         return true;
                     }
                     else
@@ -191,6 +204,8 @@ namespace FitnesCenter.Repository
                     trening.FitnesCentar = BazePodataka.treninzi[i].FitnesCentar;
                     trening.Posetioci = BazePodataka.treninzi[i].Posetioci;
                     BazePodataka.treninzi[i] = trening;
+
+                    BazePodataka.grupniTreninziRepository.SaveToFile();
                     return true;
                 }
             }
@@ -210,6 +225,21 @@ namespace FitnesCenter.Repository
             }
 
             return false;
+        }
+
+        public List<GrupniTrening> GetGrupneTreningeForCentar(Guid id)
+        {
+            List<GrupniTrening> retVal = new List<GrupniTrening>();
+
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (el.FitnesCentar.Id == id && el.DatumVreme.ToUniversalTime() < DateTime.Now.ToUniversalTime())
+                {
+                    retVal.Add(el);
+                }
+            }
+
+            return retVal;
         }
     }
 }

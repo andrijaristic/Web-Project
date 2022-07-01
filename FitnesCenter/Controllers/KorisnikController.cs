@@ -16,13 +16,36 @@ namespace FitnesCenter.Controllers
         [Route("api/korisnik/RegisterKorisnik")]
         public IHttpActionResult RegisterKorisnik(Korisnik korisnik)
         {
-            korisnik.Uloga = Enums.Uloge.POSETILAC;
-
             if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(korisnik.Username))
             {
+                korisnik.GrupniTreninziPosetioc = new List<Guid>();
+                korisnik.GrupniTreninziTrener = null;
+                korisnik.FitnesCentarTrener = null;
+                korisnik.FitnesCentarVlasnik = null;
+                korisnik.isBlocked = false;
+
                 BazePodataka.korisnici.Add(korisnik);
 
+                BazePodataka.korisnikRepository.SaveToFile();
                 return Ok(korisnik);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("api/korisnik/RegisterTrener")]
+        public IHttpActionResult RegisterTrener(RegisterTrener trener)
+        {
+            Korisnik trenerAdd = trener.Trener;
+            trenerAdd.FitnesCentarTrener = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trener.FitnesCentarId);
+
+            if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(trener.Trener.Username))
+            {
+                BazePodataka.korisnici.Add(trenerAdd);
+
+                BazePodataka.korisnikRepository.SaveToFile();
+                return Ok(trener);
             }
 
             return BadRequest();
@@ -107,6 +130,22 @@ namespace FitnesCenter.Controllers
             if (retVal.Count == 0) { return NotFound(); } // NotFound - 404 | BadRequest - 400
 
             return Ok(retVal);
+        }
+
+        [HttpPut]
+        [Route("api/korisnik/BlockTrener")]
+        public IHttpActionResult BlockTrener([FromUri]string username)
+        {
+            if (BazePodataka.korisnikRepository.CheckIfKorisnikExists(username))
+            {
+                int index = BazePodataka.korisnici.IndexOf(BazePodataka.korisnikRepository.GetKorisnikByUsername(username));
+                BazePodataka.korisnici[index].isBlocked = true;
+
+                BazePodataka.korisnikRepository.SaveToFile();
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }
