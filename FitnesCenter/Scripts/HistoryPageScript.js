@@ -33,12 +33,8 @@ function displayTreningePosetioc(user) {
     $('#checkboxFitnesCentar').show();
 
     $.ajax({
-        url: 'api/korisnik/GetTreningeKorisnik',
+        url: 'api/korisnik/GetTreningeKorisnik?username=' + user.Username,
         type: 'GET',
-        data: {
-            Username: user.Username,
-        },
-        dataType: 'json',
         success: function (dataRet) {
             console.log('Uspesno preuzeto!');
             data = dataRet;

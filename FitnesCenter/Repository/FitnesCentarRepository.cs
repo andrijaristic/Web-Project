@@ -169,6 +169,7 @@ namespace FitnesCenter.Repository
                 if (BazePodataka.centri[i].Id == centar.Id)
                 {
                     BazePodataka.centri[i] = centar;
+                    BazePodataka.grupniTreninziRepository.UpdateFitnesCentarForGrupneTreninge(centar);
 
                     BazePodataka.fitnesCentarRepository.SaveToFile();
                     return true;

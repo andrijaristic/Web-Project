@@ -10,6 +10,7 @@ var dataCurrent = [];
 $(document).ready(function () {
     loadFitnesCentre();
     $('#createFitnesCentarForm').hide();
+    $('#btnUpdateFitnesCentar').hide();
     $('#btnShowCreateFormFitnesCentar').hide();
 
     if (sessionStorage.getItem('accessToken')) {
@@ -94,28 +95,36 @@ $(document).ready(function () {
         let vlasnik = JSON.parse(sessionStorage.getItem('activeUser'));
 
         $('#createFitnesCentarForm').on('click', '#btnUpdateFitnesCentar', function () {
-            let nazivCentra = $('#nazivFitnesCentra').val();
-            let adresa = $('#adresaFitnesCentra').val();
+            validate();
+
+            let naziv = $('#nazivFitnesCentra').val();
+            let ulica = $('#adresaFitnesCentraUlica').val();
+            let broj = $('#adresaFitnesCentraBroj').val();
+            let grad = $('#adresaFitnesCentraGrad').val();
+            let kod = $('#adresaFitnesCentraKod').val();
             let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
-            let cenaMesecneClanarine = $('#cenaMesecnaClanarina').val();
-            let cenaGodisnjeClanarine = $('#cenaGodisnjaClanarina').val();
-            let cenaJednogTreninga = $('#cenaTreningJedanFitnesCentar').val();
-            let cenaJednogGrupnogTreninga = $('#cenaTreningGrupniFitnesCentar').val();
-            let cenaJednogTreningaSaTrenerom = $('#cenaTreningTrenerFitnesCentar').val();
+            let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
+            let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
+            let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
+            let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
+            let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
+
+            let adresa = `${ulica} ${broj}, ${grad}, ${kod}`;
 
             $.ajax({
                 url: 'api/centri/IzmeniCentar',
                 type: 'PUT',
-                data: { // Dodati Datum i spisak Posetilaca.
-                    Naziv: nazivCentra,
+                data: { 
+                    Id: id,
+                    Naziv: naziv,
                     Adresa: adresa,
                     Vlasnik: vlasnik,
                     GodinaOtvaranja: godinaOtvaranja,
-                    CenaMesecneClanarine: cenaMesecneClanarine,
-                    CenaGodisnjeClanarine: cenaGodisnjeClanarine,
-                    CenaJednogTreninga: cenaJednogTreninga,
-                    CenaJednogGrupnogTreninga: cenaJednogGrupnogTreninga,
-                    CenaJednogTreningaSaTrenerom: cenaJednogTreningaSaTrenerom
+                    CenaMesecneClanarine: mesecnaClanarina,
+                    CenaGodisnjeClanarine: godisnjaClanarina,
+                    CenaJednogTreninga: cenaTreningJedan,
+                    CenaJednogGrupnogTreninga: cenaTreningGrupni,
+                    CenaJednogTreningaSaTrenerom: cenaTreningTrener
                 },
                 success: function (response) {
                     console.log('Uspelo');
@@ -130,7 +139,312 @@ $(document).ready(function () {
             });
         });
     });
-});
+
+    // Validacije za kreiranje novog fitnes centra.
+    {
+        $('#nazivFitnesCentra').focusout(function () {
+            let naziv = $('#nazivFitnesCentra').val();
+            naziv = $.trim(naziv);
+            if (naziv == "") {
+                $('#nazivFitnesCentra').css('border', '1px solid red');
+                $('#nazivFitnesCentra').focus();
+            } else {
+                $('#nazivFitnesCentra').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#nazivFitnesCentra', function () {
+            let naziv = $('#nazivFitnesCentra').val();
+            naziv = $.trim(naziv);
+            if (naziv == "") {
+                $('#nazivFitnesCentra').css('border', '1px solid red');
+                $('#nazivFitnesCentra').focus();
+            } else {
+                $('#nazivFitnesCentra').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#adresaFitnesCentraUlica', function () {
+            let ulica = $('#adresaFitnesCentraUlica').val();
+            ulica = $.trim(ulica);
+            if (ulica == "") {
+                $('#adresaFitnesCentraUlica').css('border', '1px solid red');
+                $('#adresaFitnesCentraUlica').focus();
+            } else {
+                $('#adresaFitnesCentraUlica').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#adresaFitnesCentraBroj', function () {
+            let broj = $('#adresaFitnesCentraBroj').val();
+            broj = $.trim(broj);
+            if (broj == "" || broj.length > 2) {
+                $('#adresaFitnesCentraBroj').css('border', '1px solid red');
+                $('#adresaFitnesCentraBroj').focus();
+            } else {
+                $('#adresaFitnesCentraBroj').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#adresaFitnesCentraGrad', function () {
+            let grad = $('#adresaFitnesCentraGrad').val();
+            grad = $.trim(grad);
+            if (grad == "") {
+                $('#adresaFitnesCentraGrad').css('border', '1px solid red');
+                $('#adresaFitnesCentraGrad').focus();
+            } else {
+                $('#adresaFitnesCentraGrad').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#adresaFitnesCentraKod', function () {
+            let kod = $('#adresaFitnesCentraKod').val();
+            kod = $.trim(kod);
+            if (kod == "" || kod.length != 5) {
+                $('#adresaFitnesCentraKod').css('border', '1px solid red');
+                $('#adresaFitnesCentraKod').focus();
+            } else {
+                $('#adresaFitnesCentraKod').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#godinaOtvaranjaFitnesCentra', function () {
+            let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
+            let date = new Date();
+            let godina = date.getFullYear();
+            if (godinaOtvaranja == "" || godinaOtvaranja.length != 4 || godinaOtvaranja > godina) {
+                $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid red');
+                $('#godinaOtvaranjaFitnesCentra').focus();
+            } else {
+                $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#cenaMesecnaClanarina', function () {
+            let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
+            if (mesecnaClanarina == "") {
+                $('#cenaMesecnaClanarina').css('border', '1px solid red');
+                $('#cenaMesecnaClanarina').focus();
+            } else {
+                $('#cenaMesecnaClanarina').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#cenaGodisnjaClanarina', function () {
+            let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
+            if (godisnjaClanarina == "") {
+                $('#cenaGodisnjaClanarina').css('border', '1px solid red');
+                $('#cenaGodisnjaClanarina').focus();
+            } else {
+                $('#cenaGodisnjaClanarina').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#cenaTreningJedanFitnesCentar', function () {
+            let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
+            if (cenaTreningJedan == "") {
+                $('#cenaTreningJedanFitnesCentar').css('border', '1px solid red');
+                $('#cenaTreningJedanFitnesCentar').focus();
+            } else {
+                $('#cenaTreningJedanFitnesCentar').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#cenaTreningGrupniFitnesCentar', function () {
+            let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
+            if (cenaTreningGrupni == "") {
+                $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid red');
+                $('#cenaTreningGrupniFitnesCentar').focus();
+            } else {
+                $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid green');
+            }
+        });
+
+        $('#createFitnesCentarForm').on('focusout', '#cenaTreningTrenerFitnesCentar', function () {
+            let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
+            if (cenaTreningTrener == "") {
+                $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid red');
+                $('#cenaTreningTrenerFitnesCentar').focus();
+            } else {
+                $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid green');
+            }
+        });
+    }
+
+    // Validacije za filtriranje.
+    {
+        $('#filterParams').on('focusout', '#minGodina', function () {
+            let minGodina = $('#minGodina').val();
+            minGodina = $.trim(minGodina);
+
+            if (minGodina == "" || minGodina.length != 4) {
+                $('#minGodina').css('border', '1px solid red');
+            } else {
+                $('#minGodina').css('border', '1px solid green');
+
+                let maxGodina = $('#maxGodina').val();
+                maxGodina = $.trim(maxGodina);
+
+                if (maxGodina == "" || maxGodina.length != 4 || maxGodina < minGodina) {
+                    $('#maxGodina').css('border', '1px solid red');
+                    return;
+                } else {
+                    $('minGodina').css('border', '1px solid green');
+                    $('maxGodina').css('border', '1px solid green');
+                }
+            }
+        });
+
+        $('#filterParams').on('focusout', '#maxGodina', function () {
+            let maxGodina = $('#maxGodina').val();
+            maxGodina = $.trim(maxGodina);
+
+            if (maxGodina == "" || maxGodina.length != 4) {
+                $('#maxGodina').css('border', '1px solid red');
+            } else {
+                $('#maxGodina').css('border', '1px solid green');
+
+                let minGodina = $('#minGodina').val();
+                minGodina = $.trim(minGodina);
+
+                if (minGodina == "" || minGodina.length != 4 || minGodina > minGodina) {
+                    $('#minGodina').css('border', '1px solid red');
+                    return;
+                } else {
+                    $('minGodina').css('border', '1px solid green');
+                    $('maxGodina').css('border', '1px solid green');
+                }
+            }
+        });
+    }
+}); 
+
+function validate() {
+    let regex = /[a-zA-Z0-9 ]*/;
+
+    let naziv = $('#nazivFitnesCentra').val();
+    naziv = $.trim(naziv);
+    if (naziv == "") {
+        $('#nazivFitnesCentra').css('border', '1px solid red');
+        $('#nazivFitnesCentra').focus();
+        return false;
+    } else {
+        $('#nazivFitnesCentra').css('border', '1px solid green');
+    }
+
+    let ulica = $('#adresaFitnesCentraUlica').val();
+    ulica = $.trim(ulica);
+    if (!regex.test(ulica)) {
+        $('#adresaFitnesCentraUlica').css('border', '1px solid red');
+        $('#adresaFitnesCentraUlica').focus();
+        return false;
+    }
+
+    // Mozda ni ne treba ovo ako imam regex test... Hmm...
+    if (ulica == "") {
+        $('#adresaFitnesCentraUlica').css('border', '1px solid red');
+        $('#adresaFitnesCentraUlica').focus();
+        return false;
+    } else {
+        $('#adresaFitnesCentraUlica').css('border', '1px solid green');
+    }
+
+    let broj = $('#adresaFitnesCentraBroj').val();
+    broj = $.trim(broj);
+    if (broj == "" || broj.length > 2) {
+        $('#adresaFitnesCentraBroj').css('border', '1px solid red');
+        $('#adresaFitnesCentraBroj').focus();
+        return false;
+    } else {
+        $('#adresaFitnesCentraBroj').css('border', '1px solid green');
+    }
+
+
+    let grad = $('#adresaFitnesCentraGrad').val();
+    grad = $.trim(grad);
+    if (!regex.test(grad)) {
+        $('#adresaFitnesCentraGrad').css('border', '1px solid red');
+        $('#adresaFitnesCentraGrad').focus();
+        return false;
+    }
+
+    if (grad == "") {
+        $('#adresaFitnesCentraGrad').css('border', '1px solid red');
+        $('#adresaFitnesCentraGrad').focus();
+        return false;
+    } else {
+        $('#adresaFitnesCentraGrad').css('border', '1px solid green');
+    }
+
+    let kod = $('#adresaFitnesCentraKod').val();
+    kod = $.trim(kod);
+    if (kod == "" || kod.length != 5) {
+        $('#adresaFitnesCentraKod').css('border', '1px solid red');
+        $('#adresaFitnesCentraKod').focus();
+        return false;
+    } else {
+        $('#adresaFitnesCentraKod').css('border', '1px solid green');
+    }
+
+
+    let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
+    let date = new Date();
+    let godina = date.getFullYear();
+    if (godinaOtvaranja == "" || godinaOtvaranja.length != 4 || godinaOtvaranja > godina) {
+        $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid red');
+        $('#godinaOtvaranjaFitnesCentra').focus();
+        return false;
+    } else {
+        $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid green');
+    }
+
+    let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
+    if (mesecnaClanarina == "") {
+        $('#cenaMesecnaClanarina').css('border', '1px solid red');
+        $('#cenaMesecnaClanarina').focus();
+        return false;
+    } else {
+        $('#cenaMesecnaClanarina').css('border', '1px solid green');
+    }
+
+    let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
+    if (godisnjaClanarina == "") {
+        $('#cenaGodisnjaClanarina').css('border', '1px solid red');
+        $('#cenaGodisnjaClanarina').focus();
+        return false;
+    } else {
+        $('#cenaGodisnjaClanarina').css('border', '1px solid green');
+    }
+
+    let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
+    if (cenaTreningJedan == "") {
+        $('#cenaTreningJedanFitnesCentar').css('border', '1px solid red');
+        $('#cenaTreningJedanFitnesCentar').focus();
+        return false;
+    } else {
+        $('#cenaTreningJedanFitnesCentar').css('border', '1px solid green');
+    }
+
+    let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
+    if (cenaTreningGrupni == "") {
+        $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid red');
+        $('#cenaTreningGrupniFitnesCentar').focus();
+        return false;
+    } else {
+        $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid green');
+    }
+
+    let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
+    if (cenaTreningTrener == "") {
+        $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid red');
+        $('#cenaTreningTrenerFitnesCentar').focus();
+        return false;
+    } else {
+        $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid green');
+    }
+
+    return true;
+}
 
 function sort() {
     let checkedCheckbox = document.querySelector('#checkboxFilter input[type=checkbox]:checked').value;
@@ -221,6 +535,10 @@ function sort() {
 }
 
 function searchFitnesCentre() {
+    if (!validateFilter()) {
+        return;
+    }
+
     let naziv = $('#inputNaziv').val();
     let adresa = $('#inputAdresa').val();
     let minGodina = $('#minGodina').val() == "" ? 0 : $('#minGodina').val();
@@ -234,85 +552,129 @@ function searchFitnesCentre() {
     if (!imaNaziv && !imaAdresa && !imaGodina) { return; }
     searchTable = []
 
-    // 1. Sve
-    if (imaNaziv && imaAdresa && imaGodina) {
-        for (element in data) {
-            if (data[element].Naziv == naziv && data[element].Adresa == adresa && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
-                searchTable[searchTable.length] = data[element];
+    // IF-ovi za pretragu.
+    {
+        // 1. Sve
+        if (imaNaziv && imaAdresa && imaGodina) {
+            for (element in data) {
+                if (data[element].Naziv.includes(naziv) && data[element].Adresa.includes(adresa) && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
+                    searchTable[searchTable.length] = data[element];
+                }
             }
+            createTable(searchTable);
+            return;
         }
-        createTable(searchTable);
-        return;
+
+        // 2. Naziv / Adresa
+        if (imaNaziv && imaAdresa && !imaGodina) {
+            for (element in data) {
+                if (data[element].Naziv.includes(naziv) && data[element].Adresa.includes(adresa)) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+
+        // 3. Naziv / Godina 
+        if (imaNaziv && !imaAdresa && imaGodina) {
+            for (element in data) {
+                if (data[element].Naziv.includes(naziv) && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+
+        // 4. Adresa / Godina
+        if (!imaNaziv && imaAdresa && imaGodina) {
+            for (element in data) {
+                if (data[element].Adresa.includes(adresa) && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+
+        // 5. Naziv
+        if (imaNaziv && !imaAdresa && !imaGodina) {
+            for (element in data) {
+                if (data[element].Naziv.includes(naziv)) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+
+        // 6. Adresa
+        if (!imaNaziv && imaAdresa && !imaGodina) {
+            for (element in data) {
+                if (data[element].Adresa.includes(adresa)) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+
+        // 7. Godina
+        if (!imaNaziv && !imaAdresa && imaGodina) {
+            for (element in data) {
+                if (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina) {
+                    searchTable[searchTable.length] = data[element];
+                }
+            }
+            createTable(searchTable);
+            return;
+        }
+    }
+}
+
+function validateFilter() {
+    let minGodina = $('#minGodina').val();
+    minGodina = $.trim(minGodina);
+
+    if (minGodina == "" || minGodina.length != 4) {
+        $('#minGodina').css('border', '1px solid red');
+    } else {
+        $('#minGodina').css('border', '1px solid green');
+
+        let maxGodina = $('#maxGodina').val();
+        maxGodina = $.trim(maxGodina);
+
+        if (maxGodina == "" || maxGodina.length != 4 || maxGodina < minGodina) {
+            $('#maxGodina').css('border', '1px solid red');
+            return false;
+        } else {
+            $('minGodina').css('border', '1px solid green');
+            $('maxGodina').css('border', '1px solid green');
+        }
     }
 
-    // 2. Naziv / Adresa
-    if (imaNaziv && imaAdresa && !imaGodina) {
-        for (element in data) {
-            if (data[element].Naziv == naziv && data[element].Adresa == adresa) {
-                searchTable[searchTable.length] = data[element];
-            }
+    let maxGodina = $('#maxGodina').val();
+    maxGodina = $.trim(maxGodina);
+
+    if (maxGodina == "" || maxGodina.length != 4) {
+        $('#maxGodina').css('border', '1px solid red');
+    } else {
+        $('#maxGodina').css('border', '1px solid green');
+
+        minGodina = $('#minGodina').val();
+        minGodina = $.trim(minGodina);
+
+        if (minGodina == "" || minGodina.length != 4 || minGodina > minGodina) {
+            $('#minGodina').css('border', '1px solid red');
+            return false;
+        } else {
+            $('minGodina').css('border', '1px solid green');
+            $('maxGodina').css('border', '1px solid green');
         }
-        createTable(searchTable);
-        return;
     }
 
-    // 3. Naziv / Godina 
-    if (imaNaziv && imaAdresa && !imaGodina) {
-        for (element in data) {
-            if (data[element].Naziv == naziv && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
-                searchTable[searchTable.length] = data[element];
-            }
-        }
-        createTable(searchTable);
-        return;
-    }
-
-    // 4. Adresa / Godina
-    if (!imaNaziv && imaAdresa && imaGodina) {
-        for (element in data) {
-            if (data[element].Adresa == adresa && (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina)) {
-                searchTable[searchTable.length] = data[element];
-            }
-        }
-        createTable(searchTable);
-        return;
-    }
-
-    // 5. Naziv
-    if (imaNaziv && !imaAdresa && !imaGodina) {
-        for (element in data) {
-            if (data[element].Naziv == naziv) {
-                searchTable[searchTable.length] = data[element];
-            }
-        }
-        createTable(searchTable);
-        return;
-    }
-
-    // 6. Adresa
-    if (!imaNaziv && imaAdresa && !imaGodina) {
-        for (element in data) {
-            if (data[element].Adresa == adresa) {
-                searchTable[searchTable.length] = data[element];
-            }
-        }
-        createTable(searchTable);
-        return;
-    }
-
-    // 7. Godina
-    if (!imaNaziv && !imaAdresa && imaGodina) {
-        for (element in data) {
-            if (data[element].GodinaOtvaranja >= minGodina && data[element].GodinaOtvaranja <= maxGodina) {
-                searchTable[searchTable.length] = data[element];
-            }
-        }
-        createTable(searchTable);
-        return;
-    }
-    //$.get("api/centri", function (data, status) {
-
-    //});
+    return true;
 }
 
 function loadFitnesCentre() {
@@ -407,16 +769,27 @@ function createTableVlasnik(dataFun) {
 
 function createFitnesCentar() {
     // Validacija ovoga svega.
-    $('#btnAddFitnesCentar').show();
+    $('#btnShowCreateFormFitnesCentar').hide();
+    if (!validate()) {
+        return;
+    }
+
+    $('#btnAddFitnesCentar').hide();
     $('#btnUpdateFitnesCentar').hide();
+
     let naziv = $('#nazivFitnesCentra').val();
-    let adresa = $('#adresaFitnesCentra').val();
+    let ulica = $('#adresaFitnesCentraUlica').val();
+    let broj = $('#adresaFitnesCentraBroj').val();
+    let grad = $('#adresaFitnesCentraGrad').val();
+    let kod = $('#adresaFitnesCentraKod').val();
     let cenaMesecna = $('#cenaMesecnaClanarina').val(); 
     let cenaGodisnja = $('#cenaGodisnjaClanarina').val();
     let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
     let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
     let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
     let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
+
+    let adresa = `${ulica} ${broj}, ${grad}, ${kod}`;
 
     let vlasnik = JSON.parse(sessionStorage.getItem('activeUser'));
     let vlasnikNaziv = vlasnik.Username;
@@ -439,6 +812,7 @@ function createFitnesCentar() {
             sessionStorage.setItem('activeUser', '');
             sessionStorage.setItem('activeUser', JSON.stringify(response));
             $('#createFitnesCentarForm').hide();
+            $('#btnShowCreateFormFitnesCentar').show();
             displayCentre();
             alert('Napravljen fitnes centrar');
         },
@@ -459,9 +833,17 @@ function showForm(id) {
             centar = data[el];
         }
     }
+    let params = centar.Adresa.split(',');
+    let ulica = params[0].split(' ')[0];
+    let broj = params[0].split(' ')[1];
+    let grad = $.trim(params[1]);
+    let kod = $.trim(params[2]);
 
     $('#nazivFitnesCentra').attr('value', centar.Naziv);
-    $('#adresaFitnesCentra').attr('value', centar.Adresa);
+    $('#adresaFitnesCentraUlica').attr('value', ulica);
+    $('#adresaFitnesCentraBroj').attr('value', broj);
+    $('#adresaFitnesCentraGrad').attr('value', grad);
+    $('#adresaFitnesCentraKod').attr('value', kod);
     $('#cenaMesecnaClanarina').attr('value', centar.CenaMesecneClanarine)
     $('#cenaGodisnjaClanarina').attr('value', centar.CenaGodisnjeClanarine);
     $('#cenaTreningJedanFitnesCentar').attr('value', centar.CenaJednogTreninga);

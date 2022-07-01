@@ -60,6 +60,10 @@ namespace FitnesCenter.Controllers
             if (BazePodataka.korisnikRepository.CheckIfKorisnikExists(loginInfo.Username))
             {
                 Korisnik korisnik = BazePodataka.korisnikRepository.GetKorisnikByUsername(loginInfo.Username);
+                if (!string.Equals(korisnik.Password, loginInfo.Password))
+                {
+                    return NotFound();
+                }
 
                 if (korisnik.isBlocked)
                 {
@@ -80,12 +84,12 @@ namespace FitnesCenter.Controllers
 
         // Obrisati logovanog korisnika iz spiksa ulogovanih na back-end.
         //
-        [HttpPost]
-        [Route("api/korisnik/LogoutKorisnik")]
-        public IHttpActionResult LogoutKorisnik(Korisnik korisnik)
-        {
-            return BadRequest();
-        }
+        //[HttpPost]
+        //[Route("api/korisnik/LogoutKorisnik")]
+        //public IHttpActionResult LogoutKorisnik(Korisnik korisnik)
+        //{
+        //    return BadRequest();
+        //}
 
         [HttpPut]
         [Route("api/korisnik/UpdateKorisnikInfo")]
@@ -113,14 +117,19 @@ namespace FitnesCenter.Controllers
         //
         [HttpGet]
         [Route("api/korisnik/GetTreningeKorisnik")]
-        public IHttpActionResult GetTreningeKorisnik(string username)
+        public IHttpActionResult GetTreningeKorisnik([FromUri]string username)
         {
             Korisnik korisnik = BazePodataka.korisnikRepository.GetKorisnikByUsername(username);
+            if (korisnik == null)
+            {
+                return BadRequest();
+            }
+
             List<GrupniTrening> retVal = new List<GrupniTrening>();
 
             if (korisnik.Uloga == Enums.Uloge.POSETILAC)
             {
-                retVal = BazePodataka.grupniTreninziRepository.GetOdrzaneGrupneTreningeForPosetilac(korisnik.Username);
+                retVal = BazePodataka.grupniTreninziRepository.GetOdrzaneGrupneTreningeForPosetilac(korisnik);
             } else if (korisnik.Uloga == Enums.Uloge.TRENER)
             {
                 retVal = BazePodataka.grupniTreninziRepository.GetOdrzaneGrupneTreningeForTrener(korisnik.GrupniTreninziTrener);

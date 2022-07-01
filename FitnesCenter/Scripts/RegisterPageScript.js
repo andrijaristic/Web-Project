@@ -11,6 +11,8 @@ var UlogeEnum = {
 
 $(document).ready(function () {
     let id;
+    let regexSpace = /^[a-zA-Z ]*$/;
+    let regexNoSpace = /^[a-zA-Z]*$/;
     if (sessionStorage.getItem('accessToken')) {
         $('#loginHref').hide();
         id = parseUrl();
@@ -19,28 +21,158 @@ $(document).ready(function () {
     }
 
     console.log("Spremna");
+
+    $('#registerForm').on('focusout', '#username', function () {
+        let username = $('#username').val();
+        username = $.trim(username);
+        if (username == "" || (username.length < 3 || username.length > 12)) {
+            $('#username').css('border', '1px solid red');
+            $('#username').focus();
+        } else {
+            $('#username').css('border', '1px solid green');
+        }
+    });
+
+    $('#registerForm').on('focusout', '#password', function () {
+        let password = $('#password').val();
+        password = $.trim(password);
+        if (password == "" || (password.length < 3 || password.length > 16)) {
+            $('#password').css('border', '1px solid red');
+            $('#password').focus();
+        } else {
+            $('#password').css('border', '1px solid green');
+        }
+    });
+
+    $('#registerForm').on('focusout', '#ime', function () {
+        let ime = $('#ime').val();
+        ime = $.trim(ime);
+
+        if (!regexSpace.test(ime)) {
+            $('#ime').css('border', '1px solid red');
+            $('#ime').focus();
+            return;
+        }
+
+        if (ime == "" || ime.length < 2) {
+            $('#ime').css('border', '1px solid red');
+            $('#ime').focus();
+        } else {
+            $('#ime').css('border', '1px solid green');
+        }
+    });
+
+    $('#registerForm').on('focusout', '#prezime', function () {
+        let prezime = $('#prezime').val();
+        prezime = $.trim(prezime);
+
+        if (!regexNoSpace.test(prezime)) {
+            $('#prezime').css('border', '1px solid red');
+            $('#prezime').focus();
+        }
+
+        if (prezime == "" || prezime.length < 2) {
+            $('#prezime').css('border', '1px solid red');
+            $('#prezime').focus();
+        } else {
+            $('#prezime').css('border', '1px solid green');
+        }
+    });
+
+    $('#registerForm').on('focusout', '#email', function () {
+        let email = $('#email').val();
+        email = $.trim(email);
+
+        let regex = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
+        if (!regex.test(email)) {
+            $('#email').css('border', '1px solid red');
+            $('#email').focus();
+            return;
+        }
+
+        if (email == "" || email.length < 4) {
+            $('#email').css('border', '1px solid red');
+            $('#email').focus();
+        } else {
+            $('#email').css('border', '1px solid green');
+        }
+    });
+ 
+
     $("#btnRegister").click(function () {
         let username = $('#username').val();
-        let password = $('#password').val();
-        let ime = $('#ime').val();
-        let prezime = $('#prezime').val();
-        let email = $('#email').val();
-        let pol = $('#pol').val();
+        username = $.trim(username);
+        if (username == "" || (username.length < 3 || username.length > 12)) {
+            $('#username').css('border', '1px solid red');
+            $('#username').focus();
+            return;
+        } else {
+            $('#username').css('border', '1px solid green');
+        }
 
-        if (pol == "musko") { pol = PolEnum.MUSKI; }
-        else { pol = PolEnum.ZENSKI; }
+        let password = $('#password').val();
+        password = $.trim(password);
+        if (password == "" || (password.length < 3 || password.length > 16)) {
+            $('#password').css('border', '1px solid red');
+            $('#password').focus();
+            return;
+        } else {
+            $('#password').css('border', '1px solid green');
+        }
+
+        let ime = $('#ime').val();
+        ime = $.trim(ime);
+        if (ime == "" || ime.length < 5) {
+            $('#ime').css('border', '1px solid red');
+            $('#ime').focus();
+            return;
+        } else {
+            $('#ime').css('border', '1px solid green');
+        }
+
+        let prezime = $('#prezime').val();
+        prezime = $.trim(prezime);
+        if (prezime == "" || prezime.length < 4) {
+            $('#prezime').css('border', '1px solid red');
+            $('#prezime').focus();
+            return;
+        } else {
+            $('#prezime').css('border', '1px solid green');
+        }
+
+        let email = $('#email').val();
+        email = $.trim(email);
+
+        let regex = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
+        if (!regex.test(email)) {
+            $('#email').css('border', '1px solid red');
+            $('#email').focus();
+            return;
+        }
+
+        if (email == "" || email.length < 4) {
+            $('#email').css('border', '1px solid red');
+            $('#email').focus();
+            return;
+        } else {
+            $('#email').css('border', '1px solid green');
+        }
+
+        let pol = $('#pol').val(); // DEFAULT: Muski
+        let datum = $('#datum').val();
 
         if (sessionStorage.getItem('accessToken')) {
             let user = JSON.parse(sessionStorage.getItem('activeUser'));
             if (user.Uloga == UlogeEnum.VLASNIK) {
                 trener = {
-                    username: username,
-                    password: password,
-                    ime: ime,
-                    prezime: prezime,
-                    email: email,
-                    pol: pol,
-                    uloga: 1
+                    Username: username,
+                    Password: password,
+                    Ime: ime,
+                    Prezime: prezime,
+                    Email: email,
+                    Pol: pol,
+                    Uloga: 1,
+                    DatumRodjenja: datum
                 };
 
                 $.ajax({
@@ -63,13 +195,14 @@ $(document).ready(function () {
                     url: '/api/korisnik/RegisterKorisnik',
                     type: 'POST',
                     data: {
-                        username: username,
-                        password: password,
-                        ime: ime,
-                        prezime: prezime,
-                        email: email,
-                        pol: pol,
-                        uloga: 0
+                        Username: username,
+                        Password: password,
+                        Ime: ime,
+                        Prezime: prezime,
+                        Email: email,
+                        Pol: pol,
+                        Uloga: 0,
+                        DatumRodjenja: datum
                     },
                     success: function (data) {
                         console.log(data)
@@ -85,13 +218,14 @@ $(document).ready(function () {
                 url: '/api/korisnik/RegisterKorisnik',
                 type: 'POST',
                 data: {
-                    username: username,
-                    password: password,
-                    ime: ime,
-                    prezime: prezime,
-                    email: email,
-                    pol: pol,
-                    uloga: 0
+                    Username: username,
+                    Password: password,
+                    Ime: ime,
+                    Prezime: prezime,
+                    Email: email,
+                    Pol: pol,
+                    Uloga: 0,
+                    DatumRodjenja: datum
                 },
                 success: function (data) {
                     console.log(data)

@@ -1,5 +1,6 @@
-f11c22df-b873-49d5-9c50-48f07285f342=AFitnesCentar=ACentrova=2000=admin=2000=30000=100=100=1000=false
-b3c361b2-2fdf-4e54-af6a-e19b1285c73f=CFitnesCentar2=BCentrova=2000=admin=2000=30000=100=100=1000=false
-95b76659-b361-42d0-b6d6-0faad23d50dc=BFitnesCentar3=Centrova2=1980=null=2000=30000=100=100=1000=false
-269238bb-4891-403b-a221-4226a8697513=ZFitnesCentar3=Centrova3=2010=null=2000=30000=100=100=1000=false
+f11c22df-b873-49d5-9c50-48f07285f342=AFitnesCentar=Ulica 1, Novi Sad, 11000=2000=admin=2000=30000=100=100=1000=false
+b3c361b2-2fdf-4e54-af6a-e19b1285c73f=CFitnesCentar2=Ulica 2, Novi Sad, 11000=2000=admin=2000=30000=100=100=1000=false
+95b76659-b361-42d0-b6d6-0faad23d50dc=BFitnesCentar3=Ulica 3, Novi Sad, 11000=1980=null=2000=30000=100=100=1000=false
+269238bb-4891-403b-a221-4226a8697513=ZFitnesCentar3=Ulica 4, Novi Sad, 11000=2010=null=2000=30000=100=100=1000=false
+3d974817-ad4f-41c0-8ed3-3ccac5643645=Novi centar=Ulica 5, Novi Sad, 11000=2022=admin=1000=35000=100=200=500=false
 

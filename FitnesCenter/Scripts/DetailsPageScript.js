@@ -23,6 +23,7 @@ $(document).ready(function () {
     $('#btnDodajTrening').hide();
     $('#dodajKomentarForm').hide();
     $('#btnPostaviKomentar').hide();
+    $('#treneriCentra').hide();
 
     let idCentra = parseUrl();
     console.log(idCentra);
@@ -55,6 +56,7 @@ $(document).ready(function () {
             $('#btnDodajTrening').show();
         }
         else if (user.Uloga == 2) {
+            $('#treneriCentra').show();
             displayTrenereCentra(idCentra);
         }
     } else {
@@ -178,22 +180,123 @@ $(document).ready(function () {
         $('#btnDodajTrening').hide();
         $('#btnSacuvajIzmeneTrening').html('Dodaj trening');
 
+        let mind = new Date();
+        mind.setDate(mind.getDate() + 3);
+        mind = mind.toLocaleString('en-GB')
+        let params = mind.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        mind = `${datum[2]}-${datum[1]}-${datum[0]}T${vreme[0]}:${vreme[1]}:${vreme[2]}`;
+
+        $('#treningNaziv').focusout(function () {
+            let naziv = $('#treningNaziv').val();
+            naziv = $.trim(naziv);
+            if (naziv == "" || (naziv.length < 3 || naziv.length >  42)) {
+                $('#treningNaziv').css('border', '1px solid red');
+                $('#treningNaziv').focus();
+            } else {
+                $('#treningNaziv').css('border', '1px solid green');
+            } 
+        });
+
+        $('#formaTrening').on('focusout', '#treningTrajanje', function () {
+            let trajanje = $('#treningTrajanje').val();
+            if ((trajanje == "") || (trajanje < 30 || trajanje > 60)) {
+                $('#treningTrajanje').css('border', '1px solid red');
+                $('#treningTrajanje').focus();
+            } else {
+                $('#treningTrajanje').css('border', '1px solid green');
+            }
+        });
+
+        $('#formaTrening').on('focusout', '#treningBrojPosetioca', function () {
+            let brojPosetilaca = $('#treningBrojPosetioca').val();
+
+            if ((brojPosetilaca == "") || (brojPosetilaca < 1 || brojPosetilaca > 6)) {
+                $('#treningBrojPosetioca').css('border', '1px solid red');
+                $('#treningBrojPosetioca').focus();
+            } else {
+                $('#treningBrojPosetioca').css('border', '1px solid green');
+            }
+
+        });
+
+        $('#formaTrening').on('focusout', '#treningVreme', function () {
+            let datumVreme = $('#treningVreme').val();
+            if (datumVreme < mind) {
+                $('#treningVreme').css('border', '1px solid red');
+                $('#treningVreme').focus();
+                return;
+            } else {
+                $('#treningVreme').css('border', '1px solid green');
+            }
+        });
+
+
         $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
+            // Odraditi istu validaciju ovde.
+
+            let naziv = $('#treningNaziv').val();
+            naziv = $.trim(naziv);
+            if (naziv == "" || (naziv.length < 3 || naziv.length > 42)) {
+                $('#treningNaziv').css('border', '1px solid red');
+                $('#treningNaziv').focus();
+                return;
+            }
+
+            let tipTreninga = $('#treningTip').val();   // Default je YOGA.
+
+            let trajanjeTreninga = $('#treningTrajanje').val();
+            if ((trajanjeTreninga == "") || (trajanjeTreninga < 30 || trajanjeTreninga > 60)) {
+                $('#treningTrajanje').css('border', '1px solid red');
+                $('#treningTrajanje').focus();
+                return;
+            }
+
+            let maksBrojPosetilaca = $('#treningBrojPosetioca').val();
+            if ((maksBrojPosetilaca == "") || (maksBrojPosetilaca < 1 || maksBrojPosetilaca > 6)) {
+                $('#treningBrojPosetioca').css('border', '1px solid red');
+                $('#treningBrojPosetioc').focus();
+                return;
+            }
+
+            let datumVreme = $('#treningVreme').val();
+            if (datumVreme < mind) {
+                $('#treningVreme').css('border', '1px solid red');
+                $('#treningVreme').focus();
+                return;
+            }
+
+            let trening = {
+                Naziv: naziv,
+                TipTreninga: tipTreninga,
+                TrajanjeTreninga: trajanjeTreninga,
+                DatumVreme: datumVreme,
+                MaksBrojPosetilaca: maksBrojPosetilaca,
+                isDelete: false
+            }
+
+            let trenerUsername = user.Username;
+
             $.ajax({
                 url: 'api/trening/DodajTrening',
                 type: 'POST',
                 data: { // Dodati Datum i spisak Posetilaca.
-                    Naziv: $('#treningNaziv').val(),
-                    TipTreninga: 0,
-                    TrajanjeTreninga: $('#treningTrajanje').val(),
-                    MaksBrojPosetilaca: $('#treningBrojPosetioca').val(),
+                    Trening: trening,
+                    FitnesCentarId: idCentra,
+                    TrenerUsername: trenerUsername
                 },
                 success: function (response) {
                     console.log('Uspelo');
+                    displayTreninge(idCentra);
+                    $('#spisakTreninga').show();
+                    $('#formaTrening').hide();
+                    $('#btnDodajTrening').show();
                 },
                 error: function (xhr) {
-                    alert(xhr.status);
-                    console.log('Trening sa datim nazivom vec postoji!');
+                    alert('Vec imate trening u to vreme.');
+                    $('#treningVreme').css('border', '1px solid red');
+                    $('#treningVreme').focus();
                 }
             });
         });
@@ -259,6 +362,25 @@ $(document).ready(function () {
         $('#btnDodajKomentar').hide();
     });
 
+    $('#dodajKomentarForm').on('focusout', '#inputSadrzaj', function () {
+        let sadrzaj = $('#inputSadrzaj').val();
+        sadrzaj = $.trim(sadrzaj);
+        if (sadrzaj == "") {
+            // Crveni input i napisi labelu pored.
+            $('#inputSadrzaj').css('border', '1px solid red');
+            $('#inputSadrzaj').focus();
+        }
+    });
+
+    $('#dodajKomentarForm').on('focusout', '#inputOcena', function () {
+        let ocena = $('#inputOcena').val();
+        if (ocena == "" || (ocena < 0 && ocena > 5)) {
+            // Crveni input i napisi labelu pored.
+            $('#inputOcena').css('border', '1px solid red');
+            $('#inputOcena').focus();
+        }
+    });
+
     $('#btnPostaviKomentar').click(function () {
         $('#dodajKomentarForm').hide();
         $('#btnPostaviKomentar').hide();
@@ -266,7 +388,21 @@ $(document).ready(function () {
 
         let posetilac = JSON.parse(sessionStorage.getItem('activeUser'));
         let sadrzaj = $('#inputSadrzaj').val();
+        sadrzaj = $.trim(sadrzaj);
+        if (sadrzaj == ""){
+            // Crveni input i napisi labelu pored.
+            $('#inputSadrzaj').css('border', '1px solid red');
+            $('#inputSadrzaj').focus();
+            return;
+        }
+
         let ocena = $('#inputOcena').val();
+        if (ocena == "" || (ocena < 0 && ocena > 5)) {
+            // Crveni input i napisi labelu pored.
+            $('#inputOcena').css('border', '1px solid red');
+            $('#inputOcena').focus();
+            return;
+        }
 
         $.ajax({
             url: 'api/centri/AddKomentar',

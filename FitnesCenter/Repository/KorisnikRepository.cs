@@ -352,5 +352,40 @@ namespace FitnesCenter.Repository
 
             return false;
         }
+
+        public bool CheckIfTrenerHasTrening(Korisnik trener, Guid treningId)
+        {
+            foreach (var el in trener.GrupniTreninziTrener)
+            {
+                if (el.Id == treningId)
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
+
+        public bool AddTreningToTrener(GrupniTreningCreationClass trening)
+        {
+            foreach (var el in BazePodataka.korisnici)
+            {
+                if (string.Equals(trening.TrenerUsername, el.Username))
+                {
+                    if (CheckIfTrenerHasTrening(el, trening.Trening.Id))
+                    {
+                        return false;
+                    }
+
+                    el.GrupniTreninziTrener.Add(trening.Trening);
+
+                    BazePodataka.korisnikRepository.SaveToFile();
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

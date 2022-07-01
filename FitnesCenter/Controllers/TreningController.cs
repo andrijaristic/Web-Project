@@ -52,9 +52,13 @@ namespace FitnesCenter.Controllers
 
         [HttpPost]
         [Route("api/trening/DodajTrening")]
-        public IHttpActionResult DodajTrening([FromBody]GrupniTrening trening)
+        public IHttpActionResult DodajTrening([FromBody]GrupniTreningCreationClass trening)
         {
-            if (BazePodataka.grupniTreninziRepository.AddGrupniTrening(trening))
+            trening.Trening.Id = Guid.NewGuid();
+            trening.Trening.FitnesCentar = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trening.FitnesCentarId);
+            GrupniTrening retVal = BazePodataka.grupniTreninziRepository.AddGrupniTrening(trening);
+
+            if (retVal.Id == trening.Trening.Id)
             {
                 return Ok();
             }

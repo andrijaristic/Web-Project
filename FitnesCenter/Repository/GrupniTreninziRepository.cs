@@ -75,7 +75,7 @@ namespace FitnesCenter.Repository
                     string sat = vreme.Split(':')[0];
                     string minut = vreme.Split(':')[1];
 
-                    var datumVremeAttr = $"{dan}/{mesec}/{godina} {sat}:{minut}";
+                    var datumVremeAttr = $"{mesec}/{dan}/{godina} {sat}:{minut}";
                     DateTime date = DateTime.Parse(datumVremeAttr, System.Globalization.CultureInfo.InvariantCulture);
 
                     FitnesCentar fc = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(idCentar);
@@ -105,13 +105,15 @@ namespace FitnesCenter.Repository
 
         public GrupniTrening GetGrupniTreningByNaziv(Guid id)
         {
-            GrupniTrening retVal = new GrupniTrening();
             foreach(var el in BazePodataka.treninzi)
             {
-                if (el.Id == id && !el.isDeleted) { retVal = el; break; }
+                if (el.Id == id && !el.isDeleted)
+                {
+                    return el;
+                }
             }
 
-            return retVal;
+            return null;
         }
 
         public bool AddPosetilacToGrupniTrening(Guid id, Korisnik korisnik)
@@ -139,19 +141,23 @@ namespace FitnesCenter.Repository
             return false;
         }
 
-        public List<GrupniTrening> GetOdrzaneGrupneTreningeForPosetilac(string username)
+        public List<GrupniTrening> GetOdrzaneGrupneTreningeForPosetilac(Korisnik posetilac)
         {
             List<GrupniTrening> retVal = new List<GrupniTrening>();
 
-            foreach (var el in BazePodataka.treninzi)
+            if (posetilac.GrupniTreninziPosetioc.Count == 0)
             {
-                foreach (var _el in el.Posetioci)
+                return retVal;
+            }
+
+            foreach (var el in posetilac.GrupniTreninziPosetioc)
+            {
+                GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(el);
+                if (trening == null) { continue; }
+
+                if (trening.DatumVreme.ToUniversalTime() < DateTime.Now.ToUniversalTime())
                 {
-                    if(string.Equals(_el.Username, username) && DateTime.Now > el.DatumVreme && !el.isDeleted)
-                    {
-                        retVal.Add(el);
-                        break;
-                    } 
+                    retVal.Add(trening);
                 }
             }
 
@@ -199,7 +205,7 @@ namespace FitnesCenter.Repository
         {
             for (int i = 0; i < BazePodataka.treninzi.Count; i++)
             {
-                if (string.Equals(BazePodataka.treninzi[i].Naziv, trening.Naziv))
+                if (BazePodataka.treninzi[i].Id == trening.Id)
                 {
                     trening.FitnesCentar = BazePodataka.treninzi[i].FitnesCentar;
                     trening.Posetioci = BazePodataka.treninzi[i].Posetioci;
@@ -213,18 +219,22 @@ namespace FitnesCenter.Repository
             return false; 
         }
 
-        public bool AddGrupniTrening(GrupniTrening trening)
+        public GrupniTrening AddGrupniTrening(GrupniTreningCreationClass trening)
         {
             foreach (var el in BazePodataka.treninzi)
             {
-                if (!string.Equals(el.Naziv, trening.Naziv))
-                {
-                    BazePodataka.treninzi.Add(trening);
-                    return true;
+                if (el.Id != trening.Trening.Id && el.DatumVreme == trening.Trening.DatumVreme)
+                {   // Vec postoji trening u to vreme.
+                    return el;   
                 }
             }
 
-            return false;
+            trening.Trening.Posetioci = new List<Korisnik>();
+            BazePodataka.treninzi.Add(trening.Trening);
+            BazePodataka.korisnikRepository.AddTreningToTrener(trening);
+
+            BazePodataka.grupniTreninziRepository.SaveToFile();
+            return trening.Trening;
         }
 
         public List<GrupniTrening> GetGrupneTreningeForCentar(Guid id)
@@ -240,6 +250,17 @@ namespace FitnesCenter.Repository
             }
 
             return retVal;
+        }
+
+        public void UpdateFitnesCentarForGrupneTreninge(FitnesCentar centar)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (el.FitnesCentar.Id == centar.Id)
+                {
+                    el.FitnesCentar = centar;
+                }
+            }
         }
     }
 }
