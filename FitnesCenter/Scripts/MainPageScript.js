@@ -8,10 +8,13 @@ var data = [];
 var dataCurrent = [];
 
 $(document).ready(function () {
+    let idDugme = 0;
     loadFitnesCentre();
     $('#createFitnesCentarForm').hide();
     $('#btnUpdateFitnesCentar').hide();
     $('#btnShowCreateFormFitnesCentar').hide();
+    $('#btnExitForm').hide();
+    $('#btnExitUpdate').hide();
 
     if (sessionStorage.getItem('accessToken')) {
         $('#loginHref').hide();
@@ -63,10 +66,24 @@ $(document).ready(function () {
 
     $('#btnShowCreateFormFitnesCentar').click(function () {
         $('#createFitnesCentarForm').show();
+        $('#btnShowCreateFormFitnesCentar').hide();
+        $('#btnExitForm').show();
     });
+
+    $('#btnExitForm').click(function () {
+        $('#createFitnesCentarForm').hide();
+        $('#btnShowCreateFormFitnesCentar').show();
+        $('#btnExitForm').hide();
+    })
 
     $('#btnAddFitnesCentar').click(function () {
         createFitnesCentar();
+    });
+
+    $('#btnExitUpdate').click(function () {
+        $('#createFitnesCentarForm').hide();
+        $('#btnShowCreateFormFitnesCentar').show();
+        $('#btnExitUpdate').hide();
     });
 
 
@@ -87,56 +104,60 @@ $(document).ready(function () {
     });
 
     $('#fitnesCentriSpisak').on('click', '#btnIzmeniCentar', function () {
-        let id = $(this).attr('value');
+        idDugme = $(this).attr('value');
         $('#btnAddFitnesCentar').hide();
         $('#btnUpdateFitnesCentar').show();
-        showForm(id);
+        $('#btnExitUpdate').show();
+        $('#btnExitForm').hide();
+        showForm(idDugme);
+    });
 
+    $('#createFitnesCentarForm').on('click', '#btnUpdateFitnesCentar', function () {
+        if (!validate()) {
+            return;
+        }
+
+        let id = idDugme;
         let vlasnik = JSON.parse(sessionStorage.getItem('activeUser'));
+        let naziv = $('#nazivFitnesCentra').val();
+        let ulica = $('#adresaFitnesCentraUlica').val();
+        let broj = $('#adresaFitnesCentraBroj').val();
+        let grad = $('#adresaFitnesCentraGrad').val();
+        let kod = $('#adresaFitnesCentraKod').val();
+        let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
+        let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
+        let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
+        let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
+        let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
+        let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
 
-        $('#createFitnesCentarForm').on('click', '#btnUpdateFitnesCentar', function () {
-            validate();
+        let adresa = `${ulica} ${broj}, ${grad}, ${kod}`;
 
-            let naziv = $('#nazivFitnesCentra').val();
-            let ulica = $('#adresaFitnesCentraUlica').val();
-            let broj = $('#adresaFitnesCentraBroj').val();
-            let grad = $('#adresaFitnesCentraGrad').val();
-            let kod = $('#adresaFitnesCentraKod').val();
-            let godinaOtvaranja = $('#godinaOtvaranjaFitnesCentra').val();
-            let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
-            let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
-            let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
-            let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
-            let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
-
-            let adresa = `${ulica} ${broj}, ${grad}, ${kod}`;
-
-            $.ajax({
-                url: 'api/centri/IzmeniCentar',
-                type: 'PUT',
-                data: { 
-                    Id: id,
-                    Naziv: naziv,
-                    Adresa: adresa,
-                    Vlasnik: vlasnik,
-                    GodinaOtvaranja: godinaOtvaranja,
-                    CenaMesecneClanarine: mesecnaClanarina,
-                    CenaGodisnjeClanarine: godisnjaClanarina,
-                    CenaJednogTreninga: cenaTreningJedan,
-                    CenaJednogGrupnogTreninga: cenaTreningGrupni,
-                    CenaJednogTreningaSaTrenerom: cenaTreningTrener
-                },
-                success: function (response) {
-                    console.log('Uspelo');
-                    displayCentre();
-                    $('#createFitnesCentarForm').hide();
-                    $('#fitnesCentriSpisak').show();
-                },
-                error: function (xhr) {
-                    alert(xhr.status);
-                }
-
-            });
+        $.ajax({
+            url: 'api/centri/IzmeniCentar',
+            type: 'PUT',
+            data: {
+                Id: id,
+                Naziv: naziv,
+                Adresa: adresa,
+                Vlasnik: vlasnik,
+                GodinaOtvaranja: godinaOtvaranja,
+                CenaMesecneClanarine: mesecnaClanarina,
+                CenaGodisnjeClanarine: godisnjaClanarina,
+                CenaJednogTreninga: cenaTreningJedan,
+                CenaJednogGrupnogTreninga: cenaTreningGrupni,
+                CenaJednogTreningaSaTrenerom: cenaTreningTrener
+            },
+            success: function (response) {
+                console.log('Uspelo');
+                response = sortByNaziv(response);
+                $('#createFitnesCentarForm').hide();
+                $('#fitnesCentriSpisak').show();
+                createTableVlasnik(response);
+            },
+            error: function (xhr) {
+                alert(xhr.status);
+            }
         });
     });
 
@@ -147,7 +168,6 @@ $(document).ready(function () {
             naziv = $.trim(naziv);
             if (naziv == "") {
                 $('#nazivFitnesCentra').css('border', '1px solid red');
-                $('#nazivFitnesCentra').focus();
             } else {
                 $('#nazivFitnesCentra').css('border', '1px solid green');
             }
@@ -158,7 +178,6 @@ $(document).ready(function () {
             naziv = $.trim(naziv);
             if (naziv == "") {
                 $('#nazivFitnesCentra').css('border', '1px solid red');
-                $('#nazivFitnesCentra').focus();
             } else {
                 $('#nazivFitnesCentra').css('border', '1px solid green');
             }
@@ -169,7 +188,6 @@ $(document).ready(function () {
             ulica = $.trim(ulica);
             if (ulica == "") {
                 $('#adresaFitnesCentraUlica').css('border', '1px solid red');
-                $('#adresaFitnesCentraUlica').focus();
             } else {
                 $('#adresaFitnesCentraUlica').css('border', '1px solid green');
             }
@@ -180,7 +198,6 @@ $(document).ready(function () {
             broj = $.trim(broj);
             if (broj == "" || broj.length > 2) {
                 $('#adresaFitnesCentraBroj').css('border', '1px solid red');
-                $('#adresaFitnesCentraBroj').focus();
             } else {
                 $('#adresaFitnesCentraBroj').css('border', '1px solid green');
             }
@@ -191,7 +208,6 @@ $(document).ready(function () {
             grad = $.trim(grad);
             if (grad == "") {
                 $('#adresaFitnesCentraGrad').css('border', '1px solid red');
-                $('#adresaFitnesCentraGrad').focus();
             } else {
                 $('#adresaFitnesCentraGrad').css('border', '1px solid green');
             }
@@ -202,7 +218,6 @@ $(document).ready(function () {
             kod = $.trim(kod);
             if (kod == "" || kod.length != 5) {
                 $('#adresaFitnesCentraKod').css('border', '1px solid red');
-                $('#adresaFitnesCentraKod').focus();
             } else {
                 $('#adresaFitnesCentraKod').css('border', '1px solid green');
             }
@@ -214,7 +229,6 @@ $(document).ready(function () {
             let godina = date.getFullYear();
             if (godinaOtvaranja == "" || godinaOtvaranja.length != 4 || godinaOtvaranja > godina) {
                 $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid red');
-                $('#godinaOtvaranjaFitnesCentra').focus();
             } else {
                 $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid green');
             }
@@ -224,7 +238,6 @@ $(document).ready(function () {
             let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
             if (mesecnaClanarina == "") {
                 $('#cenaMesecnaClanarina').css('border', '1px solid red');
-                $('#cenaMesecnaClanarina').focus();
             } else {
                 $('#cenaMesecnaClanarina').css('border', '1px solid green');
             }
@@ -234,7 +247,6 @@ $(document).ready(function () {
             let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
             if (godisnjaClanarina == "") {
                 $('#cenaGodisnjaClanarina').css('border', '1px solid red');
-                $('#cenaGodisnjaClanarina').focus();
             } else {
                 $('#cenaGodisnjaClanarina').css('border', '1px solid green');
             }
@@ -244,7 +256,6 @@ $(document).ready(function () {
             let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
             if (cenaTreningJedan == "") {
                 $('#cenaTreningJedanFitnesCentar').css('border', '1px solid red');
-                $('#cenaTreningJedanFitnesCentar').focus();
             } else {
                 $('#cenaTreningJedanFitnesCentar').css('border', '1px solid green');
             }
@@ -254,7 +265,6 @@ $(document).ready(function () {
             let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
             if (cenaTreningGrupni == "") {
                 $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid red');
-                $('#cenaTreningGrupniFitnesCentar').focus();
             } else {
                 $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid green');
             }
@@ -264,7 +274,6 @@ $(document).ready(function () {
             let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
             if (cenaTreningTrener == "") {
                 $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid red');
-                $('#cenaTreningTrenerFitnesCentar').focus();
             } else {
                 $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid green');
             }
@@ -336,7 +345,6 @@ function validate() {
     ulica = $.trim(ulica);
     if (!regex.test(ulica)) {
         $('#adresaFitnesCentraUlica').css('border', '1px solid red');
-        $('#adresaFitnesCentraUlica').focus();
         return false;
     }
 
@@ -455,7 +463,7 @@ function sort() {
         if (selectedSortOption == "rastuce") {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (dataCurrent[i].Naziv > dataCurrent[j].Naziv) {
+                    if (dataCurrent[i].Naziv.toUpperCase() > dataCurrent[j].Naziv.toUpperCase()) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -467,7 +475,7 @@ function sort() {
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (dataCurrent[i].Naziv < dataCurrent[j].Naziv) {
+                    if (dataCurrent[i].Naziv.toUpperCase() < dataCurrent[j].Naziv.toUpperCase()) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -482,7 +490,7 @@ function sort() {
         if (selectedSortOption == "rastuce") {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (dataCurrent[i].Adresa > dataCurrent[j].Adresa) {
+                    if (dataCurrent[i].Adresa.toUpperCase() > dataCurrent[j].Adresa.toUpperCase()) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -494,7 +502,7 @@ function sort() {
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (dataCurrent[i].Adresa < dataCurrent[j].Adresa) {
+                    if (dataCurrent[i].Adresa.toUpperCase() < dataCurrent[j].Adresa.toUpperCase()) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -544,6 +552,20 @@ function createTableChecker(dataFun) {
     } else {
         createTable(dataFun);
     }
+}
+
+function sortByNaziv(dataFun) {
+    for (let i = 0; i < dataFun.length; i++) {
+        for (let j = i + 1; j < dataFun.length; j++) {
+            if (dataFun[i].Naziv.toUpperCase() > dataFun[j].Naziv.toUpperCase()) {
+                let temp = dataFun[i];
+                dataFun[i] = dataFun[j];
+                dataFun[j] = temp;
+            }
+        }
+    }
+
+    return dataFun;
 }
 
 function searchFitnesCentre() {
@@ -701,6 +723,7 @@ function loadFitnesCentre() {
         type: 'GET',
         success: function (dataFun) {
             data = dataFun
+            dataFun = sortByNaziv(dataFun);
             if (!sessionStorage.getItem('accessToken')) {
                 createTable(dataFun);
                 return;
@@ -724,6 +747,7 @@ function displayCentre() {
         url: 'api/centri/GetCentre',
         type: 'GET',
         success: function (dataFun) {
+            dataFun = sortByNaziv(dataFun);
             createTableVlasnik(dataFun);
         },
         error: function (xhr) {
@@ -733,16 +757,6 @@ function displayCentre() {
 }
 
 function createTable(dataFun) {
-    for (let i = 0; i < dataFun.length; i++) {
-        for (let j = i + 1; j < dataFun.length; j++) {
-            if (dataFun[i].Naziv > dataFun[j].Naziv) {
-                let temp = dataFun[i];
-                dataFun[i] = dataFun[j];
-                dataFun[j] = temp;
-            }
-        }
-    }
-
     let tableCentri = `<table class="centri">`;
     tableCentri += `<tr><th>Naziv</th><th>Adresa</th><th>Godina otvaranja</th><th></th></tr>`;
 
@@ -762,16 +776,6 @@ function createTable(dataFun) {
 }
 
 function createTableVlasnik(dataFun) {
-    for (let i = 0; i < dataFun.length; i++) {
-        for (let j = i + 1; j < dataFun.length; j++) {
-            if (dataFun[i].Naziv > dataFun[j].Naziv) {
-                let temp = dataFun[i];
-                dataFun[i] = dataFun[j];
-                dataFun[j] = temp;
-            }
-        }
-    }
-
     let tableCentri = `<table class="centri centriVlasnik">`;
     tableCentri += `<tr><th>Naziv</th><th>Adresa</th><th>Godina otvaranja</th><th></th></tr>`;
 
@@ -787,9 +791,9 @@ function createTableVlasnik(dataFun) {
         for (_element in vlasnik.FitnesCentarVlasnik) {
             if (dataFun[element].Id == vlasnik.FitnesCentarVlasnik[_element]) {
                 ispisan = true;
-                centar += `<td><button value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
-                centar += `<td><button value="${dataFun[element].Id}" id="btnIzmeniCentar">?</button></td>`;
-                centar += `<td><button value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
+                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnIzmeniCentar">Izmeni</button></td>`;
+                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
+                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
                 tableCentri += '<tr>' + centar + '</tr>';
             }
         }
@@ -852,7 +856,7 @@ function createFitnesCentar() {
             $('#createFitnesCentarForm').hide();
             $('#btnShowCreateFormFitnesCentar').show();
             displayCentre();
-            alert('Napravljen fitnes centrar');
+            //alert('Napravljen fitnes centrar');
         },
         error: function (xhr) {
             alert(xhr.status);
@@ -861,9 +865,10 @@ function createFitnesCentar() {
 }
 
 function showForm(id) {
-    $('#fitnesCentriSpisak').hide();
     $('#createFitnesCentarForm').show();
     $('#btnShowCreateFormFitnesCentar').hide();
+
+    $('#nazivFitnesCentra').attr('value', '');
 
     let centar;
     for (el in data) {
@@ -888,4 +893,30 @@ function showForm(id) {
     $('#cenaTreningGrupniFitnesCentar').attr('value', centar.CenaJednogGrupnogTreninga);
     $('#cenaTreningTrenerFitnesCentar').attr('value', centar.CenaJednogTreningaSaTrenerom);
     $('#godinaOtvaranjaFitnesCentra').attr('value', centar.GodinaOtvaranja);
+}
+
+function clearForm() {
+    document.getElementById('nazivFitnesCentra').value = "";
+    document.getElementById('adresaFitnesCentraUlica').value = "";
+    document.getElementById('adresaFitnesCentraBroj').value = "";
+    document.getElementById('adresaFitnesCentraGrad').value = "";
+    document.getElementById('adresaFitnesCentraKod').value = "";
+    document.getElementById('cenaMesecnaClanarina').value = "";
+    document.getElementById('cenaGodisnjaClanarina').value = "";
+    document.getElementById('cenaTreningJedanFitnesCentar').value = "";
+    document.getElementById('cenaTreningGrupniFitnesCentar').value = "";
+    document.getElementById('cenaTreningTrenerFitnesCentar').value = "";
+    document.getElementById('godinaOtvaranjaFitnesCentra').value = "";
+
+    $('#nazivFitnesCentra').css('border', '1px solid black');
+    $('#adresaFitnesCentraUlica').css('border', '1px solid black');
+    $('#adresaFitnesCentraBroj').css('border', '1px solid black');
+    $('#adresaFitnesCentraGrad').css('border', '1px solid black');
+    $('#adresaFitnesCentraKod').css('border', '1px solid black');
+    $('#cenaMesecnaClanarina').css('border', '1px solid black');
+    $('#cenaGodisnjaClanarina').css('border', '1px solid black');
+    $('#cenaTreningJedanFitnesCentar').css('border', '1px solid black');
+    $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid black');
+    $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid black');
+    $('#godinaOtvaranjaFitnesCentra').css('border', '1px solid black');
 }

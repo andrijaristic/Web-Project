@@ -27,8 +27,8 @@ namespace FitnesCenter.Controllers
             {
                 return NotFound();
             }
-            List<FitnesCentar> retVal = new List<FitnesCentar>();
-            
+
+            List<FitnesCentar> retVal = new List<FitnesCentar>();           
             foreach (var el in BazePodataka.centri)
             {
                 if (!el.isDeleted)
@@ -91,7 +91,8 @@ namespace FitnesCenter.Controllers
         {
             if (BazePodataka.fitnesCentarRepository.UpdateFitnesCentar(centar))
             {
-                return Ok(centar);
+                BazePodataka.fitnesCentarRepository.SaveToFile();
+                return Ok(BazePodataka.centri);
             }
 
             return BadRequest();

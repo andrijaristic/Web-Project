@@ -17,7 +17,7 @@
         </ul>
     </nav><br />
     <div>
-        <p id="filterParams">
+        <div id="filterParams">
             <div class="topRow">
                 <div class="blockNaziv">
                     <label class="inputName" for="inputNaziv">Naziv</label>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="blockAdresa">
                     <label class="inputName" for="inputAdresa">Adresa</label>
-                    <input type="text" id="inputAdresa" /><br /><br />
+                    <input type="text" id="inputAdresa" />
                 </div>
             </div>
             <div class="bottomRow">
@@ -41,8 +41,10 @@
 
             <button class="Filter" id="btnSearch">Pretraga</button>
             <button id="btnSearchClear">Reset</button>
-        </p><br /><br />
-        <div class="fontTest" id="checkboxFilter">
+        </div><br /><br />
+    </div>
+    <div id="container">
+        <div class="middleContainer" id="checkboxFilter">
             <input type="checkbox" id="checkboxNaziv" value="naziv" />Naziv<br />
             <input type="checkbox" id="checkboxAdresa" value="adresa" />Adresa<br />
             <input type="checkbox" id="checkboxGodina" value="godina" />Godina otvaranja<br />
@@ -52,55 +54,57 @@
             </select>
             <button id="btnSort">Sort</button>
         </div>
+        <div id="fitnesCentriSpisak"></div><br />
     </div>
-    <div id="fitnesCentriSpisak"></div><br />
-    <button id="btnShowCreateFormFitnesCentar">Add Fitnes Centar</button>
+    <button class="btnMiddle" id="btnShowCreateFormFitnesCentar">Dodaj Fitnes Centar</button>
+    <button class="btnMiddle" id="btnExitForm">Return</button>
+    <button class="btnMiddle" id="btnExitUpdate">Return</button>
     <div id="createFitnesCentarForm">
-            <table class="centri">
-                <tr>
-                    <td>Naziv:</td>
-                    <td><input type="text" id="nazivFitnesCentra" /></td>
-                </tr>
-                <tr>
-                    <td>Ulica:</td>
-                    <td><input type="text" id="adresaFitnesCentraUlica" /></td>
-                    <td>Broj ulice: <input type="number" id="adresaFitnesCentraBroj" /></td>
-                </tr>
-                <tr>
-                    <td>Grad:</td>
-                    <td><input type="text" id="adresaFitnesCentraGrad" /></td>
-                </tr>
-                <tr>
-                    <td>Postanski kod:</td>
-                    <td><input type="number" id="adresaFitnesCentraKod"></td>
-                </tr>
-                <tr>
-                    <td>Cena mesecne<br />clanarine:</td>
-                    <td><input type="number" id="cenaMesecnaClanarina" /></td>
-                </tr>
-                <tr>
-                    <td>Cena godisnje<br />clanarine:</td>
-                    <td><input type="number" id="cenaGodisnjaClanarina" /></td>
-                </tr>
-                <tr>
-                    <td>Cena jednog<br />treninga:</td>
-                    <td><input type="number" id="cenaTreningJedanFitnesCentar" /></td>
-                </tr>
-                <tr>
-                    <td>Cena jednog<br />grupnog<br />treninga:</td>
-                    <td><input type="number" id="cenaTreningGrupniFitnesCentar" /></td>
-                </tr>
-                <tr>
-                    <td>Cena jednog<br />grupnog<br />treninga<br />sa trenerom:</td>
-                    <td><input type="number" id="cenaTreningTrenerFitnesCentar" /></td>
-                </tr>
-                <tr>
-                    <td>Godina otvaranja:</td>
-                    <td><input type="number" id="godinaOtvaranjaFitnesCentra" /></td>
-                </tr>
-            </table>
-            <button id="btnAddFitnesCentar">Add</button>
-            <button id="btnUpdateFitnesCentar">Update</button>
+        <table class="centri">
+            <tr>
+                <td>Naziv:</td>
+                <td><input type="text" id="nazivFitnesCentra" /></td>
+            </tr>
+            <tr>
+                <td>Ulica:</td>
+                <td><input type="text" id="adresaFitnesCentraUlica" /></td>
+                <td>Broj ulice: <input type="number" id="adresaFitnesCentraBroj" /></td>
+            </tr>
+            <tr>
+                <td>Grad:</td>
+                <td><input type="text" id="adresaFitnesCentraGrad" /></td>
+            </tr>
+            <tr>
+                <td>Postanski kod:</td>
+                <td><input type="number" id="adresaFitnesCentraKod"></td>
+            </tr>
+            <tr>
+                <td>Cena mesecne<br />clanarine:</td>
+                <td><input type="number" id="cenaMesecnaClanarina" /></td>
+            </tr>
+            <tr>
+                <td>Cena godisnje<br />clanarine:</td>
+                <td><input type="number" id="cenaGodisnjaClanarina" /></td>
+            </tr>
+            <tr>
+                <td>Cena jednog<br />treninga:</td>
+                <td><input type="number" id="cenaTreningJedanFitnesCentar" /></td>
+            </tr>
+            <tr>
+                <td>Cena jednog<br />grupnog<br />treninga:</td>
+                <td><input type="number" id="cenaTreningGrupniFitnesCentar" /></td>
+            </tr>
+            <tr>
+                <td>Cena jednog<br />grupnog<br />treninga<br />sa trenerom:</td>
+                <td><input type="number" id="cenaTreningTrenerFitnesCentar" /></td>
+            </tr>
+            <tr>
+                <td>Godina otvaranja:</td>
+                <td><input type="number" id="godinaOtvaranjaFitnesCentra" /></td>
+            </tr>
+        </table>
+        <button id="btnAddFitnesCentar">Add</button>
+        <button id="btnUpdateFitnesCentar">Update</button>
     </div>
 </body>
 </html>

@@ -1,8 +1,8 @@
-admin=admin=Admin=Admin=MUSKI=admin@gmail.com=20/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;269238bb-4891-403b-a221-4226a8697513;f11b1fd7-9246-49c0-a6be-c63db70196bd=false
-trener=trener=Trener=Trener=ZENSKI=trener@gmail.com=20/11/2000=TRENER=null=b06e3139-7a6a-4a01-bcee-2545c00f01fb;7444369b-33d6-4a15-872a-607981417463;35be8915-03d2-44a3-a935-1260f537ca4e;84d4b5ba-9ec5-4add-a4ba-6465f3c103c4;a719e377-64c8-4f28-b04e-b113b07bb912=f11c22df-b873-49d5-9c50-48f07285f342=null=true
+admin=admin=Admin=Admin=MUSKI=admin@gmail.com=20/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;269238bb-4891-403b-a221-4226a8697513;f11b1fd7-9246-49c0-a6be-c63db70196bd;9b6c9a48-15b0-4368-9462-60923224f79c=false
+trener=trener=Trener=Trener=ZENSKI=trener@gmail.com=20/11/2000=TRENER=null=b06e3139-7a6a-4a01-bcee-2545c00f01fb;7444369b-33d6-4a15-872a-607981417463;35be8915-03d2-44a3-a935-1260f537ca4e;84d4b5ba-9ec5-4add-a4ba-6465f3c103c4=f11c22df-b873-49d5-9c50-48f07285f342=null=false
 pos=pos=Pos=Pos=MUSKI=pos@gmail.com=20/11/2000=POSETILAC=35be8915-03d2-44a3-a935-1260f537ca4e=null=null=null=false
-novi=novi=nnnnn=nnnnn=MUSKI=novi@email.com=20/11/2022=TRENER=null=d7e70c74-ec60-433c-bf01-efc4f69e8c3e=269238bb-4891-403b-a221-4226a8697513=null=false
-novi2=novi=adsaff=ffffff=MUSKI=email@emai.com=14/06/2001=TRENER=null=0978df6c-be90-4f45-8757-205473bf1889=269238bb-4891-403b-a221-4226a8697513=null=false
+novi=novi=nnnnn=nnnnn=MUSKI=novi@email.com=20/11/2022=TRENER=null=d7e70c74-ec60-433c-bf01-efc4f69e8c3e=269238bb-4891-403b-a221-4226a8697513=null=true
+novi2=novi=adsaff=ffffff=MUSKI=email@emai.com=14/06/2001=TRENER=null=0978df6c-be90-4f45-8757-205473bf1889=269238bb-4891-403b-a221-4226a8697513=null=true
 pos2=pos2=andriaj=ristic=MUSKI=andrija@email.com=14/07/2000=POSETILAC=35be8915-03d2-44a3-a935-1260f537ca4e=null=null=null=false
 pos3=pos3=andrija=andrija=MUSKI=andrija@email.com=07/07/2010=POSETILAC=35be8915-03d2-44a3-a935-1260f537ca4e=null=null=null=false
 pos4=pos4=andrijana=andrija=ZENSKI=andrija@email.com=08/11/2005=POSETILAC=null=null=null=null=false

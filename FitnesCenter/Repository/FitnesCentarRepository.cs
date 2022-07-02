@@ -10,13 +10,13 @@ namespace FitnesCenter.Repository
     // Manipulacija FitnesCentar liste/txt fajla.
     public class FitnesCentarRepository
     {
-        // Preuzimanje svega iz .txt fajla.
         public void SaveToFile()
         {
             // Ocisti fajl.
             string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\fitnesCentri.txt"));
-            File.WriteAllText(path, String.Empty);
+            //File.WriteAllText(path, String.Empty);
 
+            Console.WriteLine("PORUKA");
             using (StreamWriter sw = new StreamWriter(path))
             {
                 string line = "";
@@ -27,7 +27,6 @@ namespace FitnesCenter.Repository
                     {
                         vlasnik = el.Vlasnik.Username;
                     }
-
 
                     line += $"{el.Id}={el.Naziv}={el.Adresa}={el.GodinaOtvaranja}={vlasnik}=" +
                     $"{el.CenaMesecneClanarine}={el.CenaGodisnjeClanarine}={el.CenaJednogTreninga}={el.CenaJednogGrupnogTreninga}={el.CenaJednogTreningaSaTrenerom}=" +
@@ -52,7 +51,7 @@ namespace FitnesCenter.Repository
                 }
             }
 
-            //SaveToFile();
+            BazePodataka.fitnesCentarRepository.SaveToFile();
         }
 
         public List<FitnesCentar> GetAllFitnesCentre()
@@ -171,7 +170,7 @@ namespace FitnesCenter.Repository
                     BazePodataka.centri[i] = centar;
                     BazePodataka.grupniTreninziRepository.UpdateFitnesCentarForGrupneTreninge(centar);
 
-                    BazePodataka.fitnesCentarRepository.SaveToFile();
+                    //BazePodataka.fitnesCentarRepository.SaveToFile();
                     return true;
                 }
             }
