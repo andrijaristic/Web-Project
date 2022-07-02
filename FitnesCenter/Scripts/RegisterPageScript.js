@@ -35,7 +35,7 @@ $(document).ready(function () {
     $('#registerForm').on('focusout', '#password', function () {
         let password = $('#password').val();
         password = $.trim(password);
-        if (password == "" || (password.length < 3 || password.length > 16)) {
+        if (password == "" || (password.length < 3 || password.length > 20)) {
             $('#password').css('border', '1px solid red');
         } else {
             $('#password').css('border', '1px solid green');
@@ -103,7 +103,7 @@ $(document).ready(function () {
 
         let password = $('#password').val();
         password = $.trim(password);
-        if (password == "" || (password.length < 3 || password.length > 16)) {
+        if (password == "" || (password.length < 3 || password.length > 20)) {
             $('#password').css('border', '1px solid red');
             return;
         } else {
