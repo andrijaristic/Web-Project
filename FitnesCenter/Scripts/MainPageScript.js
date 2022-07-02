@@ -462,7 +462,7 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
@@ -474,7 +474,7 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         }
     }
@@ -489,7 +489,7 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
@@ -501,7 +501,7 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         }
     }
@@ -516,7 +516,7 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
@@ -528,9 +528,21 @@ function sort() {
                     }
                 }
             }
-            createTable(dataCurrent);
+            createTableChecker(dataCurrent);
             return;
         }
+    }
+}
+
+function createTableChecker(dataFun) {
+    if (sessionStorage.getItem('accessToken')) {
+        let user = JSON.parse(sessionStorage.getItem('activeUser'));
+
+        if (user.Uloga == 2) {
+            createTableVlasnik(dataFun);
+        }
+    } else {
+        createTable(dataFun);
     }
 }
 
@@ -561,7 +573,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -572,7 +584,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -583,7 +595,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -594,7 +606,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -605,7 +617,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -616,7 +628,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
 
@@ -627,7 +639,7 @@ function searchFitnesCentre() {
                     searchTable[searchTable.length] = data[element];
                 }
             }
-            createTable(searchTable);
+            createTableChecker(searchTable);
             return;
         }
     }
@@ -635,7 +647,13 @@ function searchFitnesCentre() {
 
 function validateFilter() {
     let minGodina = $('#minGodina').val();
+    let maxGodina = $('#maxGodina').val();
+    maxGodina = $.trim(maxGodina);
     minGodina = $.trim(minGodina);
+
+    if (maxGodina == "" && minGodina == "") {
+        return true;
+    }
 
     if (minGodina == "" || minGodina.length != 4) {
         $('#minGodina').css('border', '1px solid red');
@@ -654,7 +672,7 @@ function validateFilter() {
         }
     }
 
-    let maxGodina = $('#maxGodina').val();
+    maxGodina = $('#maxGodina').val();
     maxGodina = $.trim(maxGodina);
 
     if (maxGodina == "" || maxGodina.length != 4) {
@@ -715,7 +733,17 @@ function displayCentre() {
 }
 
 function createTable(dataFun) {
-    let tableCentri = `<table border="1">`;
+    for (let i = 0; i < dataFun.length; i++) {
+        for (let j = i + 1; j < dataFun.length; j++) {
+            if (dataFun[i].Naziv > dataFun[j].Naziv) {
+                let temp = dataFun[i];
+                dataFun[i] = dataFun[j];
+                dataFun[j] = temp;
+            }
+        }
+    }
+
+    let tableCentri = `<table class="centri">`;
     tableCentri += `<tr><th>Naziv</th><th>Adresa</th><th>Godina otvaranja</th><th></th></tr>`;
 
     for (element in dataFun) {
@@ -734,7 +762,17 @@ function createTable(dataFun) {
 }
 
 function createTableVlasnik(dataFun) {
-    let tableCentri = `<table border="1">`;
+    for (let i = 0; i < dataFun.length; i++) {
+        for (let j = i + 1; j < dataFun.length; j++) {
+            if (dataFun[i].Naziv > dataFun[j].Naziv) {
+                let temp = dataFun[i];
+                dataFun[i] = dataFun[j];
+                dataFun[j] = temp;
+            }
+        }
+    }
+
+    let tableCentri = `<table class="centri centriVlasnik">`;
     tableCentri += `<tr><th>Naziv</th><th>Adresa</th><th>Godina otvaranja</th><th></th></tr>`;
 
     let vlasnik = JSON.parse(sessionStorage.getItem('activeUser'));
@@ -749,9 +787,9 @@ function createTableVlasnik(dataFun) {
         for (_element in vlasnik.FitnesCentarVlasnik) {
             if (dataFun[element].Id == vlasnik.FitnesCentarVlasnik[_element]) {
                 ispisan = true;
-                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
-                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnIzmeniCentar">?</button></td>`;
-                centar += `<td><button class="VlasnikClass" value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
+                centar += `<td><button value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
+                centar += `<td><button value="${dataFun[element].Id}" id="btnIzmeniCentar">?</button></td>`;
+                centar += `<td><button value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
                 tableCentri += '<tr>' + centar + '</tr>';
             }
         }

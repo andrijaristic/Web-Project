@@ -39,6 +39,9 @@ namespace FitnesCenter.Controllers
         {
             Korisnik trenerAdd = trener.Trener;
             trenerAdd.FitnesCentarTrener = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trener.FitnesCentarId);
+            trenerAdd.FitnesCentarVlasnik = new List<Guid>();
+            trenerAdd.GrupniTreninziPosetioc = new List<Guid>();
+            trenerAdd.GrupniTreninziTrener = new List<GrupniTrening>();
 
             if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(trener.Trener.Username))
             {

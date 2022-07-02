@@ -14,27 +14,48 @@
             <li><a class="front" id="myAccountFromHistoryHref" href="MyAccount.html">MY ACCOUNT</a></li>
         </ul>
     </nav><br />
-    <div class="fontTest" id="checkboxFilter">
-        <input type="text" id="pretragaNaziv" />
-        <input type="text" id="nazivFitnesCentra" /><br />
-        <select id="tipTreninga">
-            <option value="yoga">YOGA</option>
-            <option value="les">LES MILLS TONE</option>
-            <option value="body">BODY PUMP</option>
-        </select>
-        <input type="number" id="minGodina" />
-        <input type="number" id="maxGodina" /><br /><br />
-        <input type="checkbox" id="checkboxNazivTreninga" value="nazivTreninga" />Naziv treninga<br />
-        <input type="checkbox" id="checkboxTipTreninga" value="tipTreninga" />Tip treninga<br />
-        <input type="checkbox" id="checkboxFitnesCentar" value="fitnesCentar" />Naziv fitnes centra<br />
-        <input type="checkbox" id="checkboxDatum" value="datum"/>Datum i vreme
-        <select id="sortOption">
-            <option value="opadajuce">Opadajuce</option>
-            <option value="rastuce">Rastuce</option>
-        </select>
-        <button id="btnSort">Sort</button>
-    </div><br />
+    <div id="sve">
+          <div id="checkboxFilter">
+              <input type="text" id="pretragaNaziv" />
+              <input type="text" id="nazivFitnesCentra" /><br />
+              <input list="trenings" id="tipTreninga" />
+              <datalist id="trenings">
+                  <option value="YOGA" name="0"></option>
+                  <option value="LES MILLS TONE" name="1"></option>
+                  <option value="BODY PUMP" name="2"></option>
+              </datalist>
+              <input type="number" id="minGodina" />
+              <input type="number" id="maxGodina" /><br /><br />            
+              <button class="Filter" id="btnSearch">Pretraga</button>
+              <button id="btnSearchClear">Reset</button>
 
+              <div class="checkboxFilter">
+                  <table>
+                      <tr id="rowNaziv">
+                          <td><input type="checkbox" id="checkboxNazivTreninga" value="naziv" /></td>
+                          <td>Naziv treninga</td>
+                      </tr>
+                      <tr id="rowTip">
+                          <td><input type="checkbox" id="checkboxTipTreninga" value="tip"></td>
+                          <td>Tip treninga</td>
+                      </tr>
+                      <tr id="rowFitnes">
+                          <td><input type="checkbox" id="checkboxFitnesCentar" value="fitnes" /></td>
+                          <td>Naziv fitnes centra</td>
+                      </tr>
+                      <tr id="rowDatum">
+                          <td><input type="checkbox" id="checkboxDatum" value="datum" /></td>
+                          <td>Datum i vreme</td>
+                      </tr>
+                  </table>
+                  <select id="sortOption">
+                      <option value="opadajuce">Opadajuce</option>
+                      <option value="rastuce">Rastuce</option>
+                  </select>
+                  <button id="btnSort">Sort</button>
+              </div>
+          </div><br />
+    </div>
     <div id="spisakTreninga"></div>
 </body>
 </html>

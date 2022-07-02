@@ -163,6 +163,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeleteTreningBlocked.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\FitnesCentar.cs" />
     <Compile Include="Models\FitnesCentarCreationClass.cs" />

@@ -28,6 +28,7 @@ namespace FitnesCenter
             BazePodataka.komentari = BazePodataka.komentarRepository.GetAllKomentare();
 
             BazePodataka.fitnesCentarRepository.AddVlasnikeToCentre();
+            BazePodataka.grupniTreninziRepository.ReadPosetioceFromTreningsFile();
             //BazePodataka.fitnesCentarRepository.SaveToFile();
             //BazePodataka.grupniTreninziRepository.SaveToFile();
             //BazePodataka.korisnikRepository.SaveToFile();

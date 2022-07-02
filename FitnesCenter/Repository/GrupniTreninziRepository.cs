@@ -30,10 +30,16 @@ namespace FitnesCenter.Repository
                     string posetioci = "null";
                     if (el.Posetioci.Count != 0)
                     {
+                        int i = 0;
                         posetioci = "";
                         foreach (var _el in el.Posetioci)
                         {
-                            posetioci += $"{_el.Username};";
+                            posetioci += $"{_el.Username}";
+                            if (i+1 < el.Posetioci.Count)
+                            {
+                                posetioci += ";";
+                                i++;
+                            }
                         }
                     }
 
@@ -63,7 +69,17 @@ namespace FitnesCenter.Repository
                     int trajanje = int.Parse(line.Split('=')[4]);
                     string datumVreme = line.Split('=')[5]; // dd/MM/yyy HH:mm
                     int brojPosetilaca = int.Parse(line.Split('=')[6]);
-                    bool isDeletedFile = line.Split('=')[7] == "true" ? true : false;
+                    string test = line.Split('=')[8];
+                    bool isDeletedFile = line.Split('=')[8] == "true" ? true : false;
+
+                    //string posetiociSvi = line.Split('=')[7];
+                    //List<string> posetiociStringList = new List<string>();
+                    //List<Korisnik> posetici = new List<Korisnik>();
+                    //if (posetiociSvi != "null")
+                    //{
+                    //    posetiociStringList = posetiociSvi.Split(';').ToList<string>();
+                    //    posetici = BazePodataka.korisnikRepository.GetPosetioce(posetiociStringList);
+                    //}
 
                     string datum = datumVreme.Split(' ')[0];
                     string vreme = datumVreme.Split(' ')[1];
@@ -101,6 +117,43 @@ namespace FitnesCenter.Repository
             }
 
             return retVal;
+        }
+
+        public void ReadPosetioceFromTreningsFile()
+        {
+            string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\grupniTreninzi.txt"));
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line = sr.ReadLine();
+                while (!string.IsNullOrEmpty(line))
+                {
+                    Guid.TryParse(line.Split('=')[0], out Guid id);
+                    string posetiociSvi = line.Split('=')[7];
+
+                    List<string> posetiociStringList = new List<string>();
+                    List<Korisnik> posetici = new List<Korisnik>();
+                    if (posetiociSvi != "null")
+                    {
+                        posetiociStringList = posetiociSvi.Split(';').ToList<string>();
+                        posetici = BazePodataka.korisnikRepository.GetPosetioce(posetiociStringList);
+                        AddPosetioceToTrening(id, posetici);
+                    }
+
+                    line = sr.ReadLine();
+                }
+            }
+        }
+
+        public void AddPosetioceToTrening(Guid id, List<Korisnik> posetici)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (el.Id == id)
+                {
+                    el.Posetioci = posetici;
+                    return;
+                }
+            }
         }
 
         public GrupniTrening GetGrupniTreningByNaziv(Guid id)

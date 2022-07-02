@@ -28,9 +28,14 @@ namespace FitnesCenter.Controllers
 
         [HttpDelete]
         [Route("api/trening/ObrisiTrening")]
-        public IHttpActionResult ObrisiTrening([FromUri]Guid id)
+        public IHttpActionResult ObrisiTrening([FromBody]DeleteTreningBlocked trening)
         {
-            if (BazePodataka.grupniTreninziRepository.DeleteTrening(id))
+            if (BazePodataka.korisnikRepository.CheckIfBlocked(trening.Username))
+            {
+                return NotFound();
+            }
+
+            if (BazePodataka.grupniTreninziRepository.DeleteTrening(trening.Id))
             {
                 return Ok();
             }
@@ -40,9 +45,14 @@ namespace FitnesCenter.Controllers
 
         [HttpPut]
         [Route("api/trening/IzmeniTrening")]
-        public IHttpActionResult IzmeniTrening([FromBody]GrupniTrening trening)
+        public IHttpActionResult IzmeniTrening([FromBody]GrupniTreningCreationClass trening)
         {
-            if (BazePodataka.grupniTreninziRepository.UpdateGrupniTrening(trening))
+            if (BazePodataka.korisnikRepository.CheckIfBlocked(trening.TrenerUsername))
+            {
+                return NotFound();
+            }
+
+            if (BazePodataka.grupniTreninziRepository.UpdateGrupniTrening(trening.Trening))
             {
                 return Ok();
             }
@@ -54,13 +64,20 @@ namespace FitnesCenter.Controllers
         [Route("api/trening/DodajTrening")]
         public IHttpActionResult DodajTrening([FromBody]GrupniTreningCreationClass trening)
         {
+            if (BazePodataka.korisnikRepository.CheckIfBlocked(trening.TrenerUsername))
+            {
+                return NotFound();
+            }
+
             trening.Trening.Id = Guid.NewGuid();
             trening.Trening.FitnesCentar = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trening.FitnesCentarId);
             GrupniTrening retVal = BazePodataka.grupniTreninziRepository.AddGrupniTrening(trening);
 
             if (retVal.Id == trening.Trening.Id)
             {
-                return Ok();
+                Korisnik trener = BazePodataka.korisnikRepository.GetKorisnikByUsername(trening.TrenerUsername);
+
+                return Ok(trener);
             }
 
             return BadRequest();
@@ -68,14 +85,19 @@ namespace FitnesCenter.Controllers
 
         [HttpGet]
         [Route("api/trening/SpisakPosetiocaTrening")]
-        public IHttpActionResult SpisakPosetiocaTrening([FromUri]Guid id)
+        public IHttpActionResult SpisakPosetiocaTrening(Guid id, string username)
         {
+            if (BazePodataka.korisnikRepository.CheckIfBlocked(username))
+            {
+                return BadRequest();
+            }
+
             GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(id);
             List<Korisnik> retVal = new List<Korisnik>();
 
             foreach (var el in trening.Posetioci) { retVal.Add(el); }
 
-            if (retVal.Count == 0){ return BadRequest(); }
+            if (retVal.Count == 0){ return NotFound(); }
 
             return Ok(retVal);
         }

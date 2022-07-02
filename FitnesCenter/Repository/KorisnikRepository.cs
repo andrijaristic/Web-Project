@@ -20,11 +20,25 @@ namespace FitnesCenter.Repository
                 string line = "";
                 foreach (var el in BazePodataka.korisnici)
                 {
+                    string dan = el.DatumRodjenja.Day.ToString();
+                    string mesec = el.DatumRodjenja.Month.ToString();
+                    string godina = el.DatumRodjenja.Year.ToString();
+
+                    if (dan.Length == 1)
+                    {
+                        dan = $"0{dan}";
+                    }
+
+                    if (mesec.Length == 1)
+                    {
+                        mesec = $"0{mesec}";
+                    }
+
                     if (el.Uloga == Enums.Uloge.POSETILAC)
                     {
-                        string dan = el.DatumRodjenja.Day.ToString();
-                        string mesec = el.DatumRodjenja.Month.ToString();
-                        string godina = el.DatumRodjenja.Year.ToString();
+                        //string dan = el.DatumRodjenja.Day.ToString();
+                        //string mesec = el.DatumRodjenja.Month.ToString();
+                        //string godina = el.DatumRodjenja.Year.ToString();
                         string grupniTreninziPosetilac = "null";
 
                         if (el.GrupniTreninziPosetioc != null && el.GrupniTreninziPosetioc.Count != 0)
@@ -46,9 +60,9 @@ namespace FitnesCenter.Repository
                         $"={grupniTreninziPosetilac}={"null"}={"null"}={"null"}={(el.isBlocked ? "true" : "false")}\n";
                     } else if (el.Uloga == Enums.Uloge.TRENER)
                     {
-                        string dan = el.DatumRodjenja.Day.ToString();
-                        string mesec = el.DatumRodjenja.Month.ToString();
-                        string godina = el.DatumRodjenja.Year.ToString();
+                        //string dan = el.DatumRodjenja.Day.ToString();
+                        //string mesec = el.DatumRodjenja.Month.ToString();
+                        //string godina = el.DatumRodjenja.Year.ToString();
                         string grupniTreninziTrener = "null";
 
                         if (el.GrupniTreninziTrener != null && el.GrupniTreninziTrener.Count != 0)
@@ -70,10 +84,11 @@ namespace FitnesCenter.Repository
                         $"={"null"}={grupniTreninziTrener}={el.FitnesCentarTrener.Id}={"null"}={(el.isBlocked ? "true" : "false")}\n";
                     } else if (el.Uloga == Enums.Uloge.VLASNIK)
                     {
-                        string dan = el.DatumRodjenja.Day.ToString();
-                        string mesec = el.DatumRodjenja.Month.ToString();
-                        string godina = el.DatumRodjenja.Year.ToString();
+                        //string dan = el.DatumRodjenja.Day.ToString();
+                        //string mesec = el.DatumRodjenja.Month.ToString();
+                        //string godina = el.DatumRodjenja.Year.ToString();
                         string fitnesCentri = "null";
+
 
                         if (el.FitnesCentarVlasnik != null && el.FitnesCentarVlasnik.Count != 0)
                         {
@@ -126,7 +141,7 @@ namespace FitnesCenter.Repository
                     // 8 - Treninzi posetioc || 9 - Treninzi trener || 10 - Centar trener || 11 - Centar vlasnik
                     List<Guid> grupniTreninziPosetioc = new List<Guid>();
                     List<GrupniTrening> grupniTreningTrener = new List<GrupniTrening>();
-                    FitnesCentar fitnesCentarTrener = null;
+                    FitnesCentar fitnesCentarTrener = new FitnesCentar();
                     List<Guid> fitnesCentarVlasnik = new List<Guid>();
 
                     if (enumUloga == Enums.Uloge.POSETILAC)
@@ -154,10 +169,12 @@ namespace FitnesCenter.Repository
                             foreach (var el in guidLista)
                             {
                                 Guid.TryParse(el, out Guid id);
-                                GrupniTrening trening = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(id);
-                                grupniTreningTrener.Add(trening);
+                                GrupniTrening treningRet = BazePodataka.grupniTreninziRepository.GetGrupniTreningByNaziv(id);
+                                if (treningRet != null)
+                                {
+                                    grupniTreningTrener.Add(treningRet);
+                                }
                             }
-
                         }
 
                         if (!string.Equals(line.Split('=')[10], "null"))
@@ -262,6 +279,8 @@ namespace FitnesCenter.Repository
         }
 
         public bool CheckIfKorisnikExists(string username)
+
+
         {
             foreach (var el in BazePodataka.korisnici)
             {
@@ -381,6 +400,38 @@ namespace FitnesCenter.Repository
                     el.GrupniTreninziTrener.Add(trening.Trening);
 
                     BazePodataka.korisnikRepository.SaveToFile();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public List<Korisnik> GetPosetioce(List<string> usernames)
+        {
+            List<Korisnik> retVal = new List<Korisnik>();
+
+            foreach (var el in BazePodataka.korisnici)
+            {
+                foreach (var _el in usernames)
+                {
+                    if (string.Equals(el.Username, _el))
+                    {
+                        retVal.Add(el);
+                        break;
+                    }
+                }
+            }
+
+            return retVal;
+        }
+
+        public bool CheckIfBlocked(string username)
+        {
+            foreach (var el in BazePodataka.korisnici)
+            {
+                if (string.Equals(el.Username, username) && el.isBlocked)
+                {
                     return true;
                 }
             }

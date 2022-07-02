@@ -200,10 +200,16 @@
 });
 
 function validate() {
+    let regexSpace = /[a-zA-Z ]+/;
+    let regexNoSpace = /[a-zA-Z]+/;
+
+    let mind = new Date();
+    mind = mind.toLocaleString('en-GB');
+
     let datum = $('#accountDatum').val();
     datum = $.trim(datum);
 
-    if (datum == "") {
+    if (datum == "" || datum > mind) {
         $('#accountDatum').css('border', '1px solid red');
         return false;
     } else {
@@ -269,8 +275,6 @@ function validate() {
         $('#accountPasswordNewRetype').css('border', '1px solid green');
     }
 
-    //let passwordNew = $('#accountPasswordNew').val();
-    //passwordNew = $.trim(passwordNew);
 
     if (passwordNew == "" || passwordNew < 3) {
         $('#accountPasswordNew').css('border', '1px solid red');
@@ -342,6 +346,12 @@ function enableChange() {
     $('#accountPrezime').attr('readonly', false);
     $('#accountEmail').attr('readonly', false);
     $('#accountDatum').attr('readonly', false);
+
+    let datum = new Date(user.DatumRodjenja).toLocaleDateString('en-GB');
+    datum = datum.split('/');
+    datum = `${datum[2]}-${datum[1]}-${datum[0]}`;
+
+    $('#accountDatum').attr('value', datum);  
 
     $('#rowAccountPolDisplay').hide();
     $('#rowAccountPol').show();

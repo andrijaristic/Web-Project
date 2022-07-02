@@ -7,7 +7,7 @@
     <script src="Scripts/MainPageScript.js"></script>
     <link rel="stylesheet" href="css/myStyleSheet.css"/>
 </head>
-<body>
+<body class="index">
     <nav>
         <ul>
             <li><a class="front" id="myAccountHref" href="MyAccount.html">MY ACCOUNT</a></li>
@@ -18,11 +18,28 @@
     </nav><br />
     <div>
         <p id="filterParams">
-            <input type="text" id="inputNaziv" />
-            <input type="text" id="inputAdresa" /><br /><br />
-            <input type="number" id="minGodina" />
-            <input type="number" id="maxGodina" /><br />
-            <button id="btnSearch">Pretraga</button>
+            <div class="topRow">
+                <div class="blockNaziv">
+                    <label class="inputName" for="inputNaziv">Naziv</label>
+                    <input type="text" id="inputNaziv" />
+                </div>
+                <div class="blockAdresa">
+                    <label class="inputName" for="inputAdresa">Adresa</label>
+                    <input type="text" id="inputAdresa" /><br /><br />
+                </div>
+            </div>
+            <div class="bottomRow">
+                <div class="blockMinGodina">
+                    <label class="inputName" for="minGodina">Min. godina</label>
+                    <input type="number" id="minGodina" />
+                </div>
+                <div class="blockMaxGodina">
+                    <label class="inputName" for="maxGodina">Max. godina</label>
+                    <input type="number" id="maxGodina" />
+                </div>
+            </div>
+
+            <button class="Filter" id="btnSearch">Pretraga</button>
             <button id="btnSearchClear">Reset</button>
         </p><br /><br />
         <div class="fontTest" id="checkboxFilter">
@@ -39,7 +56,7 @@
     <div id="fitnesCentriSpisak"></div><br />
     <button id="btnShowCreateFormFitnesCentar">Add Fitnes Centar</button>
     <div id="createFitnesCentarForm">
-            <table>
+            <table class="centri">
                 <tr>
                     <td>Naziv:</td>
                     <td><input type="text" id="nazivFitnesCentra" /></td>

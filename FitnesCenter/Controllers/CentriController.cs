@@ -60,7 +60,7 @@ namespace FitnesCenter.Controllers
             List<GrupniTrening> retVal = new List<GrupniTrening>();
             foreach (var el in BazePodataka.treninzi)
             {
-                if (el.FitnesCentar.Id == id && el.DatumVreme < DateTime.Now.ToUniversalTime() && !el.isDeleted)
+                if (el.FitnesCentar.Id == id && el.DatumVreme > DateTime.Now.ToUniversalTime() && !el.isDeleted)
                 {
                     //Console.WriteLine($"{DateTime.Now.ToUniversalTime()}");
                     retVal.Add(el);
@@ -185,6 +185,7 @@ namespace FitnesCenter.Controllers
         [Route("api/centri/AddKomentar")]
         public IHttpActionResult AddKomentar([FromBody]Komentar komentar)
         {
+            komentar.Id = Guid.NewGuid();
             if (BazePodataka.komentarRepository.AddKomentar(komentar))
             {
                 return Ok(komentar);

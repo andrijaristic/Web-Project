@@ -27,7 +27,6 @@ $(document).ready(function () {
         username = $.trim(username);
         if (username == "" || (username.length < 3 || username.length > 12)) {
             $('#username').css('border', '1px solid red');
-            $('#username').focus();
         } else {
             $('#username').css('border', '1px solid green');
         }
@@ -38,7 +37,6 @@ $(document).ready(function () {
         password = $.trim(password);
         if (password == "" || (password.length < 3 || password.length > 16)) {
             $('#password').css('border', '1px solid red');
-            $('#password').focus();
         } else {
             $('#password').css('border', '1px solid green');
         }
@@ -50,13 +48,11 @@ $(document).ready(function () {
 
         if (!regexSpace.test(ime)) {
             $('#ime').css('border', '1px solid red');
-            $('#ime').focus();
             return;
         }
 
         if (ime == "" || ime.length < 2) {
             $('#ime').css('border', '1px solid red');
-            $('#ime').focus();
         } else {
             $('#ime').css('border', '1px solid green');
         }
@@ -68,12 +64,10 @@ $(document).ready(function () {
 
         if (!regexNoSpace.test(prezime)) {
             $('#prezime').css('border', '1px solid red');
-            $('#prezime').focus();
         }
 
         if (prezime == "" || prezime.length < 2) {
             $('#prezime').css('border', '1px solid red');
-            $('#prezime').focus();
         } else {
             $('#prezime').css('border', '1px solid green');
         }
@@ -86,13 +80,11 @@ $(document).ready(function () {
         let regex = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
         if (!regex.test(email)) {
             $('#email').css('border', '1px solid red');
-            $('#email').focus();
             return;
         }
 
         if (email == "" || email.length < 4) {
             $('#email').css('border', '1px solid red');
-            $('#email').focus();
         } else {
             $('#email').css('border', '1px solid green');
         }
@@ -104,7 +96,6 @@ $(document).ready(function () {
         username = $.trim(username);
         if (username == "" || (username.length < 3 || username.length > 12)) {
             $('#username').css('border', '1px solid red');
-            $('#username').focus();
             return;
         } else {
             $('#username').css('border', '1px solid green');
@@ -114,7 +105,6 @@ $(document).ready(function () {
         password = $.trim(password);
         if (password == "" || (password.length < 3 || password.length > 16)) {
             $('#password').css('border', '1px solid red');
-            $('#password').focus();
             return;
         } else {
             $('#password').css('border', '1px solid green');
@@ -122,9 +112,8 @@ $(document).ready(function () {
 
         let ime = $('#ime').val();
         ime = $.trim(ime);
-        if (ime == "" || ime.length < 5) {
+        if (ime == "" || ime.length < 2) {
             $('#ime').css('border', '1px solid red');
-            $('#ime').focus();
             return;
         } else {
             $('#ime').css('border', '1px solid green');
@@ -132,9 +121,8 @@ $(document).ready(function () {
 
         let prezime = $('#prezime').val();
         prezime = $.trim(prezime);
-        if (prezime == "" || prezime.length < 4) {
+        if (prezime == "" || prezime.length < 2) {
             $('#prezime').css('border', '1px solid red');
-            $('#prezime').focus();
             return;
         } else {
             $('#prezime').css('border', '1px solid green');
@@ -146,13 +134,11 @@ $(document).ready(function () {
         let regex = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
         if (!regex.test(email)) {
             $('#email').css('border', '1px solid red');
-            $('#email').focus();
             return;
         }
 
         if (email == "" || email.length < 4) {
             $('#email').css('border', '1px solid red');
-            $('#email').focus();
             return;
         } else {
             $('#email').css('border', '1px solid green');
