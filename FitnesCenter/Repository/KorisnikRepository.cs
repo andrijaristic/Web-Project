@@ -438,5 +438,194 @@ namespace FitnesCenter.Repository
 
             return false;
         }
+
+        public bool ValidateRegisterKorisnik(Korisnik korisnik)
+        {
+            if (string.IsNullOrEmpty(korisnik.Username))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Password))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Ime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Prezime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Email))
+            {
+                return false;
+            }
+
+            if (korisnik.Pol != Enums.Pol.MUSKI && korisnik.Pol != Enums.Pol.ZENSKI)
+            {
+                return false;
+            }
+
+            if (korisnik.Uloga != Enums.Uloge.POSETILAC && korisnik.Uloga != Enums.Uloge.TRENER && korisnik.Uloga != Enums.Uloge.VLASNIK)
+            {
+                return false;
+            }
+
+            if (korisnik.GrupniTreninziPosetioc == null)
+            {
+                return false;
+            }
+
+            if (korisnik.GrupniTreninziTrener == null)
+            {
+                return false;
+            }
+
+            if (korisnik.FitnesCentarTrener == null)
+            {
+                return false;
+            }
+
+            if (korisnik.FitnesCentarVlasnik == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ValidateRegisterTrener(RegisterTrener trener)
+        {
+            Korisnik _trener = trener.Trener;
+
+            if (string.IsNullOrEmpty(_trener.Username))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(_trener.Password))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(_trener.Ime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(_trener.Prezime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(_trener.Email))
+            {
+                return false;
+            }
+
+            if (_trener.Pol != Enums.Pol.MUSKI && _trener.Pol != Enums.Pol.ZENSKI)
+            {
+                return false;
+            }
+
+            if (_trener.Uloga != Enums.Uloge.POSETILAC && _trener.Uloga != Enums.Uloge.TRENER && _trener.Uloga != Enums.Uloge.VLASNIK)
+            {
+                return false;
+            }
+
+            if (_trener.GrupniTreninziPosetioc == null)
+            {
+                return false;
+            }
+
+            if (_trener.GrupniTreninziTrener == null)
+            {
+                return false;
+            }
+
+            if (_trener.FitnesCentarTrener == null)
+            {
+                return false;
+            }
+
+            if (_trener.FitnesCentarVlasnik == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ValidateUpdateKorisnik(Korisnik korisnik)
+        {
+            try
+            {
+                string[] usernames = korisnik.Username.Split('-');
+                if (usernames.Length != 2)
+                {
+                    return false;
+                }
+            } catch
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Password))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Ime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Prezime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(korisnik.Email))
+            {
+                return false;
+            }
+
+            if (korisnik.Pol != Enums.Pol.MUSKI && korisnik.Pol != Enums.Pol.ZENSKI)
+            {
+                return false;
+            }
+
+            if (korisnik.Uloga != Enums.Uloge.POSETILAC && korisnik.Uloga != Enums.Uloge.TRENER && korisnik.Uloga != Enums.Uloge.VLASNIK)
+            {
+                return false;
+            }
+
+            if (korisnik.GrupniTreninziPosetioc == null)
+            {
+                return false;
+            }
+
+            if (korisnik.GrupniTreninziTrener == null)
+            {
+                return false;
+            }
+
+            if (korisnik.FitnesCentarTrener == null)
+            {
+                return false;
+            }
+
+            if (korisnik.FitnesCentarVlasnik == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

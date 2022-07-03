@@ -18,6 +18,13 @@ namespace FitnesCenter.Controllers
         [Route("api/trening/PosetiTrening")]
         public IHttpActionResult PosetiTrening([FromBody]GrupniTreningPosetilacEntity gtpe)
         {
+            gtpe.Korisnik = BazePodataka.korisnikRepository.GetKorisnikByUsername(gtpe.Korisnik.Username);
+
+            if (!BazePodataka.grupniTreninziRepository.ValidatePosetiTrening(gtpe))
+            {
+                return BadRequest();
+            }
+
             if (BazePodataka.grupniTreninziRepository.AddPosetilacToGrupniTrening(gtpe.Id, gtpe.Korisnik))
             {
                 return Ok(BazePodataka.korisnikRepository.GetKorisnikByUsername(gtpe.Korisnik.Username));
@@ -52,6 +59,11 @@ namespace FitnesCenter.Controllers
                 return NotFound();
             }
 
+            if (!BazePodataka.grupniTreninziRepository.CheckIfExists(trening.Trening.Id))
+            {
+                return BadRequest();
+            }
+
             if (BazePodataka.grupniTreninziRepository.UpdateGrupniTrening(trening.Trening))
             {
                 return Ok();
@@ -72,6 +84,11 @@ namespace FitnesCenter.Controllers
             trening.Trening.Id = Guid.NewGuid();
             trening.Trening.FitnesCentar = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trening.FitnesCentarId);
             GrupniTrening retVal = BazePodataka.grupniTreninziRepository.AddGrupniTrening(trening);
+
+            if (retVal == null)
+            {
+                return BadRequest();
+            }
 
             if (retVal.Id == trening.Trening.Id)
             {

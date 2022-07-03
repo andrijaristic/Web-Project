@@ -15,7 +15,15 @@ var TipTreningaEnums = {
     BODY_PUMP: 2,
 }
 
+
+var TipEnumText = {
+    "0": "YOGA",
+    "1": "LES MILLS TONE",
+    "2": "BODY PUMP"
+}
+
 var data = []
+var fitnesCentar = {}
 var treneriGlobal = []
 
 $(document).ready(function () {
@@ -24,14 +32,18 @@ $(document).ready(function () {
     $('#dodajKomentarForm').hide();
     $('#btnPostaviKomentar').hide();
     $('#treneriCentra').hide();
+    $('#btnExitForm').hide();
+    $('#myAccountHref').hide();
 
     let idCentra = parseUrl();
     console.log(idCentra);
 
+    getFitnesCentar(idCentra);
+    getKomentare(idCentra);
+
     let user;
     if (sessionStorage.getItem('accessToken')) {
-        getKomentare(idCentra);
-        getTrenereCentra(idCentra);
+        $('#myAccountHref').show();
 
         user = JSON.parse(sessionStorage.getItem('activeUser'));
         if (user.Uloga == 0) {
@@ -49,7 +61,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr) {
-                    alert(xhr.status);
+                    //alert(xhr.status);
                 }
             });
         } else if (user.Uloga == 1 && user.FitnesCentarTrener.Id == idCentra) {
@@ -57,15 +69,19 @@ $(document).ready(function () {
         }
         else if (user.Uloga == 2) {
             for (element in user.FitnesCentarVlasnik) {
-                if (user.FitnesCentarVlasnik[element].Id == idCentra) {
-                    displayTrenereCentra(idCentra);
+                if (user.FitnesCentarVlasnik[element] == idCentra) {
+                    $('#treneriCentra').show();
+                    getTrenereCentra(idCentra);
+                    //displayTrenereCentra(idCentra);
+                    break;
                 } 
             }
         }
-    } else {
-        getKomentare(idCentra);
-        getTrenereCentra(idCentra);
     }
+    //else {
+    //    getKomentare(idCentra);
+    //    getTrenereCentra(idCentra);
+    //}
     //let user = JSON.parse(sessionStorage.getItem('activeUser'));
     //console.log(user);
 
@@ -99,7 +115,6 @@ $(document).ready(function () {
     });
 
     $('#spisakTreninga').on('click', '#btnPosetiTrening', function () {
-
         $.ajax({
             url: 'api/trening/PosetiTrening',
             type: 'POST',
@@ -112,10 +127,11 @@ $(document).ready(function () {
                 console.log(response);
                 sessionStorage.setItem('activeUser', JSON.stringify(response));
                 alert("Uspesno dodat na trening");
-                $(this).hide();
+                displayTreninge(idCentra);
             },
             error: function (xhr) {
-                alert(xhr.status);
+                alert('Nemoguce posecivanje.');
+                displayTreninge(idCentra);
             }
         });
     });
@@ -151,6 +167,7 @@ $(document).ready(function () {
     $('#spisakTreninga').on('click', '#btnIzmeniTrening', function () {
         if (sessionStorage.getItem('accessToken')) {
             let id = $(this).attr('value');
+            $('#btnExitForm').show();
             showForm(id);
 
             $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
@@ -240,136 +257,72 @@ $(document).ready(function () {
             $('#formaTrening').show();
             $('#btnDodajTrening').hide();
             $('#btnSacuvajIzmeneTrening').html('Dodaj trening');
-
-            let mind = new Date();
-            mind.setDate(mind.getDate() + 3);
-            mind = mind.toLocaleString('en-GB')
-            let params = mind.split(',');
-            let datum = params[0].split('/');
-            let vreme = params[1].split(':');
-            mind = `${datum[2]}-${datum[1]}-${datum[0]}T${vreme[0]}:${vreme[1]}:${vreme[2]}`;
-
-            $('#treningNaziv').focusout(function () {
-                let naziv = $('#treningNaziv').val();
-                naziv = $.trim(naziv);
-                if (naziv == "" || (naziv.length < 3 || naziv.length > 42)) {
-                    $('#treningNaziv').css('border', '1px solid red');
-                    $('#treningNaziv').focus();
-                } else {
-                    $('#treningNaziv').css('border', '1px solid green');
-                }
-            });
-
-            $('#formaTrening').on('focusout', '#treningTrajanje', function () {
-                let trajanje = $('#treningTrajanje').val();
-                if ((trajanje == "") || (trajanje < 30 || trajanje > 60)) {
-                    $('#treningTrajanje').css('border', '1px solid red');
-                    $('#treningTrajanje').focus();
-                } else {
-                    $('#treningTrajanje').css('border', '1px solid green');
-                }
-            });
-
-            $('#formaTrening').on('focusout', '#treningBrojPosetioca', function () {
-                let brojPosetilaca = $('#treningBrojPosetioca').val();
-
-                if ((brojPosetilaca == "") || (brojPosetilaca < 1 || brojPosetilaca > 6)) {
-                    $('#treningBrojPosetioca').css('border', '1px solid red');
-                    $('#treningBrojPosetioca').focus();
-                } else {
-                    $('#treningBrojPosetioca').css('border', '1px solid green');
-                }
-
-            });
-
-            $('#formaTrening').on('focusout', '#treningVreme', function () {
-                let datumVreme = $('#treningVreme').val();
-                if (datumVreme < mind) {
-                    $('#treningVreme').css('border', '1px solid red');
-                    $('#treningVreme').focus();
-                    return;
-                } else {
-                    $('#treningVreme').css('border', '1px solid green');
-                }
-            });
-
-
-            $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
-                // Odraditi istu validaciju ovde.
-
-                let naziv = $('#treningNaziv').val();
-                naziv = $.trim(naziv);
-                if (naziv == "" || (naziv.length < 3 || naziv.length > 42)) {
-                    $('#treningNaziv').css('border', '1px solid red');
-                    $('#treningNaziv').focus();
-                    return;
-                }
-
-                let tipTreninga = $('#treningTip').val();   // Default je YOGA.
-
-                let trajanjeTreninga = $('#treningTrajanje').val();
-                if ((trajanjeTreninga == "") || (trajanjeTreninga < 30 || trajanjeTreninga > 60)) {
-                    $('#treningTrajanje').css('border', '1px solid red');
-                    $('#treningTrajanje').focus();
-                    return;
-                }
-
-                let maksBrojPosetilaca = $('#treningBrojPosetioca').val();
-                if ((maksBrojPosetilaca == "") || (maksBrojPosetilaca < 1 || maksBrojPosetilaca > 6)) {
-                    $('#treningBrojPosetioca').css('border', '1px solid red');
-                    $('#treningBrojPosetioc').focus();
-                    return;
-                }
-
-                let datumVreme = $('#treningVreme').val();
-                if (datumVreme < mind) {
-                    $('#treningVreme').css('border', '1px solid red');
-                    $('#treningVreme').focus();
-                    return;
-                }
-
-                let trening = {
-                    Naziv: naziv,
-                    TipTreninga: tipTreninga,
-                    TrajanjeTreninga: trajanjeTreninga,
-                    DatumVreme: datumVreme,
-                    MaksBrojPosetilaca: maksBrojPosetilaca,
-                    isDelete: false
-                }
-
-                let trenerUsername = user.Username;
-
-                $.ajax({
-                    url: 'api/trening/DodajTrening',
-                    type: 'POST',
-                    data: { // Dodati Datum i spisak Posetilaca.
-                        Trening: trening,
-                        FitnesCentarId: idCentra,
-                        TrenerUsername: trenerUsername
-                    },
-                    success: function (response) {
-                        console.log('Uspelo');
-                        displayTreninge(idCentra);
-                        $('#spisakTreninga').show();
-                        $('#formaTrening').hide();
-                        $('#btnDodajTrening').show();
-
-                        sessionStorage.setItem('activeUser', JSON.stringify(response));
-                    },
-                    error: function (xhr) {
-                        if (xhr.status == 404) {
-                            alert('Blokirani ste. Bicete izlogovani');
-                            sessionStorage.setItem('accessToken', "");
-                            sessionStorage.setItem('activeUser', "");
-                        }
-
-                        alert('Vec imate trening u to vreme.');
-                        $('#treningVreme').css('border', '1px solid red');
-                        $('#treningVreme').focus();
-                    }
-                });
-            });
+            $('#btnExitForm').show();
         }
+    });
+
+    $('#formaTrening').on('click', '#btnExitForm', function () {
+        $('#spisakTreninga').show();
+        $('#formaTrening').hide();
+        $('#btnDodajTrening').show();
+        $('#btnExitForm').hide();
+    });
+
+    $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
+        // Odraditi istu validaciju ovde.
+        if (!validateDodajTrening()) {
+            return;
+        }
+
+        let naziv = $('#treningNaziv').val();
+        naziv = $.trim(naziv);
+
+        let tipTreninga = $('#treningTip').val();   // Default je YOGA.
+        let trajanjeTreninga = $('#treningTrajanje').val();
+        let maksBrojPosetilaca = $('#treningBrojPosetioca').val();
+        let datumVreme = $('#treningVreme').val();
+
+
+        let trening = {
+            Naziv: naziv,
+            TipTreninga: tipTreninga,
+            TrajanjeTreninga: trajanjeTreninga,
+            DatumVreme: datumVreme,
+            MaksBrojPosetilaca: maksBrojPosetilaca,
+            isDelete: false
+        }
+
+        let trenerUsername = user.Username;
+
+        $.ajax({
+            url: 'api/trening/DodajTrening',
+            type: 'POST',
+            data: { // Dodati Datum i spisak Posetilaca.
+                Trening: trening,
+                FitnesCentarId: idCentra,
+                TrenerUsername: trenerUsername
+            },
+            success: function (response) {
+                console.log('Uspelo');
+                displayTreninge(idCentra);
+                $('#spisakTreninga').show();
+                $('#formaTrening').hide();
+                $('#btnDodajTrening').show();
+
+                sessionStorage.setItem('activeUser', JSON.stringify(response));
+            },
+            error: function (xhr) {
+                if (xhr.status == 404) {
+                    alert('Blokirani ste. Bicete izlogovani');
+                    sessionStorage.setItem('accessToken', "");
+                    sessionStorage.setItem('activeUser', "");
+                }
+
+                alert('Vec imate trening u to vreme.');
+                $('#treningVreme').css('border', '1px solid red');
+                $('#treningVreme').focus();
+            }
+        });
     });
 
     $('#treneriCentra').on('click', '#btnBlockTrener', function () {
@@ -484,7 +437,107 @@ $(document).ready(function () {
         $('#btnPostaviKomentar').hide();
         $('#btnDodajKomentar').show();
     });
+
+    // Validacije dodavanja/edit treninga.
+    {
+        $('#treningNaziv').focusout(function () {
+            let naziv = $('#treningNaziv').val();
+            naziv = $.trim(naziv);
+            if (naziv == "" || (naziv.length < 3 || naziv.length > 42)) {
+                $('#treningNaziv').css('border', '1px solid red');
+                $('#treningNaziv').focus();
+            } else {
+                $('#treningNaziv').css('border', '1px solid green');
+            }
+        });
+
+        $('#formaTrening').on('focusout', '#treningTrajanje', function () {
+            let trajanje = $('#treningTrajanje').val();
+            if ((trajanje == "") || (trajanje < 30 || trajanje > 60)) {
+                $('#treningTrajanje').css('border', '1px solid red');
+                $('#treningTrajanje').focus();
+            } else {
+                $('#treningTrajanje').css('border', '1px solid green');
+            }
+        });
+
+        $('#formaTrening').on('focusout', '#treningBrojPosetioca', function () {
+            let brojPosetilaca = $('#treningBrojPosetioca').val();
+
+            if ((brojPosetilaca == "") || (brojPosetilaca < 1 || brojPosetilaca > 6)) {
+                $('#treningBrojPosetioca').css('border', '1px solid red');
+                $('#treningBrojPosetioca').focus();
+            } else {
+                $('#treningBrojPosetioca').css('border', '1px solid green');
+            }
+
+        });
+
+        let mind = new Date();
+        mind.setDate(mind.getDate() + 3);
+        mind = mind.toLocaleString('en-GB')
+        let params = mind.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        mind = `${datum[2]}-${datum[1]}-${datum[0]}T${vreme[0]}:${vreme[1]}:${vreme[2]}`;
+
+        $('#formaTrening').on('focusout', '#treningVreme', function () {
+            let datumVreme = $('#treningVreme').val();
+            if (datumVreme < mind) {
+                $('#treningVreme').css('border', '1px solid red');
+                $('#treningVreme').focus();
+                return;
+            } else {
+                $('#treningVreme').css('border', '1px solid green');
+            }
+        });
+
+    }
 });
+
+function validateDodajTrening() {
+
+    let naziv = $('#treningNaziv').val();
+    naziv = $.trim(naziv);
+    if (naziv == "" || (naziv.length < 3 || naziv.length > 42)) {
+        $('#treningNaziv').css('border', '1px solid red');
+        $('#treningNaziv').focus();
+        return false;
+    }
+
+    //let tipTreninga = $('#treningTip').val();   // Default je YOGA.
+
+    let trajanjeTreninga = $('#treningTrajanje').val();
+    if ((trajanjeTreninga == "") || (trajanjeTreninga < 30 || trajanjeTreninga > 60)) {
+        $('#treningTrajanje').css('border', '1px solid red');
+        $('#treningTrajanje').focus();
+        return false;
+    }
+
+    let maksBrojPosetilaca = $('#treningBrojPosetioca').val();
+    if ((maksBrojPosetilaca == "") || (maksBrojPosetilaca < 1 || maksBrojPosetilaca > 6)) {
+        $('#treningBrojPosetioca').css('border', '1px solid red');
+        $('#treningBrojPosetioc').focus();
+        return false;
+    }
+
+    let mind = new Date();
+    mind.setDate(mind.getDate() + 3);
+    mind = mind.toLocaleString('en-GB')
+    let params = mind.split(',');
+    let datum = params[0].split('/');
+    let vreme = params[1].split(':');
+    mind = `${datum[2]}-${datum[1]}-${datum[0]}T${vreme[0]}:${vreme[1]}:${vreme[2]}`;
+
+    let datumVreme = $('#treningVreme').val();
+    if (datumVreme < mind) {
+        $('#treningVreme').css('border', '1px solid red');
+        $('#treningVreme').focus();
+        return false;
+    }
+
+    return true;
+}
 
 function validateUpdateTrening() {
     let naziv = $('#treningNaziv').val();
@@ -569,15 +622,38 @@ function getFitnesCentar(id) {
     $.ajax({
         url: 'api/centri/GetCentar',
         type: 'GET',
-        data: id,
-        dataType: 'string',
+        data: {
+            id: id
+        },
         success: function (response) {
             fitnesCentar = response;
+            // Funkcija za ispis podataka o centru.
+            displayFitnesCentar(response);
         },
         error: function (xhr) {
             alert(xhr.status);
         }
     });
+}
+
+function displayFitnesCentar(dataFun) {
+    let tableCentar = `<table class="trenings">`;
+    //tableCentar += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
+
+    let centar = '<td>' + dataFun.Naziv + '</td>';
+    centar += '<td>' + dataFun.Adresa + '</td>';
+    centar += '<td>' + dataFun.GodinaOtvaranja + '</td>';
+    centar += `<td>${dataFun.Vlasnik.Ime} ${dataFun.Vlasnik.Prezime} </td>`;
+    centar += '<td>' + dataFun.CenaMesecneClanarine + '</td>';
+    centar += '<td>' + dataFun.CenaGodisnjeClanarine + '</td>';
+    centar += '<td>' + dataFun.CenaJednogTreninga + '</td>';
+    centar += '<td>' + dataFun.CenaJednogGrupnogTreninga + '</td>';
+    centar += '<td>' + dataFun.CenaJednogTreningaSaTrenerom + '</td>';
+
+    tableCentar += '<tr>' + centar + '</tr>';
+
+    tableCentar += `</table>`;
+    $('#podaciCentar').html(tableCentar);
 }
 
 function display(data) {
@@ -616,8 +692,9 @@ function displayTreninge(id) {
     $.ajax({
         url: "api/centri/GetTreninge/",
         type: "GET",
-        data: id,
-        dataType: 'string',
+        data: {
+            id: id
+        },
         success: function (dataFun) {
             if (dataFun == null) { return; }
             data = dataFun;
@@ -638,15 +715,6 @@ function displayTreninge(id) {
     });
 }
 
-//function getParameterByName(name, url = window.location.href) {
-//    name = name.replace(/[\[\]]/g, '\\$&');
-//    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex.exec(url);
-
-//    if (!results) return null;
-//    if (!results[2]) return '';
-//    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-//}
-
 function parseUrl(url = window.location.href) {
     let a = document.createElement('a');
     let searchObject, queries, split, i;
@@ -662,11 +730,23 @@ function parseUrl(url = window.location.href) {
 }
 
 function createTableNeprijavljen(dataFun) {
-    let tableTreninzi = `<table border="1">`;
-    tableTreninzi += `<tr><th>Naziv</th></tr>`;
+    let tableTreninzi = `<table class="trenings">`;
+    tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     for (element in dataFun) {
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
+        trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let params = vremeOdrzavanja.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+
+        trening += '<td>' + vremeOdrzavanja + '</td>';
+        trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td>' + dataFun[element].Posetioci.length + '</td>';
         tableTreninzi += '<tr>' + trening + '</tr>';
     }
 
@@ -675,12 +755,24 @@ function createTableNeprijavljen(dataFun) {
 }
 
 function createTablePosetioc(dataFun) {
-    let tableTreninzi = `<table border="1">`;
-    tableTreninzi += `<tr><th>Naziv</th></tr>`;
+    let tableTreninzi = `<table class="trenings">`;
+    tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     for (element in dataFun) {
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
-        trening += `<td><button class="PosetiClass" value="${dataFun[element].Id}" id="btnPosetiTrening">+</button></td>`;
+        trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let params = vremeOdrzavanja.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+
+        trening += '<td>' + vremeOdrzavanja + '</td>';
+        trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td>' + dataFun[element].Posetioci.length + '</td>';
+        trening += `<td><button class="PosetiClass" value="${dataFun[element].Id}" name="${dataFun[element].Id}" id="btnPosetiTrening">+</button></td>`;
         tableTreninzi += '<tr>' + trening + '</tr>';
     }
 
@@ -689,8 +781,8 @@ function createTablePosetioc(dataFun) {
 }
 
 function createTableTrener(dataFun) {
-    let tableTreninzi = `<table>`;
-    tableTreninzi += `<tr><th>Naziv</th></tr>`;
+    let tableTreninzi = `<table class="trenings">`;
+    tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     let user = JSON.parse(sessionStorage.getItem('activeUser'));
     if (user.FitnesCentarTrener.Id == parseUrl()) {
@@ -699,6 +791,18 @@ function createTableTrener(dataFun) {
 
     for (element in dataFun) { 
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
+        trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let params = vremeOdrzavanja.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+
+        trening += '<td>' + vremeOdrzavanja + '</td>';
+        trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td>' + dataFun[element].Posetioci.length + '</td>';
         let ispisan = false;
 
         for (_element in user.GrupniTreninziTrener) { 
@@ -712,7 +816,7 @@ function createTableTrener(dataFun) {
         }
 
         if (!ispisan) {
-            trening = '<td>' + dataFun[element].Naziv + '</td>';
+            //trening = '<td>' + dataFun[element].Naziv + '</td>';
             tableTreninzi += '<tr>' + trening + '</tr>';
         }
     }
@@ -733,13 +837,13 @@ function getTrenereCentra(idCentra) {
             displayTrenereCentra(response);
         },
         error: function (xhr) {
-            alert(xhr.status);
+            //alert(xhr.status);
+            console.log('Empty');
         }
     })
 }
 
 function displayTrenereCentra(treneri) {
-    $('#treneriCentra').show();
     let tableTreneri = `<table>`;
     tableTreneri += `<tr><th>Username</th><tr>`;
 
@@ -761,7 +865,7 @@ function getKomentare(idCentra) {
             displayKomentare(response);
         },
         error: function (xhr) {
-            alert('Nema komentara');
+            //alert('Nema komentara');
         }
 
     });

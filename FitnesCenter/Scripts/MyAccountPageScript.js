@@ -9,10 +9,21 @@
     console.log(user.Username);
 
     $('#changeAccountInfo').hide();
+    $('#disableChanges').hide();
     displayInformation(user);
 
     $('#enableChanges').click(function () {
-        enableChange();
+        $('#disableChanges').show();
+        $('#enableChanges').hide();
+        enableChange(user);
+    });
+
+    $('#disableChanges').click(function () {
+        $('#changeAccountInfo').hide();
+        $('#enableChanges').show();
+        $('#disableChanges').hide();
+        $('#passwordField').html('Password: ');
+        displayInformation(user);
     });
 
     $('#showPassword').change(function () {
@@ -335,7 +346,7 @@ function displayInformation(user) {
     disableChange();
 }
 
-function enableChange() {
+function enableChange(user) {
     $('#accountUsername').attr('readonly', false);
     $('#accountPassword').attr('value', "");
     $('#accountPassword').attr('readonly', false);

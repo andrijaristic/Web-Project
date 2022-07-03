@@ -189,3 +189,25 @@ table.centriVlasnik td:nth-last-child(-n+5){
     width: 60%;
     margin: 0 auto;
 }
+
+table.trenings td {
+    font-weight: lighter;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+table.trenings td:nth-last-child(-n+3){
+    min-width: 0;
+}
+
+table.trenings th {
+    font-weight: 400;
+    font-style: italic;
+    border: 1px solid gray;
+    text-align: center;
+    min-width: 180px;
+}
+
+.duoButtons{
+    display: inline-block;
+}

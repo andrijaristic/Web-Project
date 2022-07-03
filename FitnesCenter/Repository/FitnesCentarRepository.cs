@@ -14,9 +14,8 @@ namespace FitnesCenter.Repository
         {
             // Ocisti fajl.
             string path = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\\fitnesCentri.txt"));
-            //File.WriteAllText(path, String.Empty);
+            File.WriteAllText(path, String.Empty);
 
-            Console.WriteLine("PORUKA");
             using (StreamWriter sw = new StreamWriter(path))
             {
                 string line = "";
@@ -167,6 +166,11 @@ namespace FitnesCenter.Repository
             {
                 if (BazePodataka.centri[i].Id == centar.Id)
                 {
+                    if (!BazePodataka.fitnesCentarRepository.ValidateCreate(centar))
+                    {
+                        return false;
+                    }
+
                     BazePodataka.centri[i] = centar;
                     BazePodataka.grupniTreninziRepository.UpdateFitnesCentarForGrupneTreninge(centar);
 
@@ -211,6 +215,56 @@ namespace FitnesCenter.Repository
             }
 
             return false;
+        }
+
+        public bool ValidateCreate(FitnesCentar centar)
+        {
+            if (centar.Id == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(centar.Naziv))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(centar.Adresa))
+            {
+                return false;
+            }
+
+            if (centar.GodinaOtvaranja < 0 || centar.GodinaOtvaranja < 1000 || centar.GodinaOtvaranja > DateTime.Now.Year)
+            {
+                return false;
+            }
+
+            if (centar.CenaMesecneClanarine < 0)
+            {
+                return false;
+            }
+
+            if (centar.CenaGodisnjeClanarine < 0)
+            {
+                return false;
+            }
+
+            if (centar.CenaJednogTreninga < 0)
+            {
+                return false;
+            }
+
+            if (centar.CenaJednogGrupnogTreninga < 0)
+            {
+                return false;
+            }
+
+            if (centar.CenaJednogTreningaSaTrenerom < 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -236,7 +236,7 @@ $(document).ready(function () {
 
         $('#createFitnesCentarForm').on('focusout', '#cenaMesecnaClanarina', function () {
             let mesecnaClanarina = $('#cenaMesecnaClanarina').val();
-            if (mesecnaClanarina == "") {
+            if (mesecnaClanarina == "" || mesecnaClanarina < 0) {
                 $('#cenaMesecnaClanarina').css('border', '1px solid red');
             } else {
                 $('#cenaMesecnaClanarina').css('border', '1px solid green');
@@ -245,7 +245,7 @@ $(document).ready(function () {
 
         $('#createFitnesCentarForm').on('focusout', '#cenaGodisnjaClanarina', function () {
             let godisnjaClanarina = $('#cenaGodisnjaClanarina').val();
-            if (godisnjaClanarina == "") {
+            if (godisnjaClanarina == "" || godisnjaClanarina < 0) {
                 $('#cenaGodisnjaClanarina').css('border', '1px solid red');
             } else {
                 $('#cenaGodisnjaClanarina').css('border', '1px solid green');
@@ -254,7 +254,7 @@ $(document).ready(function () {
 
         $('#createFitnesCentarForm').on('focusout', '#cenaTreningJedanFitnesCentar', function () {
             let cenaTreningJedan = $('#cenaTreningJedanFitnesCentar').val();
-            if (cenaTreningJedan == "") {
+            if (cenaTreningJedan == "" || cenaTreningJedan < 0) {
                 $('#cenaTreningJedanFitnesCentar').css('border', '1px solid red');
             } else {
                 $('#cenaTreningJedanFitnesCentar').css('border', '1px solid green');
@@ -263,7 +263,7 @@ $(document).ready(function () {
 
         $('#createFitnesCentarForm').on('focusout', '#cenaTreningGrupniFitnesCentar', function () {
             let cenaTreningGrupni = $('#cenaTreningGrupniFitnesCentar').val();
-            if (cenaTreningGrupni == "") {
+            if (cenaTreningGrupni == "" || cenaTreningGrupni < 0) {
                 $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid red');
             } else {
                 $('#cenaTreningGrupniFitnesCentar').css('border', '1px solid green');
@@ -272,7 +272,7 @@ $(document).ready(function () {
 
         $('#createFitnesCentarForm').on('focusout', '#cenaTreningTrenerFitnesCentar', function () {
             let cenaTreningTrener = $('#cenaTreningTrenerFitnesCentar').val();
-            if (cenaTreningTrener == "") {
+            if (cenaTreningTrener == "" || cenaTreningTrener < 0) {
                 $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid red');
             } else {
                 $('#cenaTreningTrenerFitnesCentar').css('border', '1px solid green');

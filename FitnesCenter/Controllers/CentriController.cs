@@ -42,14 +42,17 @@ namespace FitnesCenter.Controllers
 
         [HttpGet]
         [Route("api/centri/GetCentar")]
-        public IHttpActionResult Get(string naziv)
+        public IHttpActionResult GetCentar(Guid id)
         {
-            FitnesCentar retVal = null;
             foreach (var el in BazePodataka.centri)
             {
-                if (el.Naziv.Equals(naziv)) { retVal = el; }
+                if (el.Id == id)
+                {
+                    return Ok(el);
+                }
             }
-            return Ok(retVal);
+
+            return BadRequest();
         }
 
         [HttpGet]
@@ -76,6 +79,11 @@ namespace FitnesCenter.Controllers
         {
             centar.Id = Guid.NewGuid();
             centar.isDeleted = false;
+
+            if (!BazePodataka.fitnesCentarRepository.ValidateCreate(centar))
+            {
+                return BadRequest();
+            }
 
             Korisnik vlasnik = BazePodataka.fitnesCentarRepository.CreateFitnesCentar(centar);
             if (vlasnik != null)

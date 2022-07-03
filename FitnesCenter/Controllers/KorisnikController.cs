@@ -16,18 +16,24 @@ namespace FitnesCenter.Controllers
         [Route("api/korisnik/RegisterKorisnik")]
         public IHttpActionResult RegisterKorisnik(Korisnik korisnik)
         {
-            if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(korisnik.Username))
-            {
-                korisnik.GrupniTreninziPosetioc = new List<Guid>();
-                korisnik.GrupniTreninziTrener = null;
-                korisnik.FitnesCentarTrener = null;
-                korisnik.FitnesCentarVlasnik = null;
-                korisnik.isBlocked = false;
+            Korisnik korisnikAdd = korisnik;
+            korisnikAdd.GrupniTreninziPosetioc = new List<Guid>();
+            korisnikAdd.GrupniTreninziTrener = new List<GrupniTrening>();
+            korisnikAdd.FitnesCentarTrener = new FitnesCentar();
+            korisnikAdd.FitnesCentarVlasnik = new List<Guid>();
+            korisnikAdd.isBlocked = false;
 
-                BazePodataka.korisnici.Add(korisnik);
+            if (!BazePodataka.korisnikRepository.ValidateRegisterKorisnik(korisnikAdd))
+            {
+                return BadRequest();
+            }
+
+            if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(korisnikAdd.Username))
+            {
+                BazePodataka.korisnici.Add(korisnikAdd);
 
                 BazePodataka.korisnikRepository.SaveToFile();
-                return Ok(korisnik);
+                return Ok(korisnikAdd);
             }
 
             return BadRequest();
@@ -42,6 +48,11 @@ namespace FitnesCenter.Controllers
             trenerAdd.FitnesCentarVlasnik = new List<Guid>();
             trenerAdd.GrupniTreninziPosetioc = new List<Guid>();
             trenerAdd.GrupniTreninziTrener = new List<GrupniTrening>();
+
+            if (!BazePodataka.korisnikRepository.ValidateRegisterTrener(trener))
+            {
+                return BadRequest();
+            }
 
             if (!BazePodataka.korisnikRepository.CheckIfKorisnikExists(trener.Trener.Username))
             {
@@ -85,19 +96,15 @@ namespace FitnesCenter.Controllers
             return NotFound(); // Ne postoji.
         }
 
-        // Obrisati logovanog korisnika iz spiksa ulogovanih na back-end.
-        //
-        //[HttpPost]
-        //[Route("api/korisnik/LogoutKorisnik")]
-        //public IHttpActionResult LogoutKorisnik(Korisnik korisnik)
-        //{
-        //    return BadRequest();
-        //}
-
         [HttpPut]
         [Route("api/korisnik/UpdateKorisnikInfo")]
         public IHttpActionResult UpdateKorisnikInfo(Korisnik korisnik)
         {
+            if (!BazePodataka.korisnikRepository.ValidateUpdateKorisnik(korisnik))
+            {
+                return BadRequest();
+            }
+
             string username = korisnik.Username;
             string oldUsername = korisnik.Username.Split('-')[0];
             string newUsername = korisnik.Username.Split('-')[1];

@@ -11,8 +11,9 @@ var UlogeEnum = {
 
 $(document).ready(function () {
     let id;
-    let regexSpace = /^[a-zA-Z ]*$/;
-    let regexNoSpace = /^[a-zA-Z]*$/;
+    let regexUsername = /^[a-zA-Z@!]+$/
+    let regexSpace = /^[a-zA-Z ]+$/;
+    let regexNoSpace = /^[a-zA-Z]+$/;
     if (sessionStorage.getItem('accessToken')) {
         $('#loginHref').hide();
         id = parseUrl();
@@ -25,6 +26,12 @@ $(document).ready(function () {
     $('#registerForm').on('focusout', '#username', function () {
         let username = $('#username').val();
         username = $.trim(username);
+
+        if (!regexUsername.test(username)) {
+            $('#username').css('border', '1px solid red');
+            return;
+        }
+
         if (username == "" || (username.length < 3 || username.length > 12)) {
             $('#username').css('border', '1px solid red');
         } else {
@@ -64,6 +71,7 @@ $(document).ready(function () {
 
         if (!regexNoSpace.test(prezime)) {
             $('#prezime').css('border', '1px solid red');
+            return;
         }
 
         if (prezime == "" || prezime.length < 2) {
@@ -94,6 +102,12 @@ $(document).ready(function () {
     $("#btnRegister").click(function () {
         let username = $('#username').val();
         username = $.trim(username);
+
+        if (!regexUsername.test(username)) {
+            $('#username').css('border', '1px solid red');
+            return;
+        }
+
         if (username == "" || (username.length < 3 || username.length > 12)) {
             $('#username').css('border', '1px solid red');
             return;
@@ -112,6 +126,12 @@ $(document).ready(function () {
 
         let ime = $('#ime').val();
         ime = $.trim(ime);
+
+        if (!regexSpace.test(ime)) {
+            $('#ime').css('border', '1px solid red');
+            return;
+        }
+
         if (ime == "" || ime.length < 2) {
             $('#ime').css('border', '1px solid red');
             return;
@@ -121,6 +141,12 @@ $(document).ready(function () {
 
         let prezime = $('#prezime').val();
         prezime = $.trim(prezime);
+
+        if (!regexNoSpace.test(prezime)) {
+            $('#prezime').css('border', '1px solid red');
+            return;
+        }
+
         if (prezime == "" || prezime.length < 2) {
             $('#prezime').css('border', '1px solid red');
             return;

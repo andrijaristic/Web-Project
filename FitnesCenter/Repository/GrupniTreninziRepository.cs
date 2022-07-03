@@ -262,6 +262,12 @@ namespace FitnesCenter.Repository
                 {
                     trening.FitnesCentar = BazePodataka.treninzi[i].FitnesCentar;
                     trening.Posetioci = BazePodataka.treninzi[i].Posetioci;
+
+                    if (!ValidateUpdateTrening(trening))
+                    {
+                        return false;
+                    }
+
                     BazePodataka.treninzi[i] = trening;
 
                     BazePodataka.grupniTreninziRepository.SaveToFile();
@@ -283,6 +289,12 @@ namespace FitnesCenter.Repository
             }
 
             trening.Trening.Posetioci = new List<Korisnik>();
+
+            if (!BazePodataka.grupniTreninziRepository.ValidateUpdateTrening(trening.Trening))
+            {
+                return null;
+            }
+
             BazePodataka.treninzi.Add(trening.Trening);
             BazePodataka.korisnikRepository.AddTreningToTrener(trening);
 
@@ -314,6 +326,129 @@ namespace FitnesCenter.Repository
                     el.FitnesCentar = centar;
                 }
             }
+        }
+
+        public bool CheckIfExists(Guid id)
+        {
+            foreach (var el in BazePodataka.treninzi)
+            {
+                if (el.Id == id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ValidatePosetiTrening(GrupniTreningPosetilacEntity gtpe)
+        {
+            if (gtpe.Id == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(gtpe.Korisnik.Username))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(gtpe.Korisnik.Password))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(gtpe.Korisnik.Ime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(gtpe.Korisnik.Prezime))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(gtpe.Korisnik.Email))
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.Pol != Enums.Pol.MUSKI && gtpe.Korisnik.Pol != Enums.Pol.ZENSKI)
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.Uloga != Enums.Uloge.POSETILAC && gtpe.Korisnik.Uloga != Enums.Uloge.TRENER && gtpe.Korisnik.Uloga != Enums.Uloge.VLASNIK)
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.GrupniTreninziPosetioc == null)
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.GrupniTreninziTrener == null)
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.FitnesCentarTrener == null)
+            {
+                return false;
+            }
+
+            if (gtpe.Korisnik.FitnesCentarVlasnik == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ValidateUpdateTrening(GrupniTrening trening)
+        {
+            if (trening.Id == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(trening.Naziv))
+            {
+                return false;
+            }
+
+            if (trening.TipTreninga != Enums.TipTreninga.YOGA && trening.TipTreninga != Enums.TipTreninga.LES_MILLS_TONE && trening.TipTreninga != Enums.TipTreninga.BODY_PUMP)
+            {
+                return false;
+            }
+
+            if (trening.FitnesCentar == null)
+            {
+                return false;
+            }
+
+            if (trening.TrajanjeTreninga < 0 || trening.TrajanjeTreninga == 0)
+            {
+                return false;
+            }
+
+            if (trening.DatumVreme == null)
+            {
+                return false;
+            }
+
+            if (trening.MaksBrojPosetilaca < 0 || trening.MaksBrojPosetilaca == 0)
+            {
+                return false;
+            }
+
+            if (trening.Posetioci == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
