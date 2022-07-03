@@ -254,7 +254,7 @@ namespace FitnesCenter.Repository
             return false;
         }
 
-        public bool UpdateGrupniTrening(GrupniTrening trening)
+        public bool UpdateGrupniTrening(GrupniTrening trening, string username)
         {
             for (int i = 0; i < BazePodataka.treninzi.Count; i++)
             {
@@ -269,6 +269,10 @@ namespace FitnesCenter.Repository
                     }
 
                     BazePodataka.treninzi[i] = trening;
+                    if (!BazePodataka.korisnikRepository.UpdateGrupneTreninge(trening, username))
+                    {
+                        return false;
+                    }
 
                     BazePodataka.grupniTreninziRepository.SaveToFile();
                     return true;

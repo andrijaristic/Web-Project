@@ -4,4 +4,6 @@ dd201b18-dff3-43a0-bab1-6e1599f17c6c=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ov
 e3b0bf72-a155-4938-8571-bff3c224f152=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test2 komentar za FitnesCentar1=2=false=true
 681145bb-8958-48a3-b00c-2b8f5c90e266=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test1 komentar za FitnesCentar1=1=false=false
 15054e4d-04a1-4f76-981c-3292c2ab9c4f=pos=95b76659-b361-42d0-b6d6-0faad23d50dc=Sadrzaj koji je sad dodat=5=false=true
+947343b3-fa0f-47f0-a030-cdbfd10a362b=pos=f11c22df-b873-49d5-9c50-48f07285f342=sadasd=3=false=true
+b38d1b91-00d3-4aae-af33-9a20561223c3=mirko=f11c22df-b873-49d5-9c50-48f07285f342=Novi komentar=5=false=false
 

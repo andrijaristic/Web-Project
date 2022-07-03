@@ -548,6 +548,8 @@ function createTableChecker(dataFun) {
 
         if (user.Uloga == 2) {
             createTableVlasnik(dataFun);
+        } else {
+            createTable(dataFun)
         }
     } else {
         createTable(dataFun);
@@ -764,7 +766,7 @@ function createTable(dataFun) {
         let centar = '<td>' + dataFun[element].Naziv + '</td>';
         centar += '<td>' + dataFun[element].Adresa + '</td>';
         centar += '<td>' + dataFun[element].GodinaOtvaranja + '</td>';
-        centar += `<td><button class="btnDetails" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
+        centar += `<td class="btnNormal"><button class="btnDetails" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
 
         tableCentri += '<tr>' + centar + '</tr>';
     }
@@ -785,15 +787,15 @@ function createTableVlasnik(dataFun) {
         let centar = '<td>' + dataFun[element].Naziv + '</td>';
         centar += '<td>' + dataFun[element].Adresa + '</td>';
         centar += '<td>' + dataFun[element].GodinaOtvaranja + '</td>';
-        centar += `<td><button class="btnDetails" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
+        centar += `<td class="btnVlasnik1" ><button class="btnVlasnik" name="${dataFun[element].Id}" onClick="location.href=\'Details.html?id=${dataFun[element].Id}\'">Detalji</td>`;
         let ispisan = false;
 
         for (_element in vlasnik.FitnesCentarVlasnik) {
             if (dataFun[element].Id == vlasnik.FitnesCentarVlasnik[_element]) {
                 ispisan = true;
-                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnIzmeniCentar">Izmeni</button></td>`;
-                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
-                centar += `<td><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
+                centar += `<td class="btnVlasnik1" ><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnIzmeniCentar">Izmeni</button></td>`;
+                centar += `<td class="btnVlasnik1" ><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnObrisiCentar">-</button></td>`;
+                centar += `<td class="btnVlasnik1" ><button class="btnVlasnik" value="${dataFun[element].Id}" id="btnDodajTreneraCentar" onClick="location.href=\'Register.html?id=${dataFun[element].Id}\'">+</button></td>`;
                 tableCentri += '<tr>' + centar + '</tr>';
             }
         }

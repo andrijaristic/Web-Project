@@ -100,11 +100,6 @@ namespace FitnesCenter.Controllers
         [Route("api/korisnik/UpdateKorisnikInfo")]
         public IHttpActionResult UpdateKorisnikInfo(Korisnik korisnik)
         {
-            if (!BazePodataka.korisnikRepository.ValidateUpdateKorisnik(korisnik))
-            {
-                return BadRequest();
-            }
-
             string username = korisnik.Username;
             string oldUsername = korisnik.Username.Split('-')[0];
             string newUsername = korisnik.Username.Split('-')[1];
@@ -117,6 +112,7 @@ namespace FitnesCenter.Controllers
                 {
                     return BadRequest();
                 }
+
                 korisnik.Username = newUsername;
                 return Ok(korisnik);
             }

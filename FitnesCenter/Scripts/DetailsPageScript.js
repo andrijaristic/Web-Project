@@ -25,8 +25,11 @@ var TipEnumText = {
 var data = []
 var fitnesCentar = {}
 var treneriGlobal = []
+var idTreninga;
 
 $(document).ready(function () {
+    $('#btnDodajNoviTrening').hide();
+    $('#btnSacuvajIzmeneTrening').hide();
     $('#btnDodajKomentar').hide();
     $('#btnDodajTrening').hide();
     $('#dodajKomentarForm').hide();
@@ -158,6 +161,10 @@ $(document).ready(function () {
                         sessionStorage.setItem('accessToken', "");
                         sessionStorage.setItem('activeUser', "");
                     }
+
+                    if (xhr.status == 400) {
+                        alert('Nemoguce brisanje. Postoje posetioci!');
+                    }
                 }
 
             });
@@ -166,58 +173,59 @@ $(document).ready(function () {
 
     $('#spisakTreninga').on('click', '#btnIzmeniTrening', function () {
         if (sessionStorage.getItem('accessToken')) {
-            let id = $(this).attr('value');
+            $('#btnSacuvajIzmeneTreninga').show();
+            idTreninga = $(this).attr('value');
             $('#btnExitForm').show();
-            showForm(id);
-
-            $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
-                if (!validateUpdateTrening()) {
-                    return;
-                }
-
-                let naziv = $('#treningNaziv').val();
-                let tip = $('#treningTip').val();
-                let trajanje = $('#treningTrajanje').val();
-                let brojPosetioca = $('#treningBrojPosetioca').val();
-                let datumVreme = $('#treningVreme').val();
-
-                let trening = {
-                    Id: id,
-                    Naziv: naziv,
-                    TipTreninga: tip,
-                    TrajanjeTreninga: trajanje,
-                    MaksBrojPosetilaca: brojPosetioca,
-                    DatumVreme: datumVreme
-                }
-
-                let username = user.Username;
-
-                $.ajax({
-                    url: 'api/trening/IzmeniTrening',
-                    type: 'PUT',
-                    data: { // Dodati Datum i spisak Posetilaca.
-                        Trening: trening,
-                        TrenerUsername: username,
-                        FitnesCentarId: 0
-                    },
-                    success: function (response) {
-                        console.log('Uspelo');
-                        $('#spisakTreninga').show();
-                        $('#formaTrening').hide();
-                        $('#btnDodajTrening').show();
-                        displayTreninge(idCentra);
-                    },
-                    error: function (xhr) {
-                        if (xhr.status == 404) {
-                            alert('Blokirani ste. Bicete izlogovani');
-                            sessionStorage.setItem('accessToken', "");
-                            sessionStorage.setItem('activeUser', "");
-                        }
-                    }
-
-                });
-            });
+            showForm(idTreninga);
         }
+    });
+
+    $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
+        if (!validateUpdateTrening()) {
+            return;
+        }
+
+        let naziv = $('#treningNaziv').val();
+        let tip = $('#treningTip').val();
+        let trajanje = $('#treningTrajanje').val();
+        let brojPosetioca = $('#treningBrojPosetioca').val();
+        let datumVreme = $('#treningVreme').val();
+
+        let trening = {
+            Id: idTreninga,
+            Naziv: naziv,
+            TipTreninga: tip,
+            TrajanjeTreninga: trajanje,
+            MaksBrojPosetilaca: brojPosetioca,
+            DatumVreme: datumVreme
+        }
+
+        let username = user.Username;
+
+        $.ajax({
+            url: 'api/trening/IzmeniTrening',
+            type: 'PUT',
+            data: { // Dodati Datum i spisak Posetilaca.
+                Trening: trening,
+                TrenerUsername: username,
+                FitnesCentarId: 0
+            },
+            success: function (response) {
+                console.log('Uspelo');
+                $('#spisakTreninga').show();
+                $('#formaTrening').hide();
+                $('#btnDodajNoviTrening').show();
+                displayTreninge(idCentra);
+            },
+            error: function (xhr) {
+                if (xhr.status == 404) {
+                    alert('Blokirani ste. Bicete izlogovani');
+                    sessionStorage.setItem('accessToken', "");
+                    sessionStorage.setItem('activeUser', "");
+                }
+            }
+
+        });
     });
 
     $('#spisakTreninga').on('click', '#btnPrikaziSpisakPosetiocaTrening', function () {
@@ -256,7 +264,8 @@ $(document).ready(function () {
             $('#spisakTreninga').hide();
             $('#formaTrening').show();
             $('#btnDodajTrening').hide();
-            $('#btnSacuvajIzmeneTrening').html('Dodaj trening');
+            $('#btnSacuvajIzmeneTrening').hide();
+            $('#btnDodajNoviTrening').show();
             $('#btnExitForm').show();
         }
     });
@@ -266,9 +275,11 @@ $(document).ready(function () {
         $('#formaTrening').hide();
         $('#btnDodajTrening').show();
         $('#btnExitForm').hide();
+        $('#btnDodajNoviTrening').hide();
+        $('#btnbtnSacuvajIzmeneTrening').hide();
     });
 
-    $('#formaTrening').on('click', '#btnSacuvajIzmeneTrening', function () {
+    $('#formaTrening').on('click', '#btnDodajNoviTrening', function () {
         // Odraditi istu validaciju ovde.
         if (!validateDodajTrening()) {
             return;
@@ -307,6 +318,7 @@ $(document).ready(function () {
                 displayTreninge(idCentra);
                 $('#spisakTreninga').show();
                 $('#formaTrening').hide();
+                $('#btnDodajNoviTrening').hide();
                 $('#btnDodajTrening').show();
 
                 sessionStorage.setItem('activeUser', JSON.stringify(response));
@@ -316,11 +328,11 @@ $(document).ready(function () {
                     alert('Blokirani ste. Bicete izlogovani');
                     sessionStorage.setItem('accessToken', "");
                     sessionStorage.setItem('activeUser', "");
+                } else if (xhr.status == 400){
+                    alert('Vec imate trening u to vreme.');
+                    $('#treningVreme').css('border', '1px solid red');
+                    $('#treningVreme').focus();
                 }
-
-                alert('Vec imate trening u to vreme.');
-                $('#treningVreme').css('border', '1px solid red');
-                $('#treningVreme').focus();
             }
         });
     });
@@ -412,6 +424,10 @@ $(document).ready(function () {
         }
 
         let posetilac = JSON.parse(sessionStorage.getItem('activeUser'));
+        let sadrzaj = $('#inputSadrzaj').val();
+        sadrzaj = $.trim(sadrzaj);
+
+        let ocena = $('#inputOcena').val();
 
         $.ajax({
             url: 'api/centri/AddKomentar',
@@ -612,7 +628,7 @@ function validateKomentar() {
 function showSpisakPosetioca(dataFun) {
     let spisak = "";
     for (el in dataFun) {
-        spisak += `${dataFun[el].Ime}\n`;
+        spisak += `${dataFun[el].Ime} ${dataFun[el].Prezime}\n`;
     }
 
     alert(spisak);
@@ -637,18 +653,18 @@ function getFitnesCentar(id) {
 }
 
 function displayFitnesCentar(dataFun) {
-    let tableCentar = `<table class="trenings">`;
+    let tableCentar = `<table class="fitnesCentarInfo">`;
     //tableCentar += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
-    let centar = '<td>' + dataFun.Naziv + '</td>';
-    centar += '<td>' + dataFun.Adresa + '</td>';
-    centar += '<td>' + dataFun.GodinaOtvaranja + '</td>';
-    centar += `<td>${dataFun.Vlasnik.Ime} ${dataFun.Vlasnik.Prezime} </td>`;
-    centar += '<td>' + dataFun.CenaMesecneClanarine + '</td>';
-    centar += '<td>' + dataFun.CenaGodisnjeClanarine + '</td>';
-    centar += '<td>' + dataFun.CenaJednogTreninga + '</td>';
-    centar += '<td>' + dataFun.CenaJednogGrupnogTreninga + '</td>';
-    centar += '<td>' + dataFun.CenaJednogTreningaSaTrenerom + '</td>';
+    let centar = '<tr><td>Naziv: </td><td class="tableLabel">' + dataFun.Naziv + '</td></tr>';
+    centar += '<tr><td>Adresa: </td><td class="tableLabel">' + dataFun.Adresa + '</td></tr>';
+    centar += '<tr><td>Godina otvaranja: </td><td class="tableLabel">' + dataFun.GodinaOtvaranja + '</td></tr>';
+    centar += `<tr><td>Vlasnik: </td><td class="tableLabel">${dataFun.Vlasnik.Ime} ${dataFun.Vlasnik.Prezime} </td></tr>`;
+    centar += '<tr><td>Mesecna clanarina: </td><td class="tableLabel">' + dataFun.CenaMesecneClanarine + ' RSD</td></tr>';
+    centar += '<tr><td>Godisnja clanarina: </td><td class="tableLabel">' + dataFun.CenaGodisnjeClanarine + ' RSD</td></tr>';
+    centar += '<tr><td>Cena jednog treninga: </td><td class="tableLabel">' + dataFun.CenaJednogTreninga + ' RSD</td></tr>';
+    centar += '<tr><td>Cena grupnog treninga: </td><td class="tableLabel">' + dataFun.CenaJednogGrupnogTreninga + ' RSD</td></tr>';
+    centar += '<tr><td class="test">Cena grupnog sa trenerom: </td><td class="tableLabel">' + dataFun.CenaJednogTreningaSaTrenerom + ' RSD</td></tr>';
 
     tableCentar += '<tr>' + centar + '</tr>';
 
@@ -664,6 +680,7 @@ function showForm(id) {
     $('#spisakTreninga').hide();
     $('#formaTrening').show();
     $('#btnDodajTrening').hide();
+    $('#btnSacuvajIzmeneTrening').show();
 
     let trening;
     for (el in data) {
@@ -730,19 +747,19 @@ function parseUrl(url = window.location.href) {
 }
 
 function createTableNeprijavljen(dataFun) {
-    let tableTreninzi = `<table class="trenings">`;
-    tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
+    let tableTreninzi = `<table class="treninziDisplay">`;
+    tableTreninzi += `<tr class="tableHeader"><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     for (element in dataFun) {
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
         trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
-        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + ' minuta</td>';
 
-        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');    // Godina-mesec-dan sat:minut:sekunda
         let params = vremeOdrzavanja.split(',');
         let datum = params[0].split('/');
         let vreme = params[1].split(':');
-        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+        vremeOdrzavanja = `${datum[0]}-${datum[1]}-${datum[2]} | ${vreme[0]}:${vreme[1]}`;
 
         trening += '<td>' + vremeOdrzavanja + '</td>';
         trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
@@ -755,19 +772,19 @@ function createTableNeprijavljen(dataFun) {
 }
 
 function createTablePosetioc(dataFun) {
-    let tableTreninzi = `<table class="trenings">`;
+    let tableTreninzi = `<table class="treninziDisplay">`;
     tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     for (element in dataFun) {
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
         trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
-        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + ' minuta</td>';
 
         let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
         let params = vremeOdrzavanja.split(',');
         let datum = params[0].split('/');
         let vreme = params[1].split(':');
-        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+        vremeOdrzavanja = `${datum[0]}-${datum[1]}-${datum[2]} | ${vreme[0]}:${vreme[1]}`;
 
         trening += '<td>' + vremeOdrzavanja + '</td>';
         trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
@@ -781,7 +798,7 @@ function createTablePosetioc(dataFun) {
 }
 
 function createTableTrener(dataFun) {
-    let tableTreninzi = `<table class="trenings">`;
+    let tableTreninzi = `<table class="treninziDisplay">`;
     tableTreninzi += `<tr><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     let user = JSON.parse(sessionStorage.getItem('activeUser'));
@@ -792,25 +809,25 @@ function createTableTrener(dataFun) {
     for (element in dataFun) { 
         let trening = '<td>' + dataFun[element].Naziv + '</td>';
         trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
-        trening += '<td>' + dataFun[element].TrajanjeTreninga + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + ' minuta</td>';
 
         let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
         let params = vremeOdrzavanja.split(',');
         let datum = params[0].split('/');
         let vreme = params[1].split(':');
-        vremeOdrzavanja = `${datum[2]}-${datum[1]}-${datum[0]} | ${vreme[0]}:${vreme[1]}`;
+        vremeOdrzavanja = `${datum[0]}-${datum[1]}-${datum[2]} | ${vreme[0]}:${vreme[1]}`;
 
         trening += '<td>' + vremeOdrzavanja + '</td>';
-        trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
-        trening += '<td>' + dataFun[element].Posetioci.length + '</td>';
+        trening += '<td class="broj">' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td class="broj">' + dataFun[element].Posetioci.length + '</td>';
         let ispisan = false;
 
         for (_element in user.GrupniTreninziTrener) { 
             if (dataFun[element].Id == user.GrupniTreninziTrener[_element].Id) {
                 ispisan = true;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnObrisiTrening">-</button></td>`;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnIzmeniTrening">?</button></td>`;
-                trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnPrikaziSpisakPosetiocaTrening">List</button></td>`;
+                trening += `<td class="btnTrener"><button class="TrenerClass" value="${dataFun[element].Id}" id="btnPrikaziSpisakPosetiocaTrening">Spisak</button></td>`;
+                trening += `<td class="btnTrener"><button class="TrenerClass" value="${dataFun[element].Id}" id="btnIzmeniTrening">Izmeni</button></td>`;
+                trening += `<td class="btnTrener"><button class="TrenerClass" value="${dataFun[element].Id}" id="btnObrisiTrening">Obrisi</button></td>`;
                 tableTreninzi += '<tr>' + trening + '</tr>';
             }
         }
@@ -844,7 +861,7 @@ function getTrenereCentra(idCentra) {
 }
 
 function displayTrenereCentra(treneri) {
-    let tableTreneri = `<table>`;
+    let tableTreneri = `<table class="treneriDisplay">`;
     tableTreneri += `<tr><th>Username</th><tr>`;
 
     for (element in treneri) {
@@ -875,7 +892,7 @@ function checkIfVlasnikCentra(user) {
     let idCentra = parseUrl();
     
     for (element in user.FitnesCentarVlasnik) {
-        if (user.FitnesCentarVlasnik[element].Id == idCentra) {
+        if (user.FitnesCentarVlasnik[element] == idCentra) {
             return true;
         }
     }
@@ -884,8 +901,9 @@ function checkIfVlasnikCentra(user) {
 }
 
 function displayKomentare(komentari) {
-    let tableKomentari = `<table>`;
-    tableKomentari += `<tr><th colspan="3">KOMENTARI</th></tr>`
+    let tableKomentari = `<table class="komentariDisplay">`;
+    tableKomentari += `<tr><td class="header" colspan="3">KOMENTARI</td></tr>`;
+    tableKomentari += `<tr class="headerSecond"><td>Sadrzaj</td><td>Ocena</td></tr>`;
 
     if (sessionStorage.getItem('accessToken')) {
         let user = JSON.parse(sessionStorage.getItem('activeUser'));
@@ -893,7 +911,7 @@ function displayKomentare(komentari) {
             if (checkIfVlasnikCentra(user)) {
                 for (element in komentari) {
                     let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
-                    komentar += `<td>${komentari[element].Ocena}</td>`
+                    komentar += `<td class="ocena">${komentari[element].Ocena}</td>`
                     if (komentari[element].NotTouched == true && komentari[element].Odobren == false) {
                         komentar += `<td><button id="btnOdobriKomentar" value="${komentari[element].Id}">+</button> <button id="btnOdbijKomentar" value="${komentari[element].Id}">-</button></td>`
                     } else if (komentari[element].NotTouched == false && komentari[element].Odobren == false) {
@@ -908,7 +926,7 @@ function displayKomentare(komentari) {
                 for (element in komentari) {
                     if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
                         let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
-                        komentar += `<td>${komentari[element].Ocena}</td>`
+                        komentar += `<td class="ocena">${komentari[element].Ocena}</td>`
                         tableKomentari += `<tr>${komentar}</tr>`
                     }
                 }
@@ -918,7 +936,7 @@ function displayKomentare(komentari) {
             for (element in komentari) {
                 if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
                     let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
-                    komentar += `<td>${komentari[element].Ocena}</td>`
+                    komentar += `<td class="ocena">${komentari[element].Ocena}</td>`
                     tableKomentari += `<tr>${komentar}</tr>`
                 }
             }
@@ -927,7 +945,7 @@ function displayKomentare(komentari) {
         for (element in komentari) {
             if (komentari[element].NotTouched == false && komentari[element].Odobren == true) {
                 let komentar = `<td>${komentari[element].Sadrzaj}</td>`;
-                komentar += `<td>${komentari[element].Ocena}</td>`
+                komentar += `<td class="ocena">${komentari[element].Ocena}</td>`
                 tableKomentari += `<tr>${komentar}</tr>`
             }
         }

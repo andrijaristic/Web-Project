@@ -3,5 +3,7 @@ b3c361b2-2fdf-4e54-af6a-e19b1285c73f=CFitnesCentar2=Ulica 2, Novi Sad, 11000=200
 95b76659-b361-42d0-b6d6-0faad23d50dc=BFitnesCentar3=Ulica 3, Novi Sad, 11000=1980=admin=2000=30000=100=100=1000=false
 269238bb-4891-403b-a221-4226a8697513=ZFitnesCentar456=Ulica 4, Novi Sad, 11000=2010=admin=2000=30000=100=100=1000=false
 3d974817-ad4f-41c0-8ed3-3ccac5643645=Novi centar=Ulica 5, Novi Sad, 11000=2022=admin=1000=35000=100=200=500=false
-f11b1fd7-9246-49c0-a6be-c63db70196bd=Ovo je izmenjen centar=ulica 6, Novi Sad, 11000=2004=admin=100=100=100=100=100=false
+f11b1fd7-9246-49c0-a6be-c63db70196bd=Bice obrisano=Ulica 6, Novi Sad, 11000=2004=admin=100=100=100=100=100=true
+054206a7-3d9c-4a71-b647-85edaae83ad1=novicent=Ulica 5, Novi Sad, 11000=2006=admin=100=100=100=100=100=true
+220bb9c5-a71d-4542-9c2f-3435cc399302=Tets=Test 2, Test, 11111=2002=admin=111=11=11=11=11=true
 

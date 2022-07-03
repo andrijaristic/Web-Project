@@ -1,10 +1,15 @@
-admin=admin=Admin=Admin=MUSKI=admin@gmail.com=20/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;269238bb-4891-403b-a221-4226a8697513;f11b1fd7-9246-49c0-a6be-c63db70196bd;9b6c9a48-15b0-4368-9462-60923224f79c=false
-trener=trener=Trener=Trener=ZENSKI=trener@gmail.com=20/11/2000=TRENER=null=b06e3139-7a6a-4a01-bcee-2545c00f01fb;7444369b-33d6-4a15-872a-607981417463;35be8915-03d2-44a3-a935-1260f537ca4e;84d4b5ba-9ec5-4add-a4ba-6465f3c103c4;e6ea46bd-752f-4da3-91eb-f440be3d0276;86167a02-60a2-4885-8928-dfa79278b278;bca552a5-f2b3-4114-991f-14b8e31e329c;29532ed9-2ed2-4d08-8f84-3604fd9a166a;db77c8a0-62a5-4395-8f8c-d4ed8affc2a3;1864510d-9781-4c1f-87ce-3f8acb6f8650=f11c22df-b873-49d5-9c50-48f07285f342=null=false
-pos=pos=Pos=Pos=MUSKI=pos@gmail.com=20/11/2000=POSETILAC=b06e3139-7a6a-4a01-bcee-2545c00f01fb;35be8915-03d2-44a3-a935-1260f537ca4e;fa86e44d-8d69-43a6-949e-633ce49bdef7;e6ea46bd-752f-4da3-91eb-f440be3d0276=null=null=null=false
+admin=admin=Admin=Admin=MUSKI=admin@gmail.com=20/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;269238bb-4891-403b-a221-4226a8697513;f11b1fd7-9246-49c0-a6be-c63db70196bd;9b6c9a48-15b0-4368-9462-60923224f79c;054206a7-3d9c-4a71-b647-85edaae83ad1;220bb9c5-a71d-4542-9c2f-3435cc399302=false
+trener=trener=Trener=Trener=ZENSKI=trener@gmail.com=20/11/2000=TRENER=null=b06e3139-7a6a-4a01-bcee-2545c00f01fb;7444369b-33d6-4a15-872a-607981417463;35be8915-03d2-44a3-a935-1260f537ca4e;84d4b5ba-9ec5-4add-a4ba-6465f3c103c4;e6ea46bd-752f-4da3-91eb-f440be3d0276;86167a02-60a2-4885-8928-dfa79278b278;29532ed9-2ed2-4d08-8f84-3604fd9a166a;db77c8a0-62a5-4395-8f8c-d4ed8affc2a3;1864510d-9781-4c1f-87ce-3f8acb6f8650;96eca327-9269-444d-a1ad-32c1d838d5c5;8196b5ac-98cc-4313-bde5-0536f365ff83=f11c22df-b873-49d5-9c50-48f07285f342=null=false
+pos=pos=Pos=Pos=MUSKI=pos@gmail.com=20/11/2000=POSETILAC=b06e3139-7a6a-4a01-bcee-2545c00f01fb;35be8915-03d2-44a3-a935-1260f537ca4e;fa86e44d-8d69-43a6-949e-633ce49bdef7;e6ea46bd-752f-4da3-91eb-f440be3d0276;e1a6373b-8538-46e8-816c-e5b1e119a131=null=null=null=false
 novi=novi=nnnnn=nnnnn=MUSKI=novi@email.com=20/11/2022=TRENER=null=d7e70c74-ec60-433c-bf01-efc4f69e8c3e=269238bb-4891-403b-a221-4226a8697513=null=false
 novi2=novi=adsaff=ffffff=MUSKI=email@emai.com=14/06/2001=TRENER=null=0978df6c-be90-4f45-8757-205473bf1889=269238bb-4891-403b-a221-4226a8697513=null=false
 pos2=pos2=andriaj=ristic=MUSKI=andrija@email.com=14/07/2000=POSETILAC=35be8915-03d2-44a3-a935-1260f537ca4e;fa86e44d-8d69-43a6-949e-633ce49bdef7;e6ea46bd-752f-4da3-91eb-f440be3d0276=null=null=null=false
 pos3=pos3=andrija=andrija=MUSKI=andrija@email.com=07/07/2010=POSETILAC=35be8915-03d2-44a3-a935-1260f537ca4e;fa86e44d-8d69-43a6-949e-633ce49bdef7=null=null=null=false
 pos4=pos4=andrijana=andrija=ZENSKI=andrija@email.com=08/11/2005=POSETILAC=null=null=null=null=false
 pos5=pos5=andrija=andrija=MUSKI=andrija@email.com=16/06/1998=POSETILAC=84d4b5ba-9ec5-4add-a4ba-6465f3c103c4=null=null=null=false
+mirko=1111=Mirko=Mirkovic=MUSKI=mirko@gmail.com=24/05/1990=POSETILAC=e6ea46bd-752f-4da3-91eb-f440be3d0276;1864510d-9781-4c1f-87ce-3f8acb6f8650;db77c8a0-62a5-4395-8f8c-d4ed8affc2a3;29532ed9-2ed2-4d08-8f84-3604fd9a166a=null=null=null=false
+trener2=trener2=Slavko=Slavkic=MUSKI=slavko@email.com=05/04/1980=TRENER=null=e1a6373b-8538-46e8-816c-e5b1e119a131=f11c22df-b873-49d5-9c50-48f07285f342=null=false
+delete=del=delete=delete=MUSKI=delete@email.com=18/01/2000=TRENER=null=97e5985f-67af-4e33-9eda-3151fefb86b8=f11b1fd7-9246-49c0-a6be-c63db70196bd=null=false
+del=del=del=del=MUSKI=del@email.com=03/05/2019=TRENER=null=null=054206a7-3d9c-4a71-b647-85edaae83ad1=null=false
+test=test=del=del=MUSKI=del@email.com=15/07/2000=TRENER=null=null=220bb9c5-a71d-4542-9c2f-3435cc399302=null=true
 

@@ -51,12 +51,12 @@
     });
 
     $('#btnSaveChanges').click(function () {
-        if (!validate()) {
+        if (!validate(user)) {
             return; 
         }
 
         let newUsername = `${user.Username}-${$('#accountUsername').val()}`;
-        let newPassword = $('#accountPassword').val();
+        let newPassword = $('#accountPasswordNewRetype').val();
         let newIme = $('#accountIme').val();
         let newPrezime = $('#accountPrezime').val();
         let newEmail = $('#accountEmail').val();
@@ -73,13 +73,20 @@
                 Prezime: newPrezime,
                 Email: newEmail,
                 Pol: pol,
-                DatumRodjenja: datum
+                DatumRodjenja: datum,
+                Uloga: user.Uloga,
+                GrupniTreninziPosetioc: user.GrupniTreninziPosetioc,
+                GrupniTreninziTrener: user.GrupniTreninziTrener,
+                FitnesCentarTrener: user.FitnesCentarTrener,
+                FitnesCentarVlasnik: user.FitnesCentarVlasnik,
+                isBlocked: user.isBlocked
             },
             dataType: 'json',
             success: function (data) {
                 console.log(data);
                 sessionStorage.setItem('activeUser', JSON.stringify(data));
                 displayInformation(JSON.parse(sessionStorage.getItem('activeUser')));
+                alert('Uspesno promenjene informacije! Refreshujte stranicu');
             },
             error: function (xhr) {
                 console.log(xhr.status);
@@ -210,12 +217,14 @@
     }
 });
 
-function validate() {
+function validate(user) {
     let regexSpace = /[a-zA-Z ]+/;
     let regexNoSpace = /[a-zA-Z]+/;
 
     let mind = new Date();
-    mind = mind.toLocaleString('en-GB');
+    mind = mind.toLocaleDateString('en-GB');
+    mind = mind.split('/');
+    mind = `${mind[2]}-${mind[1]}-${mind[0]}`;
 
     let datum = $('#accountDatum').val();
     datum = $.trim(datum);

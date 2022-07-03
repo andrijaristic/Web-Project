@@ -45,9 +45,9 @@
     </div>
     <div id="container">
         <div class="middleContainer" id="checkboxFilter">
-            <input type="checkbox" id="checkboxNaziv" value="naziv" />Naziv<br />
-            <input type="checkbox" id="checkboxAdresa" value="adresa" />Adresa<br />
-            <input type="checkbox" id="checkboxGodina" value="godina" />Godina otvaranja<br />
+            <label class="fontChange"><input type="checkbox" id="checkboxNaziv" value="naziv" />Naziv</label>
+            <label class="fontChange"><input type="checkbox" id="checkboxAdresa" value="adresa" />Adresa</label>
+            <label class="fontChange"><input type="checkbox" id="checkboxGodina" value="godina" />Godina otvaranja</label>
             <select id="sortOption">
                 <option value="opadajuce">Opadajuce</option>
                 <option value="rastuce">Rastuce</option>
@@ -57,10 +57,10 @@
         <div id="fitnesCentriSpisak"></div><br />
     </div>
     <button class="btnMiddle" id="btnShowCreateFormFitnesCentar">Dodaj Fitnes Centar</button>
-    <button class="btnMiddle" id="btnExitForm">Return</button>
-    <button class="btnMiddle" id="btnExitUpdate">Return</button>
+    <button class="btnMiddle" id="btnExitForm">Zatvori formu</button>
+    <button class="btnMiddle" id="btnExitUpdate">Zatvori formu</button>
     <div id="createFitnesCentarForm">
-        <table class="centri">
+        <table class="addForm">
             <tr>
                 <td>Naziv:</td>
                 <td><input type="text" id="nazivFitnesCentra" /></td>
@@ -91,11 +91,11 @@
                 <td><input type="number" id="cenaTreningJedanFitnesCentar" /></td>
             </tr>
             <tr>
-                <td>Cena jednog<br />grupnog<br />treninga:</td>
+                <td>Cena jednog<br />grupnog treninga:</td>
                 <td><input type="number" id="cenaTreningGrupniFitnesCentar" /></td>
             </tr>
             <tr>
-                <td>Cena jednog<br />grupnog<br />treninga<br />sa trenerom:</td>
+                <td>Cena jednog grupnog<br />treninga sa trenerom:</td>
                 <td><input type="number" id="cenaTreningTrenerFitnesCentar" /></td>
             </tr>
             <tr>

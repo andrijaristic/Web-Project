@@ -32,11 +32,11 @@ $(document).ready(function () {
     }
 
     $('#sve').show();
-    $('#pretragaNaziv').hide();
-    $('#nazivFitnesCentra').hide();
-    $('#tipTreninga').hide();
-    $('#minGodina').hide();
-    $('#maxGodina').hide();
+    $('.blockNaziv').hide();
+    $('.blockFitnes').hide();
+    $('.blockTrening').hide();
+    $('.blockMinGodina').hide();
+    $('.blockMaxGodina').hide();
     $('#rowNaziv').hide();
     $('#rowTip').hide();
     $('#rowFitnes').hide();
@@ -54,19 +54,19 @@ $(document).ready(function () {
     // NAZIV, TIP, FITNES - Pretraga
     // NAZIV, TIP, DATUM i VREME - Sort
     if (user.Uloga == UlogaEnum.POSETIOC) {
-        $('#pretragaNaziv').show();
-        $('#nazivFitnesCentra').show();
-        $('#tipTreninga').show();
+        $('.blockNaziv').show();
+        $('.blockFitnes').show();
+        $('.blockTrening').show();
 
         $('#rowNaziv').show();
         $('#rowTip').show();
         $('#rowDatum').show();
         displayTreningePosetioc(user);
     } else if (user.Uloga == UlogaEnum.TRENER) {
-        $('#pretragaNaziv').show();
-        $('#tipTreninga').show();
-        $('#minGodina').show();
-        $('#maxGodina').show();
+        $('.blockNaziv').show();
+        $('.blockTrening').show();
+        $('.blockMinGodina').show();
+        $('.blockMaxGodina').show();
 
         $('#rowNaziv').show();
         $('#rowTip').show();
@@ -178,7 +178,7 @@ $(document).ready(function () {
 function showSpisakPosetioca(dataFun) {
     let spisak = "";
     for (el in dataFun) {
-        spisak += `${dataFun[el].Ime}\n`;
+        spisak += `${dataFun[el].Ime} ${dataFun[el].Prezime}\n`;
     }
 
     alert(spisak);
@@ -220,7 +220,7 @@ function sort() {
         if (selectedSortOption == "rastuce") {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (TipEnumText[dataCurrent[i].TipTreninga] > TipEnumText[dataCurrent[i].TipTreninga]) {
+                    if (TipEnumText[dataCurrent[i].TipTreninga] > TipEnumText[dataCurrent[j].TipTreninga]) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -232,7 +232,7 @@ function sort() {
         } else {
             for (let i = 0; i < dataCurrent.length; i++) {
                 for (let j = i + 1; j < dataCurrent.length; j++) {
-                    if (TipEnumText[dataCurrent[i].TipTreninga] < TipEnumText[dataCurrent[i].TipTreninga]) {
+                    if (TipEnumText[dataCurrent[i].TipTreninga] < TipEnumText[dataCurrent[j].TipTreninga]) {
                         let temp = dataCurrent[i];
                         dataCurrent[i] = dataCurrent[j];
                         dataCurrent[j] = temp;
@@ -318,7 +318,7 @@ function searchTrenings(user) {
             // 1. Sve
             if (imaNaziv && imaFitnes && imaTip) {
                 for (element in data) {
-                    if (data[element].Naziv.includes(naziv) && data[element].FitnesCentar.Naziv.includes(fitnes) && data[element].TipTreninga == TipEnum[tipTreninga]) {
+                    if (data[element].Naziv.includes(naziv) && data[element].FitnesCentar.Naziv.includes(fitnes) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -342,7 +342,7 @@ function searchTrenings(user) {
             // 3. Naziv / Tip
             if (imaNaziv && !imaFitnes && imaTip) {
                 for (element in data) {
-                    if (data[element].Naziv.includes(naziv) && data[element].TipTreninga == TipEnum[tipTreninga]) {
+                    if (data[element].Naziv.includes(naziv) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -424,7 +424,9 @@ function searchTrenings(user) {
             // 1. Sve
             if (imaNaziv && imaGodinu && imaTip) {
                 for (element in data) {
-                    if (data[element].Naziv.includes(naziv) && (data[element].DatumVreme >= minGodina && data[element].DatumVreme <= maxGodina) && data[element].TipTreninga == TipEnum[tipTreninga]) {
+                    let godina = data[element].DatumVreme.split('-')[0];
+
+                    if (data[element].Naziv.includes(naziv) && (godina >= minGodina && godina <= maxGodina) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -436,7 +438,9 @@ function searchTrenings(user) {
             // 2. Naziv / Datum
             if (imaNaziv && imaGodinu && !imaTip) {
                 for (element in data) {
-                    if (data[element].Naziv.includes(naziv) && (data[element].DatumVreme >= minGodina && data[element].DatumVreme <= maxGodina)) {
+                    let godina = data[element].DatumVreme.split('-')[0];
+
+                    if (data[element].Naziv.includes(naziv) && (godina >= minGodina && godina <= maxGodina)) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -448,7 +452,7 @@ function searchTrenings(user) {
             // 3. Naziv / Tip
             if (imaNaziv && !imaGodinu && imaTip) {
                 for (element in data) {
-                    if (data[element].Naziv.includes(naziv) && data[element].TipTreninga == TipEnum[tipTreninga]) {
+                    if (data[element].Naziv.includes(naziv) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -460,7 +464,9 @@ function searchTrenings(user) {
             // 4. Datum / Tip
             if (!imaNaziv && imaGodinu && imaTip) {
                 for (element in data) {
-                    if ((data[element].DatumVreme >= minGodina && data[element].DatumVreme <= maxGodina) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
+                    let godina = data[element].DatumVreme.split('-')[0];
+
+                    if ((godina >= minGodina && godina <= maxGodina) && data[element].TipTreninga == TipEnum[tipTreninga.toUpperCase()]) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -484,7 +490,9 @@ function searchTrenings(user) {
             // 6. Datum
             if (!imaNaziv && imaGodinu && !imaTip) {
                 for (element in data) {
-                    if ((data[element].DatumVreme >= minGodina && data[element].DatumVreme <= maxGodina)) {
+                    let godina = data[element].DatumVreme.split('-')[0];
+
+                    if ((godina >= minGodina && godina <= maxGodina)) {
                         searchTable[searchTable.length] = data[element];
                     }
                 }
@@ -606,11 +614,24 @@ function displayTreningeTrener(user) {
 }
 
 function createTablePosetioc(dataFun) {
-    let tableTreninzi = `<table border="1">`;
-    tableTreninzi += `<tr><th>Naziv</th></tr>`;
+    let tableTreninzi = `<table class="treninziDisplay">`;
+    tableTreninzi += `<tr><th>Fitnes centar</th><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
 
     for (element in dataFun) {
-        let trening = '<td>' + dataFun[element].Naziv + '</td>';
+        let trening = '<td>' + dataFun[element].FitnesCentar.Naziv + '</td>';
+        trening += '<td>' + dataFun[element].Naziv + '</td>';
+        trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + ' minuta</td>';
+
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let params = vremeOdrzavanja.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        vremeOdrzavanja = `${datum[0]}-${datum[1]}-${datum[2]} | ${vreme[0]}:${vreme[1]}`;
+
+        trening += '<td>' + vremeOdrzavanja + '</td>';
+        trening += '<td>' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td>' + dataFun[element].Posetioci.length + '</td>';
         tableTreninzi += '<tr>' + trening + '</tr>';
     }
 
@@ -620,13 +641,40 @@ function createTablePosetioc(dataFun) {
 }
 
 function createTableTrener(dataFun) {
-    let tableTreninzi = `<table border="1">`;
-    tableTreninzi += `<tr><th>Naziv</th></tr>`;
+    let tableTreninzi = `<table class="treninziDisplay">`;
+    tableTreninzi += `<tr><th>Fitnes centar</th><th>Naziv</th><th>Tip treninga</th><th>Trajanje</th><th>Vreme odrzavanja</th><th>Max. broj posetioca</th><th>Broj posetioca</th></tr>`;
+
+    let user = JSON.parse(sessionStorage.getItem('activeUser'));
 
     for (element in dataFun) {
-        let trening = '<td>' + dataFun[element].Naziv + '</td>';
-        trening += `<td><button class="TrenerClass" value="${dataFun[element].Id}" id="btnPrikaziSpisakPosetiocaTrening">List</button></td>`;
-        tableTreninzi += '<tr>' + trening + '</tr>';
+        let trening = '<td>' + dataFun[element].FitnesCentar.Naziv + '</td>';
+        trening += '<td>' + dataFun[element].Naziv + '</td>';
+        trening += '<td>' + TipEnumText[dataFun[element].TipTreninga] + '</td>';
+        trening += '<td>' + dataFun[element].TrajanjeTreninga + ' minuta</td>';
+
+        let vremeOdrzavanja = new Date(dataFun[element].DatumVreme).toLocaleString('en-GB');
+        let params = vremeOdrzavanja.split(',');
+        let datum = params[0].split('/');
+        let vreme = params[1].split(':');
+        vremeOdrzavanja = `${datum[0]}-${datum[1]}-${datum[2]} | ${vreme[0]}:${vreme[1]}`;
+
+        trening += '<td>' + vremeOdrzavanja + '</td>';
+        trening += '<td class="broj">' + dataFun[element].MaksBrojPosetilaca + '</td>';
+        trening += '<td class="broj">' + dataFun[element].Posetioci.length + '</td>';
+        let ispisan = false;
+
+        for (_element in user.GrupniTreninziTrener) {
+            if (dataFun[element].Id == user.GrupniTreninziTrener[_element].Id) {
+                ispisan = true;
+                trening += `<td class="btnTrener"><button class="TrenerClass" value="${dataFun[element].Id}" id="btnPrikaziSpisakPosetiocaTrening">Spisak</button></td>`;
+                tableTreninzi += '<tr>' + trening + '</tr>';
+            }
+        }
+
+        if (!ispisan) {
+            //trening = '<td>' + dataFun[element].Naziv + '</td>';
+            tableTreninzi += '<tr>' + trening + '</tr>';
+        }
     }
 
     tableTreninzi += `</table>`;

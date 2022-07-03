@@ -11,7 +11,7 @@ var UlogeEnum = {
 
 $(document).ready(function () {
     let id;
-    let regexUsername = /^[a-zA-Z@!]+$/
+    let regexUsername = /^[a-zA-Z0-9@!]+$/
     let regexSpace = /^[a-zA-Z ]+$/;
     let regexNoSpace = /^[a-zA-Z]+$/;
     if (sessionStorage.getItem('accessToken')) {

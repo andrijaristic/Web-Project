@@ -311,9 +311,20 @@ namespace FitnesCenter.Repository
                 if (string.Equals(BazePodataka.korisnici[i].Username, korisnik.Username))
                 {
                     korisnik.Username = newUsername;
+                    korisnik.FitnesCentarVlasnik = BazePodataka.korisnici[i].FitnesCentarVlasnik;
+                    korisnik.FitnesCentarTrener = BazePodataka.korisnici[i].FitnesCentarTrener;
+                    korisnik.GrupniTreninziPosetioc = BazePodataka.korisnici[i].GrupniTreninziPosetioc;
+                    korisnik.GrupniTreninziTrener = BazePodataka.korisnici[i].GrupniTreninziTrener;
+
+                    if (!BazePodataka.korisnikRepository.ValidateUpdateKorisnik(korisnik))
+                    {
+                        return false;
+                    }
+
                     BazePodataka.korisnici[i] = korisnik;
 
                     BazePodataka.korisnikRepository.SaveToFile();
+                    Console.WriteLine();
                     return true;
                 }
             }
@@ -424,6 +435,26 @@ namespace FitnesCenter.Repository
             }
 
             return retVal;
+        }
+
+        public bool UpdateGrupneTreninge(GrupniTrening trening, string username)
+        {
+            foreach (var el in BazePodataka.korisnici)
+            {
+                if (string.Equals(el.Username, username))
+                {
+                    for (int i = 0; i < el.GrupniTreninziTrener.Count; i++)
+                    {
+                        if (el.GrupniTreninziTrener[i].Id == trening.Id)
+                        {
+                            el.GrupniTreninziTrener[i] = trening;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         public bool CheckIfBlocked(string username)
@@ -563,14 +594,7 @@ namespace FitnesCenter.Repository
 
         public bool ValidateUpdateKorisnik(Korisnik korisnik)
         {
-            try
-            {
-                string[] usernames = korisnik.Username.Split('-');
-                if (usernames.Length != 2)
-                {
-                    return false;
-                }
-            } catch
+            if (string.IsNullOrEmpty(korisnik.Username))
             {
                 return false;
             }

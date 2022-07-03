@@ -64,7 +64,7 @@ namespace FitnesCenter.Controllers
                 return BadRequest();
             }
 
-            if (BazePodataka.grupniTreninziRepository.UpdateGrupniTrening(trening.Trening))
+            if (BazePodataka.grupniTreninziRepository.UpdateGrupniTrening(trening.Trening, trening.TrenerUsername))
             {
                 return Ok();
             }

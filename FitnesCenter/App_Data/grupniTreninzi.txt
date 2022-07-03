@@ -3,7 +3,7 @@ b06e3139-7a6a-4a01-bcee-2545c00f01fb=Trening1=YOGA=f11c22df-b873-49d5-9c50-48f07
 1d6dfa82-8e6a-44c9-90ee-36456034ea2e=Trening3=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=20=10/10/2010 10:10=10=null=false
 3e222fc4-f394-4795-ab2e-ae86e283db9b=Trening4=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=20=10/10/2010 10:10=10=null=false
 0dfbf943-ba08-40cd-9b07-6e95c66bf7bc=Trening5=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=20=10/10/2019 10:10=10=null=false
-35be8915-03d2-44a3-a935-1260f537ca4e=NoviTrening5=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=35=14/7/2022 12:44=3=pos;pos2;pos3=false
+35be8915-03d2-44a3-a935-1260f537ca4e=NoviTrening8=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=35=14/7/2022 12:44=3=pos;pos2;pos3=false
 fa86e44d-8d69-43a6-949e-633ce49bdef7=TestTrening2=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=35=20/7/2022 12:44=3=pos;pos2;pos3=false
 10df7c97-8478-468e-8e84-74449672b87c=test=YOGA=95b76659-b361-42d0-b6d6-0faad23d50dc=35=28/7/2018 13:7=4=null=false
 f971241b-3089-4194-ad67-1dc4966c190e=TRENINGNOV=BODY_PUMP=f11b1fd7-9246-49c0-a6be-c63db70196bd=35=22/7/2022 14:17=6=null=true
@@ -14,10 +14,14 @@ ff8dc435-7205-4c70-88a8-3e7d338a30b5=NOVI2Trening3=YOGA=269238bb-4891-403b-a221-
 30f25419-47d2-4311-98e6-c9e641973638=treningNov=LES_MILLS_TONE=f11c22df-b873-49d5-9c50-48f07285f342=42=28/7/2022 15:42=1=null=true
 84d4b5ba-9ec5-4add-a4ba-6465f3c103c4=noviTreningHaha8=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=55=22/7/2022 18:40=1=pos5=false
 a719e377-64c8-4f28-b04e-b113b07bb912=noviTrening=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=43=12/7/2022 16:12=3=null=true
-e6ea46bd-752f-4da3-91eb-f440be3d0276=Tek dodat trening=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=34=14/7/2022 9:25=4=pos;pos2=false
+e6ea46bd-752f-4da3-91eb-f440be3d0276=Tek dodat trening=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=34=14/7/2022 9:25=4=pos;pos2;mirko=false
 86167a02-60a2-4885-8928-dfa79278b278=Tek dodat trening=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=34=14/7/2022 9:30=5=null=false
-bca552a5-f2b3-4114-991f-14b8e31e329c=Tek dodat trening12=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=34=30/7/2022 9:30=5=null=false
-29532ed9-2ed2-4d08-8f84-3604fd9a166a=Ovo je novododati trening=LES_MILLS_TONE=f11c22df-b873-49d5-9c50-48f07285f342=35=22/7/2022 9:34=3=null=false
-db77c8a0-62a5-4395-8f8c-d4ed8affc2a3=Ovo je novododati trening2=LES_MILLS_TONE=f11c22df-b873-49d5-9c50-48f07285f342=35=26/7/2022 9:40=3=null=false
-1864510d-9781-4c1f-87ce-3f8acb6f8650=Ovo je novododati trening3=BODY_PUMP=f11c22df-b873-49d5-9c50-48f07285f342=35=12/8/2022 9:40=3=null=false
+bca552a5-f2b3-4114-991f-14b8e31e329c=Tek dodat trening12=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=34=30/7/2022 9:30=5=null=true
+29532ed9-2ed2-4d08-8f84-3604fd9a166a=Ovo je novododati trening=LES_MILLS_TONE=f11c22df-b873-49d5-9c50-48f07285f342=35=22/7/2022 9:34=3=mirko=false
+db77c8a0-62a5-4395-8f8c-d4ed8affc2a3=Ovo je novododati trening2=LES_MILLS_TONE=f11c22df-b873-49d5-9c50-48f07285f342=35=26/7/2022 9:40=3=mirko=false
+1864510d-9781-4c1f-87ce-3f8acb6f8650=Ovo je novododati trening3=BODY_PUMP=f11c22df-b873-49d5-9c50-48f07285f342=35=12/8/2022 9:40=3=mirko=false
+96eca327-9269-444d-a1ad-32c1d838d5c5=Dnevna doza yoge=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=60=20/7/2022 7:30=6=null=false
+8196b5ac-98cc-4313-bde5-0536f365ff83=Trening koji je danas=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=30=6/7/2022 15:52=6=null=false
+e1a6373b-8538-46e8-816c-e5b1e119a131=IZMENA=YOGA=f11c22df-b873-49d5-9c50-48f07285f342=30=20/7/2023 18:5=3=pos=false
+97e5985f-67af-4e33-9eda-3151fefb86b8=dasdas=YOGA=f11b1fd7-9246-49c0-a6be-c63db70196bd=33=16/7/2022 16:19=3=null=false
 
