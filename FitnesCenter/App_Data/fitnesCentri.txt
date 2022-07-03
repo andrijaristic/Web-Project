@@ -5,4 +5,9 @@ aed77132-9064-47a4-8316-7e016d60ed4b=CFitnesCentar=Vere Nikolic 65, Novi Sad, 21
 8b6ce502-24f3-4768-8bcc-431150425b10=DFitnesCentar=Balzakova 45, Novi Sad, 21000=2007=admin2=3000=30000=300=150=400=false
 fa8a44bf-fe6c-44d5-8a48-f68af2313b6c=XFitnesCentar=Bulevar Oslobodjenja 30, Novi Sad, 21000=2009=admin2=3000=30000=300=150=400=true
 437ddf68-2c59-4805-960e-7da8847b4a19=XFitnesCentar2=Knjeginje Milice 50, Beograd, 11000=1997=admin2=2500=25000=300=150=400=true
+75d84813-53ba-4262-b52a-014b5ffd23b5=Centar=Ulica 10, Novi Sad, 21000=2019=admin=100=100=100=100=100=false
+7b42bf07-3dbe-4243-b4af-c9ddbaacf9dd=ZZCentar=Cetnar 11, Novi Sad, 11000=2000=admin=100=100=100=100=100=true
+a14d798d-332a-4115-806d-e6af3da98936=Novi=Novi 2, Novi Sad, 21000=2002=admin=100=100=100=100=100=true
+025a77e9-7863-4748-b6ba-42a95571661f=UFitnesCentar=Cara Dusana 10, Beograd, 11000=2000=admin2=100=100=100=100=100=true
+a9a8272c-df96-457f-bc8a-91e085850769=JFitnesCentar=Cara Lazara 15, Novi Sad, 21000=2007=admin2=100=100=100=100=100=true
 

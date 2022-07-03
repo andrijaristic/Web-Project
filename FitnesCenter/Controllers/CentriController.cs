@@ -100,7 +100,9 @@ namespace FitnesCenter.Controllers
             if (BazePodataka.fitnesCentarRepository.UpdateFitnesCentar(centar))
             {
                 BazePodataka.fitnesCentarRepository.SaveToFile();
-                return Ok(BazePodataka.centri);
+                List<FitnesCentar> centri = BazePodataka.fitnesCentarRepository.GetValidFitnesCentre();
+
+                return Ok(centri);
             }
 
             return BadRequest();

@@ -192,7 +192,7 @@ namespace FitnesCenter.Repository
                     // Proveri da li ima treninga koji ce se odrzati u buducnosti (ZA SAD PROSLOSTI KAKO NE BI PUKLO)
                     foreach (var _el in BazePodataka.treninzi)
                     {
-                        if (_el.FitnesCentar.Id == el.Id && _el.DatumVreme.ToUniversalTime() < DateTime.Now.ToUniversalTime())
+                        if (_el.FitnesCentar.Id == el.Id && _el.DatumVreme.ToUniversalTime() > DateTime.Now.ToUniversalTime() && !_el.isDeleted)
                         {
                             return false;
                         }
@@ -215,6 +215,21 @@ namespace FitnesCenter.Repository
             }
 
             return false;
+        }
+
+        public List<FitnesCentar> GetValidFitnesCentre()
+        {
+            List<FitnesCentar> retVal = new List<FitnesCentar>();
+
+            foreach (var el in BazePodataka.centri)
+            {
+                if (!el.isDeleted)
+                {
+                    retVal.Add(el);
+                }
+            }
+
+            return retVal;
         }
 
         public bool ValidateCreate(FitnesCentar centar)

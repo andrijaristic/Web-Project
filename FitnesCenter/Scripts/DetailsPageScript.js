@@ -329,7 +329,7 @@ $(document).ready(function () {
                     sessionStorage.setItem('accessToken', "");
                     sessionStorage.setItem('activeUser', "");
                 } else if (xhr.status == 400){
-                    alert('Vec imate trening u to vreme.');
+                    alert('Vec imate trening u to vreme ili je obrisan fitnes centar.');
                     $('#treningVreme').css('border', '1px solid red');
                     $('#treningVreme').focus();
                 }

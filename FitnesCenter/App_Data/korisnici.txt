@@ -1,5 +1,5 @@
-admin=admin=Andrija=Ristic=MUSKI=andrija@gmail.com=23/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;4f393034-900d-4d5b-9d6e-985e2c39e552;675de6f3-f52f-4f3b-b141-4b6020bb0bc2=false
-admin2=admin2=Milan=Krstic=MUSKI=milan@gmail.com=06/03/1998=VLASNIK=null=null=null=aed77132-9064-47a4-8316-7e016d60ed4b;8b6ce502-24f3-4768-8bcc-431150425b10;fa8a44bf-fe6c-44d5-8a48-f68af2313b6c;437ddf68-2c59-4805-960e-7da8847b4a19=false
+admin=admin=Andrija=Ristic=MUSKI=andrija@gmail.com=23/11/2000=VLASNIK=null=null=null=f11c22df-b873-49d5-9c50-48f07285f342;4f393034-900d-4d5b-9d6e-985e2c39e552;675de6f3-f52f-4f3b-b141-4b6020bb0bc2;75d84813-53ba-4262-b52a-014b5ffd23b5;7b42bf07-3dbe-4243-b4af-c9ddbaacf9dd;a14d798d-332a-4115-806d-e6af3da98936=false
+admin2=admin2=Milan=Krstic=MUSKI=milan@gmail.com=06/03/1998=VLASNIK=null=null=null=aed77132-9064-47a4-8316-7e016d60ed4b;8b6ce502-24f3-4768-8bcc-431150425b10;fa8a44bf-fe6c-44d5-8a48-f68af2313b6c;437ddf68-2c59-4805-960e-7da8847b4a19;025a77e9-7863-4748-b6ba-42a95571661f;a9a8272c-df96-457f-bc8a-91e085850769=false
 trener1=trener1=Tatjana=Stepanovic=ZENSKI=tatjana@email.com=05/05/1999=TRENER=null=8052ceee-134c-4776-bf1b-01ac9eebce85;a4c941df-061d-4c88-90ea-3009ca8ded71=4f393034-900d-4d5b-9d6e-985e2c39e552=null=false
 trener2=trener2=Nikola=Veskovac=MUSKI=nikola@email.com=11/07/1998=TRENER=null=6f986429-2a57-44ab-9959-912389abda33;83976b2a-cb9f-4c0f-b446-862d106faa80=4f393034-900d-4d5b-9d6e-985e2c39e552=null=false
 trener3=trener3=Branko=Pavlovic=MUSKI=brank@email.com=17/06/2000=TRENER=null=ed2ba984-7528-4d9f-bbee-3f39163be2e7;4bacad8e-d829-41f7-a714-693be0eb129a;5e050a0d-2f00-490b-b5ce-fffd348dc570=4f393034-900d-4d5b-9d6e-985e2c39e552=null=false
@@ -8,10 +8,14 @@ trener5=trener5=Nenad=Milosevic=MUSKI=nenad@email.com=12/05/1996=TRENER=null=528
 trener6=trener6=Luka=Rakovac=MUSKI=luka@email.com=22/04/1996=TRENER=null=852c147c-a4f6-4fdb-a36a-1dad653e1d05=675de6f3-f52f-4f3b-b141-4b6020bb0bc2=null=false
 trener7=trener7=Sanja=Radovic=ZENSKI=sanja@email.com=23/02/2001=TRENER=null=4d81a3b6-91a2-42c5-92c1-d1db7b274e67;e79adea1-d3e5-41e4-9edb-731ae171d43d;ae8e7333-57bd-41e3-94a8-f75a9b95b6b8=aed77132-9064-47a4-8316-7e016d60ed4b=null=false
 trener8=trener8=Aleksandar=Panic=MUSKI=aleksandar@email.com=11/03/1996=TRENER=null=null=8b6ce502-24f3-4768-8bcc-431150425b10=null=false
-trener9=trener9=Vojin=Popovic=MUSKI=vojin@email.com=04/08/2001=TRENER=null=7de420f0-d326-4174-a0fb-4dd36160ee20=8b6ce502-24f3-4768-8bcc-431150425b10=null=false
+trener9=trener9=Vojin=Popovic=MUSKI=vojin@email.com=04/08/2001=TRENER=null=null=8b6ce502-24f3-4768-8bcc-431150425b10=null=false
 trenerX=trenerX=Dalibor=Lukic=MUSKI=dalibor@email.com=05/02/2000=TRENER=null=null=aed77132-9064-47a4-8316-7e016d60ed4b=null=true
 pos1=pos1=Aleksandra=Miric=ZENSKI=aleksandra@email.com=04/03/2000=POSETILAC=4bacad8e-d829-41f7-a714-693be0eb129a;8052ceee-134c-4776-bf1b-01ac9eebce85;6f986429-2a57-44ab-9959-912389abda33;7866526d-308f-4f0d-bf0b-39177128c0f8;e1d79924-2f7a-4f82-8dbc-88f3b09848c6;5287b2c5-10d4-4c1b-be97-246c82f5bce3;852c147c-a4f6-4fdb-a36a-1dad653e1d05;ae8e7333-57bd-41e3-94a8-f75a9b95b6b8=null=null=null=false
 pos2=pos2=Tina=Stojanovic=ZENSKI=tina@email.com=08/07/1990=POSETILAC=4bacad8e-d829-41f7-a714-693be0eb129a;5e050a0d-2f00-490b-b5ce-fffd348dc570;a4c941df-061d-4c88-90ea-3009ca8ded71;6f986429-2a57-44ab-9959-912389abda33;e1d79924-2f7a-4f82-8dbc-88f3b09848c6=null=null=null=false
 pos3=pos3=Petar=Pejcic=MUSKI=petar@email.com=07/06/2000=POSETILAC=5e050a0d-2f00-490b-b5ce-fffd348dc570;6f986429-2a57-44ab-9959-912389abda33;5287b2c5-10d4-4c1b-be97-246c82f5bce3=null=null=null=false
 pos4=pos4=Marko=Vucic=MUSKI=marko@gmail.com=13/02/1998=POSETILAC=5e050a0d-2f00-490b-b5ce-fffd348dc570;a4c941df-061d-4c88-90ea-3009ca8ded71;5287b2c5-10d4-4c1b-be97-246c82f5bce3;0e4bbb60-f27a-4907-a15c-24fb74c47fb3;ae8e7333-57bd-41e3-94a8-f75a9b95b6b8=null=null=null=false
+trenerM=trenerM=TrenerM=TrenerM=MUSKI=trener@email.com=22/02/2000=TRENER=null=null=7b42bf07-3dbe-4243-b4af-c9ddbaacf9dd=null=true
+trenerG=trenerG=trenerG=trenerG=MUSKI=trenerg@email.com=22/02/2000=TRENER=null=0eb724cc-156c-42e1-9af3-1af072df5cf8=a14d798d-332a-4115-806d-e6af3da98936=null=true
+trenerU=trenerU=TrenerU=TrenerU=MUSKI=treneru@email.com=12/05/1980=TRENER=null=0433f393-b3ba-4858-b8ec-2f3785c3afc7=025a77e9-7863-4748-b6ba-42a95571661f=null=true
+trenerJ=trenerJ=TrenerJ=TrenerJ=MUSKI=trener@email.com=13/07/2000=TRENER=null=91fa53fd-88ac-44d1-9269-73d7461fb3fe=a9a8272c-df96-457f-bc8a-91e085850769=null=true
 

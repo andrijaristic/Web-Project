@@ -67,6 +67,7 @@ $(document).ready(function () {
     $('#btnShowCreateFormFitnesCentar').click(function () {
         $('#createFitnesCentarForm').show();
         $('#btnAddFitnesCentar').show();
+        $('#btnUpdateFitnesCentar').hide();
         $('#btnShowCreateFormFitnesCentar').hide();
         $('#btnExitForm').show();
     });
@@ -158,6 +159,8 @@ $(document).ready(function () {
                 response = sortByNaziv(response);
                 $('#createFitnesCentarForm').hide();
                 $('#fitnesCentriSpisak').show();
+                $('#btnExitUpdate').hide();
+                $('#btnShowCreateFormFitnesCentar').show();
                 createTableVlasnik(response);
             },
             error: function (xhr) {
@@ -862,6 +865,7 @@ function createFitnesCentar() {
             sessionStorage.setItem('activeUser', JSON.stringify(response));
             $('#createFitnesCentarForm').hide();
             $('#btnShowCreateFormFitnesCentar').show();
+            $('#btnExitForm').hide();
             displayCentre();
             //alert('Napravljen fitnes centrar');
         },
@@ -884,8 +888,26 @@ function showForm(id) {
         }
     }
     let params = centar.Adresa.split(',');
-    let ulica = params[0].split(' ')[0];
-    let broj = params[0].split(' ')[1];
+    let paramsUlica = params[0].split(' ');
+    let ulica = "", broj = "";
+    if (paramsUlica.length != 2) {
+
+        for (let i = 0; i < paramsUlica.length - 1; i++) {
+            if (i + 1 == paramsUlica.length - 1) {
+                ulica += `${paramsUlica[i]}`;
+            } else {
+                ulica += `${paramsUlica[i]} `;
+            }
+        }
+
+        broj = paramsUlica[paramsUlica.length - 1];
+    } else {
+        ulica = paramsUlica[0];
+        broj = paramsUlica[1];
+    }
+
+    //let ulica = params[0].split(' ')[0];
+    //let broj = params[0].split(' ')[1];
     let grad = $.trim(params[1]);
     let kod = $.trim(params[2]);
 

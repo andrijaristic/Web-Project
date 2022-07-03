@@ -83,6 +83,12 @@ namespace FitnesCenter.Controllers
 
             trening.Trening.Id = Guid.NewGuid();
             trening.Trening.FitnesCentar = BazePodataka.fitnesCentarRepository.GetFitnesCentarByNaziv(trening.FitnesCentarId);
+
+            if (trening.Trening.FitnesCentar.isDeleted)
+            {
+                return BadRequest();
+            }
+
             GrupniTrening retVal = BazePodataka.grupniTreninziRepository.AddGrupniTrening(trening);
 
             if (retVal == null)
