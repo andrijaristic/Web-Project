@@ -106,7 +106,15 @@ namespace FitnesCenter.Repository
 
         public bool AddKomentar(Komentar komentar)
         {
-            if (CheckIfKomentarExists(komentar.Id)) { return true; }
+            if (CheckIfKomentarExists(komentar.Id))
+            {
+                return false;
+            }
+
+            if (!BazePodataka.komentarRepository.ValidateKomentar(komentar))
+            {
+                return false;
+            }
 
             BazePodataka.komentari.Add(komentar);
 
@@ -146,6 +154,36 @@ namespace FitnesCenter.Repository
             }
 
             return false;
+        }
+
+        public bool ValidateKomentar(Komentar komentar)
+        {
+            if (komentar.Id == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(komentar.Posetilac))
+            {
+                return false;
+            }
+
+            if (komentar.FitnesCentar == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(komentar.Sadrzaj))
+            {
+                return false;
+            }
+
+            if (komentar.Ocena < 0 || komentar.Ocena > 5)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
