@@ -1,9 +1,6 @@
-fc493179-eec2-44da-b32c-af2f49af960a=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test5 komentar za FitnesCentar1=5=false=true
-eec11466-90ed-4ffd-8633-89a73e5b8911=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test4 komentar za FitnesCentar1=4=false=false
-dd201b18-dff3-43a0-bab1-6e1599f17c6c=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test3 komentar za FitnesCentar1=3=false=true
-e3b0bf72-a155-4938-8571-bff3c224f152=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test2 komentar za FitnesCentar1=2=false=true
-681145bb-8958-48a3-b00c-2b8f5c90e266=pos=f11c22df-b873-49d5-9c50-48f07285f342=Ovo je test1 komentar za FitnesCentar1=1=false=false
-15054e4d-04a1-4f76-981c-3292c2ab9c4f=pos=95b76659-b361-42d0-b6d6-0faad23d50dc=Sadrzaj koji je sad dodat=5=false=true
-947343b3-fa0f-47f0-a030-cdbfd10a362b=pos=f11c22df-b873-49d5-9c50-48f07285f342=sadasd=3=false=true
-b38d1b91-00d3-4aae-af33-9a20561223c3=mirko=f11c22df-b873-49d5-9c50-48f07285f342=Novi komentar=5=false=false
+38363aa6-b03f-4294-8b76-7ed15d2ca7dc=pos1=4f393034-900d-4d5b-9d6e-985e2c39e552=Odlican trener!=5=false=true
+73e57d7e-44b3-4904-9427-a68f75d50f45=pos1=4f393034-900d-4d5b-9d6e-985e2c39e552=Neprofesionalno=1=true=false
+2113c882-75ed-445c-ba07-7e7311353a64=pos2=4f393034-900d-4d5b-9d6e-985e2c39e552=Osrednje iskustvo=3=false=true
+0d37edf8-6a08-46db-920a-c93fee98e880=pos2=4f393034-900d-4d5b-9d6e-985e2c39e552=Nehigijenski=1=false=false
+985b08bb-86c3-4f93-a1bc-d6ab573b5c92=pos4=aed77132-9064-47a4-8316-7e016d60ed4b=Treneri su bezobrazni=1=true=false
 

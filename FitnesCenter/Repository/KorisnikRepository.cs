@@ -132,6 +132,7 @@ namespace FitnesCenter.Repository
                     string email = line.Split('=')[5];
                     string datum = line.Split('=')[6];
                     Enum.TryParse(line.Split('=')[7], out Enums.Uloge enumUloga);
+                    bool isBlocked = line.Split('=')[12] == "true" ? true : false; 
 
                     // Radi.
                     //
@@ -224,7 +225,7 @@ namespace FitnesCenter.Repository
                             GrupniTreninziTrener = grupniTreningTrener,
                             FitnesCentarTrener = fitnesCentarTrener,
                             FitnesCentarVlasnik = fitnesCentarVlasnik,
-                            isBlocked = false
+                            isBlocked = isBlocked
                         };
 
                         retVal.Add(korisnik);
@@ -245,7 +246,7 @@ namespace FitnesCenter.Repository
                             GrupniTreninziTrener = grupniTreningTrener,
                             FitnesCentarTrener = fitnesCentarTrener,
                             FitnesCentarVlasnik = fitnesCentarVlasnik,
-                            isBlocked = false
+                            isBlocked = isBlocked
                         };
 
                         retVal.Add(korisnik);
@@ -266,7 +267,7 @@ namespace FitnesCenter.Repository
                             GrupniTreninziTrener = grupniTreningTrener,
                             FitnesCentarTrener = fitnesCentarTrener,
                             FitnesCentarVlasnik = fitnesCentarVlasnik,
-                            isBlocked = false
+                            isBlocked = isBlocked
                         };
                         retVal.Add(korisnik);
                     }

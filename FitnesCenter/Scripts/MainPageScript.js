@@ -66,6 +66,7 @@ $(document).ready(function () {
 
     $('#btnShowCreateFormFitnesCentar').click(function () {
         $('#createFitnesCentarForm').show();
+        $('#btnAddFitnesCentar').show();
         $('#btnShowCreateFormFitnesCentar').hide();
         $('#btnExitForm').show();
     });
@@ -73,6 +74,8 @@ $(document).ready(function () {
     $('#btnExitForm').click(function () {
         $('#createFitnesCentarForm').hide();
         $('#btnShowCreateFormFitnesCentar').show();
+        $('#btnAddFitnesCentar').hide();
+        $('#btnUpdateFitnesCentar').hide();
         $('#btnExitForm').hide();
     })
 
@@ -84,6 +87,8 @@ $(document).ready(function () {
         $('#createFitnesCentarForm').hide();
         $('#btnShowCreateFormFitnesCentar').show();
         $('#btnExitUpdate').hide();
+        $('#btnAddFitnesCentar').hide();
+        $('#btnUpdateFitnesCentar').hide();
     });
 
 

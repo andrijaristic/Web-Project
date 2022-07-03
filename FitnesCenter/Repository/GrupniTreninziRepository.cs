@@ -27,6 +27,26 @@ namespace FitnesCenter.Repository
                     string sat = el.DatumVreme.Hour.ToString();
                     string minut = el.DatumVreme.Minute.ToString();
 
+                    if (dan.Length == 1)
+                    {
+                        dan = $"0{dan}";
+                    }
+
+                    if (mesec.Length == 1)
+                    {
+                        mesec = $"0{mesec}";
+                    }
+
+                    if (sat.Length == 1)
+                    {
+                        sat = $"0{sat}";
+                    }
+
+                    if (minut.Length == 1)
+                    {
+                        minut = $"0{minut}";
+                    }
+
                     string posetioci = "null";
                     if (el.Posetioci.Count != 0)
                     {
@@ -69,16 +89,15 @@ namespace FitnesCenter.Repository
                     int trajanje = int.Parse(line.Split('=')[4]);
                     string datumVreme = line.Split('=')[5]; // dd/MM/yyy HH:mm
                     int brojPosetilaca = int.Parse(line.Split('=')[6]);
-                    string test = line.Split('=')[8];
                     bool isDeletedFile = line.Split('=')[8] == "true" ? true : false;
 
                     //string posetiociSvi = line.Split('=')[7];
                     //List<string> posetiociStringList = new List<string>();
-                    //List<Korisnik> posetici = new List<Korisnik>();
+                    //List<Korisnik> posetioci = new List<Korisnik>();
                     //if (posetiociSvi != "null")
                     //{
                     //    posetiociStringList = posetiociSvi.Split(';').ToList<string>();
-                    //    posetici = BazePodataka.korisnikRepository.GetPosetioce(posetiociStringList);
+                    //    posetioci = BazePodataka.korisnikRepository.GetPosetioce(posetiociStringList);
                     //}
 
                     string datum = datumVreme.Split(' ')[0];
@@ -286,9 +305,16 @@ namespace FitnesCenter.Repository
         {
             foreach (var el in BazePodataka.treninzi)
             {
-                if (el.Id != trening.Trening.Id && el.DatumVreme == trening.Trening.DatumVreme)
-                {   // Vec postoji trening u to vreme.
-                    return el;   
+                if (el.Id != trening.Trening.Id)
+                {
+                    Korisnik trener = BazePodataka.korisnikRepository.GetKorisnikByUsername(trening.TrenerUsername);
+                    foreach (var _el in trener.GrupniTreninziTrener)
+                    {
+                        if (_el.DatumVreme == trening.Trening.DatumVreme)
+                        {
+                            return el;
+                        }
+                    }
                 }
             }
 

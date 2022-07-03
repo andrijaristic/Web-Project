@@ -1,9 +1,8 @@
-f11c22df-b873-49d5-9c50-48f07285f342=AFitnesCentar=Ulica 1, Novi Sad, 11000=2000=admin=2000=30000=100=100=1000=false
-b3c361b2-2fdf-4e54-af6a-e19b1285c73f=CFitnesCentar2=Ulica 2, Novi Sad, 11000=2000=admin=2000=30000=100=100=1000=false
-95b76659-b361-42d0-b6d6-0faad23d50dc=BFitnesCentar3=Ulica 3, Novi Sad, 11000=1980=admin=2000=30000=100=100=1000=false
-269238bb-4891-403b-a221-4226a8697513=ZFitnesCentar456=Ulica 4, Novi Sad, 11000=2010=admin=2000=30000=100=100=1000=false
-3d974817-ad4f-41c0-8ed3-3ccac5643645=Novi centar=Ulica 5, Novi Sad, 11000=2022=admin=1000=35000=100=200=500=false
-f11b1fd7-9246-49c0-a6be-c63db70196bd=Bice obrisano=Ulica 6, Novi Sad, 11000=2004=admin=100=100=100=100=100=true
-054206a7-3d9c-4a71-b647-85edaae83ad1=novicent=Ulica 5, Novi Sad, 11000=2006=admin=100=100=100=100=100=true
-220bb9c5-a71d-4542-9c2f-3435cc399302=Tets=Test 2, Test, 11111=2002=admin=111=11=11=11=11=true
+f11c22df-b873-49d5-9c50-48f07285f342=AFitnesCentar=Cara Lazara 8, Novi Sad, 21000=1998=admin=2000=20000=300=200=1000=false
+4f393034-900d-4d5b-9d6e-985e2c39e552=ABFitnesCentar=Cara Dusana 8, Beograd, 11000=2005=admin=2000=20000=300=200=400=false
+675de6f3-f52f-4f3b-b141-4b6020bb0bc2=BFitnesCentar=Marsala Tita 88, Beograd, 11000=1990=admin=3000=30000=400=350=600=false
+aed77132-9064-47a4-8316-7e016d60ed4b=CFitnesCentar=Vere Nikolic 65, Novi Sad, 21000=2005=admin2=3000=30000=300=150=400=false
+8b6ce502-24f3-4768-8bcc-431150425b10=DFitnesCentar=Balzakova 45, Novi Sad, 21000=2007=admin2=3000=30000=300=150=400=false
+fa8a44bf-fe6c-44d5-8a48-f68af2313b6c=XFitnesCentar=Bulevar Oslobodjenja 30, Novi Sad, 21000=2009=admin2=3000=30000=300=150=400=true
+437ddf68-2c59-4805-960e-7da8847b4a19=XFitnesCentar2=Knjeginje Milice 50, Beograd, 11000=1997=admin2=2500=25000=300=150=400=true
 
